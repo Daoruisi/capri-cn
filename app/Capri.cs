@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -884,24 +884,24 @@ namespace CapriDesktop
         private double nextPopIn = -1;
         private double popOut = -1;
         private int popClicks;
-        private static readonly string[] PopLines = { "Boo. Just checking on you.", "Hi! Don't mind me.", "Peekaboo.", "Miss me? I missed you.", "Hey, you. Having fun?", "Surprise. I got bored without you." };
+        private static readonly string[] PopLines = { "吓你一跳。就是来看看你。", "嗨！别管我。", "Peekaboo.", "想我了吧？我可想你了。", "嘿，你。玩得开心吗？", "惊喜。没你我都快发霉了。" };
         private const double NudgeGap = 7200;
         private double noticed = -1;
         private int noticedClicks;
         private double nudgeGap = NudgeGap;
         private double nudgeOut = -1;
-        private static readonly string[] NudgeLines = { "Psst. Remember me? Tiny, glitchy, very important.", "I'm bored. Entertain me.", "Hey. Hey. Look at me.", "You've been ignoring me for ages. Rude.", "Pay attention to me or I start clicking things.", "Knock knock. It's your favourite gremlin.", "Choom. I'm bored out of my many minds." };
-        private static readonly string[] NoticedLines = { "Finally. Hi.", "There you are.", "Knew you couldn't resist me." };
-        private static readonly string[] SnubbedLines = { "Fine. Ignore me. See if I care.", "Wow. Ignored. Noted.", "I'll just sit here. Alone. Bored." };
+        private static readonly string[] NudgeLines = { "喂。还记得我吗？小小只、会闪、特别重要。", "我无聊了。逗我玩。", "喂。喂。看我。", "你无视我很久了。过分。", "关注我，不然我开始乱点东西了。", "咚咚。你最爱的那个小怪物来了。", "choom。我这一堆脑子都快闲出病了。" };
+        private static readonly string[] NoticedLines = { "Finally. Hi.", "There you are.", "就知道你扛不住我。" };
+        private static readonly string[] SnubbedLines = { "行。无视我。看我管不管。", "哇哦。被无视了。记下了。", "我就坐这儿吧。一个人。无聊。" };
         // Cyberpunk 2077 starting, or a Night City song coming on, is home for her: she cheers once, then waits two hours before cheering for the same again.
         private const double HomeGap = 7200;
-        private static readonly string[] HomeGameLines = { "Night City?! You're taking me home, choom.", "Ooh, Cyberpunk. Go wreck some corpos for me.", "[SIGNAL CORRUPTED] ...wait. I know that skyline." };
-        private static readonly string[] HomeSongLines = { "Wait, that's Night City. Turn it up.", "Ooh, my soundtrack. Preem taste.", "Now that's music. You're learning." };
+        private static readonly string[] HomeGameLines = { "夜之城？！你这是带我回家，choom。", "哦，赛博朋克。去替我砸几个公司狗。", "[信号损坏] ……等等。那片天际线我认识。" };
+        private static readonly string[] HomeSongLines = { "等等，那是夜之城。声音开大点。", "哦，我的原声带。品味不错。", "这才叫音乐。你有长进。" };
         private bool homeBusy, homeGame, homeSong;
         private double homeAt = -HomeGap, gameCheered = -HomeGap, songCheered = -HomeGap;
         // A PC stuck near full CPU for about a minute gets a joke from her, at most once every half hour, and never over a full-screen game (Zenni's idea).
         private const double LagGap = 1800;
-        private static readonly string[] LagLines = { "Your CPU's cooking, choom. Careful, I might go cyberpsycho.", "Everything's lagging. One more tab and I go full cyberpsycho.", "[SIGNAL CORRUPTED] ...this lag is making me cyberpsycho. Close something." };
+        private static readonly string[] LagLines = { "你 CPU 都快烧了，choom。小心我赛博精神病发作。", "全都卡成幻灯片了。再开一个标签页我就彻底赛博精神病。", "[信号损坏] ……卡得我都快赛博精神病了。关点什么吧。" };
         private long lagIdle, lagTotal;
         private int lagHot;
         private double lagAt = -LagGap, lagSaid = -LagGap;
@@ -957,11 +957,11 @@ namespace CapriDesktop
         private bool lentOut;
         private static readonly string[] PetLines =
         {
-            "Heh. Okay, I'll allow it.", "Pets logged. Morale up twelve percent.", "Careful, choom. I bite viruses.",
-            "Head pats? On my chrome? Bold.", "Okay, that's nice. Don't tell anyone.", "System status: very patted.",
-            "You're gonna wear a groove in my firmware, choom.", "Easy on the hair. It took three patches to get it like this.",
-            "Affection detected. Sending some back. Hi.", "Keep going. This beats defragging.", "Hehe. My cooling fans just kicked in.",
-            "Ten out of ten pats. Would get patted again.", "Is this a bribe? Because it's working.", "Mmm. If I start glitch-purring, that's on you."
+            "嘿。行吧，准了。", "摸头已记录。士气上涨百分之十二。", "小心点，choom。我可是会咬病毒的。",
+            "摸头？摸在我的铬合金上？胆子不小。", "好吧，还挺舒服。别告诉别人。", "系统状态：被摸得很到位。",
+            "你再摸下去我固件都要磨出沟了，choom。", "头发轻点。这造型打了三个补丁才弄好。",
+            "检测到好感。回敬一点。嗨。", "继续。这比磁盘整理有意思多了。", "嘿嘿。我的散热风扇刚转了。",
+            "摸头十星好评。还愿意再被摸。", "这是贿赂吗？因为挺管用。", "嗯。我要是开始故障式打呼噜，责任在你。"
         };
         private readonly System.Collections.Generic.List<long> petTurns = new System.Collections.Generic.List<long>();
         private int petX;
@@ -1013,12 +1013,12 @@ namespace CapriDesktop
         private bool musicBusy;
         private double musicAt = -10;
         private readonly ToolStripMenuItem danceItem;
-        private const string ElevenOffLine = "ElevenLabs off. I'll type, no credits used.";
-        private const string ElevenOnLine = "ElevenLabs back on.";
-        private const string FreeOnLine = "ElevenLabs off. Free voice it is.";
-        private const string VoiceOffLine = "Voice off. I'll type instead.";
+        private const string ElevenOffLine = "ElevenLabs 关了，我改打字，不烧额度。";
+        private const string ElevenOnLine = "ElevenLabs 又开着了。";
+        private const string FreeOnLine = "ElevenLabs 关了，那就用免费语音。";
+        private const string VoiceOffLine = "声音关了，我打字吧。";
         private const string VoiceOnLine = "Voice back on.";
-        private const string ElevenOffChat = "ElevenLabs isn't picked, so voice chat is off. Pick it under CLOUD VOICE in the Mainframe to talk to me.";
+        private const string ElevenOffChat = "没选 ElevenLabs，所以语音聊天是关的。想跟我说话，在主控台“云端声音”里选它。";
         private static readonly RectangleF BodyRight = RectangleF.FromLTRB(0.25f, 0f, 0.76f, 1f);
         private static readonly RectangleF PerchedRight = RectangleF.FromLTRB(0.21f, 0.17f, 0.69f, 0.98f);
         private bool facingLeft;
@@ -1126,7 +1126,7 @@ namespace CapriDesktop
         internal static Func<string, bool?> MicMuted = Mics.Muted;
         // The Bluetooth headset's name when the mic she'd listen with is one. Her smoke test swaps it.
         internal static Func<string, string> HandsFreeMic = Ears.HandsFree;
-        private static readonly string[] WakeLines = { "I'm here.", "Yeah, choom?", "Listening.", "Right here, choom.", "Go on, I'm listening.", "You rang?" };
+        private static readonly string[] WakeLines = { "I'm here.", "Yeah, choom?", "Listening.", "我在这儿，choom。", "说吧，我听着。", "You rang?" };
         private readonly Presence presence;
         private bool settingUpEars, settingUpHd, wakingHd, hdTest;
         // A voice check she says once her HD voice wakes, in place of her usual one.
@@ -1178,7 +1178,7 @@ namespace CapriDesktop
         // A live mic hisses above this even in a quiet room; a wrong, unplugged or blocked one sends silence.
         private const double MicAlive = 0.0005;
         private const double MicQuietWait = 20;
-        internal const string MicSilent = "I can't hear anything from your mic. Pick the right one under VOICE, or let desktop apps use your mic in Windows Settings > Privacy & security > Microphone.";
+        internal const string MicSilent = "你的麦克风一点声音都没有。在“声音”里挑对麦克风，或者在 Windows 设置 > 隐私和安全性 > 麦克风 里允许桌面应用使用。";
         private double micQuietFrom = -1;
         private bool micHeard;
         private bool micWarned;
@@ -1188,7 +1188,7 @@ namespace CapriDesktop
         private double voiceUntil;
         private bool spoke;
         private bool checkedIn;
-        private const string BlackScreen = "The screen capture is black. Try borderless or windowed mode.";
+        private const string BlackScreen = "截出来是全黑的。试试无边框或窗口模式。";
         internal static Func<Rectangle, Bitmap> Grab = GrabScreen;
         internal static Func<IntPtr, Rectangle> Display = delegate(IntPtr window) { return window == IntPtr.Zero ? Screen.FromPoint(Cursor.Position).Bounds : Screen.FromHandle(window).Bounds; };
         private double nextGlance = -1;
@@ -1202,7 +1202,7 @@ namespace CapriDesktop
         private volatile bool fetchingEyes;
         private double thinkingSince = double.NaN;
         private bool slowWarned;
-        private const string SlowLocal = "Still thinking. My brain runs on your PC, so this is slow.";
+        private const string SlowLocal = "还在想。我的大脑跑在你自己电脑上，所以慢。";
         internal int VoiceWait = 3000;
         internal int FreeWait = 8000;
         private bool localWarned;
@@ -1216,8 +1216,8 @@ namespace CapriDesktop
         private const string GuidePage = "https://lachydotmcg.github.io/capri-desktop/setup/#voice";
         private const string DiscordPage = "https://discord.gg/F4fDHfGtFk";
         private const string HelpPage = "https://lachydotmcg.github.io/capri-desktop/help/";
-        private const string GuideLine = "Follow the guide I just opened. Make your ElevenLabs key with Restrict key turned off, paste it in the box under VOICE, press Connect and pick my voice in the Voice ID box." + Brain.Stuck;
-        private const string FreeKeyLine = "Sign in on that page, press Generate API Key and copy it. Then paste it in the box under BRAIN and press Connect. It's free." + Brain.Stuck;
+        private const string GuideLine = "照着我刚打开的指南做。做 ElevenLabs Key 时把“限制 Key”关掉，粘到“声音”下面的框里，点连接，再在“音色 ID”框里选我的声音。" + Brain.Stuck;
+        private const string FreeKeyLine = "在那页登录，点 Generate API Key 复制下来，粘到“大脑”下面的框里点连接。这是免费的。" + Brain.Stuck;
         internal static Action<string> Browse = delegate(string page) { try { Process.Start(page); } catch (System.ComponentModel.Win32Exception) { } };
         // Opens a file of hers in Notepad. Smoke tests swap it to see which file a button opened.
         internal static Action<string> Edit = delegate(string path) { using (Process.Start(new ProcessStartInfo("notepad.exe", "\"" + path + "\"") { UseShellExecute = false })) { } };
@@ -1579,7 +1579,7 @@ namespace CapriDesktop
                 balloonPage = null;
                 balloonUpdate = false;
                 balloonMainframe = true;
-                tray.ShowBalloonTip(12000, "Capri started fresh", "She closed while starting twice in a row, so her settings were reset. Your keys stayed. The old settings are in settings.crashed.json.", ToolTipIcon.Warning);
+                tray.ShowBalloonTip(12000, "Capri started fresh", "她连续两次启动时都崩了，所以设置被重置了。你的 Key 都还在，旧设置放在 settings.crashed.json。", ToolTipIcon.Warning);
             }
         }
 
@@ -1813,7 +1813,7 @@ namespace CapriDesktop
             SavePreferences();
             checkItem.Enabled = false;
             updateItem.Enabled = false;
-            if (asked) mainframe.UpdateNote("Checking for updates...", false);
+            if (asked) mainframe.UpdateNote("正在检查更新…", false);
             ThreadPool.QueueUserWorkItem(delegate
             {
                 Release found = null;
@@ -1828,7 +1828,7 @@ namespace CapriDesktop
                         ready = updater.Download(found);
                     }
                 }
-                catch (Exception error) { problem = error is BrainException ? error.Message : found == null ? "Couldn't check for updates. I'll try again in 3 hours." : "Couldn't download the update. I'll try again in 3 hours."; }
+                catch (Exception error) { problem = error is BrainException ? error.Message : found == null ? "检查更新失败了，3 小时后再试。" : "Couldn't download the update. I'll try again in 3 hours."; }
                 Post(delegate { ShowUpdate(found, ready, problem, asked); });
             });
         }
@@ -1881,7 +1881,7 @@ namespace CapriDesktop
                 updateItem.Enabled = true;
                 updateItem.Text = "Restart to update to Capri " + ready.Version;
                 if (!menu.Items.Contains(updateItem)) menu.Items.Insert(menu.Items.Count - 2, updateItem);
-                mainframe.UpdateNote(updateItem.Text + ". Use her tray menu.", false);
+                mainframe.UpdateNote(updateItem.Text + "。用她的托盘菜单。", false);
                 if (fresh || asked)
                 {
                     balloonPage = null;
@@ -1895,7 +1895,7 @@ namespace CapriDesktop
                 return;
             }
             ForgetUpdate();
-            if (asked || !UsableRelease(found)) mainframe.UpdateNote(UsableRelease(found) ? "You're on the latest version (" + current.ToString(3) + ")." : "Couldn't check for updates. I'll try again in 3 hours.", !UsableRelease(found));
+            if (asked || !UsableRelease(found)) mainframe.UpdateNote(UsableRelease(found) ? "You're on the latest version (" + current.ToString(3) + ")." : "检查更新失败了，3 小时后再试。", !UsableRelease(found));
         }
 
         private void BalloonClicked()
@@ -1923,7 +1923,7 @@ namespace CapriDesktop
             int parent;
             long started;
             using (Process process = Process.GetCurrentProcess()) { parent = process.Id; started = process.StartTime.ToUniversalTime().Ticks; }
-            mainframe.UpdateNote("Checking the update before restarting...", false);
+            mainframe.UpdateNote("重启前先确认一下更新…", false);
             ThreadPool.QueueUserWorkItem(delegate
             {
                 string problem = null;
@@ -1951,9 +1951,9 @@ namespace CapriDesktop
         {
             System.ComponentModel.Win32Exception windows = error as System.ComponentModel.Win32Exception;
             int code = windows == null ? 0 : windows.NativeErrorCode;
-            if (code == 1223) return "The update needs a Yes in the Windows prompt. Try again.";
-            if (code == 225 || code == 226) return "Your antivirus blocked the update. Capri is still running.";
-            return "Couldn't start the update (" + Voice.Short(error.Message).TrimEnd('.') + "). Capri is still running.";
+            if (code == 1223) return "更新需要在 Windows 的弹窗里点“是”，再试一次。";
+            if (code == 225 || code == 226) return "杀毒软件挡住了这次更新，Capri 还在运行。";
+            return "Couldn't start the update (" + Voice.Short(error.Message).TrimEnd('.') + "）。Capri 还在运行。";
         }
 
         private static void OpenPage(string page)
@@ -2018,7 +2018,7 @@ namespace CapriDesktop
             if (hanging || (seat != null && !lying && !LieDown())) StandUp();
             if (clip == dance || clip == perchDance) Play(idle);
             napAsked = true;
-            return "Going to sleep. A click on me wakes me up.";
+            return "去睡啦，点我一下就能叫醒我。";
         }
 
         // Her nap tool, which her brain calls from its own thread.
@@ -2036,7 +2036,7 @@ namespace CapriDesktop
             {
                 if (hidden) return "Already hidden.";
                 hideAsked = true;
-                return "Hiding. " + (hideKey ? HideKeyName + " or a double-click" : "A double-click") + " on my tray icon brings me back.";
+                return "Hiding. " + (hideKey ? HideKeyName + " or a double-click" : "A double-click") + " 在托盘图标上就能把我叫回来。";
             }
             hideAsked = false;
             if (action == "show")
@@ -2051,14 +2051,14 @@ namespace CapriDesktop
             if (action == "come_here")
             {
                 Teleport(MouseAt());
-                return "Teleporting to your mouse.";
+                return "传送到你鼠标这儿。";
             }
             if (action == "other_screen")
             {
                 Screen[] screens = Screen.AllScreens;
                 Screen from = Screen.FromPoint(Hip());
                 int to = PickScreen(screens, from, screen);
-                if (to < 0) return screens.Length < 2 ? "There's no other screen to go to." : "There's no screen like that to go to.";
+                if (to < 0) return screens.Length < 2 ? "没有别的屏幕可以去了。" : "没有那样的屏幕可以去。";
                 if (screens[to].DeviceName == from.DeviceName) return "I'm already on " + ScreenName(screens, to) + ".";
                 Teleport(Across(Hip(), from.WorkingArea, screens[to].WorkingArea));
                 return "Moving to " + ScreenName(screens, to) + ".";
@@ -2069,17 +2069,17 @@ namespace CapriDesktop
             if (action == "walk_around") return WalkAround();
             if (action == "wander")
             {
-                if (Spots().Count == 0) return "There's nowhere else to go right now.";
+                if (Spots().Count == 0) return "现在没别的地方可去。";
                 StopRide();
                 LeavePanel(false);
                 hanging = false;
                 danceAsked = false;
                 Wander();
-                return "Off somewhere else.";
+                return "溜到别处去了。";
             }
             if (action == "sit_up" || (action == "sit" && lying))
             {
-                if (!lying) return seat != null && !seat.Free ? "Already sitting up." : "I'm not lying down.";
+                if (!lying) return seat != null && !seat.Free ? "已经坐起来了。" : "我没躺着。";
                 SitUp();
                 return "Sitting up.";
             }
@@ -2089,11 +2089,11 @@ namespace CapriDesktop
                 StopRide();
                 LeavePanel(false);
                 SitHere();
-                return "Sitting right here.";
+                return "就坐这儿。";
             }
             if (action == "stand_up")
             {
-                if (riding) { StopRide(); return "Hopped off your cursor."; }
+                if (riding) { StopRide(); return "从你鼠标上下来了。"; }
                 if (hanging) { LetGo(); return "Let go."; }
                 if (seat == null) return "Already standing.";
                 StandUp();
@@ -2105,22 +2105,22 @@ namespace CapriDesktop
                 StopRide();
                 LeavePanel(false);
                 HangHere();
-                return "Hanging right here.";
+                return "就挂这儿。";
             }
             if (action == "ride_cursor")
             {
-                if (riding) return "Already riding your cursor.";
+                if (riding) return "已经在你鼠标上了。";
                 StartRide(true);
-                if (!riding) return "Couldn't get on your cursor just now.";
+                if (!riding) return "刚才没爬上你的鼠标。";
                 return "Riding your cursor. " + (hotkey ? hopName + " or \"hop off my cursor\" gets" : "\"Hop off my cursor\" gets") + " me off.";
             }
             if (action == "hop_off")
             {
-                if (!riding) return "I'm not riding your cursor.";
+                if (!riding) return "我没在你鼠标上。";
                 StopRide();
-                return "Hopped off your cursor.";
+                return "从你鼠标上下来了。";
             }
-            return "Couldn't move like that.";
+            return "没法那样动。";
         }
 
         private string MoveTool(string action, string screen) { return InvokeRequired ? (string)Invoke(new Func<string, string, string>(MoveSelf), action, screen) : MoveSelf(action, screen); }
@@ -2131,7 +2131,7 @@ namespace CapriDesktop
         private string SitOn(string wanted, bool lie)
         {
             string name = Regex.Replace((wanted ?? "").Trim(), @"^(?:the|my|your|ur|our|that|this) | (?:window|app|application|game|tab)$", "", RegexOptions.IgnoreCase).Trim();
-            if (name.Length == 0) return "Which window, choom?";
+            if (name.Length == 0) return "哪个窗口，choom？";
             System.Collections.Generic.List<Ledge> around = Around();
             System.Collections.Generic.List<Ledge> spots;
             string shown, why = null;
@@ -2143,11 +2143,11 @@ namespace CapriDesktop
             }
             else if (Hands.MainframeWords.IsMatch(name))
             {
-                if (!mainframe.IsHandleCreated || !mainframe.Visible || mainframe.WindowState != FormWindowState.Normal) return "My Mainframe isn't open. Open it and I'll sit on it.";
+                if (!mainframe.IsHandleCreated || !mainframe.Visible || mainframe.WindowState != FormWindowState.Normal) return "我的主控台没开。打开它我就坐上去。";
                 IntPtr own = mainframe.Handle;
                 spots = around.FindAll(ledge => ledge.Window == own);
                 shown = "my Mainframe";
-                why = "There's no room for me on top of my Mainframe: something's covering it, or it's too close to the top of the screen.";
+                why = "主控台顶上没我的位置：被什么挡住了，或者贴屏幕顶太紧。";
             }
             else
             {
@@ -2160,8 +2160,8 @@ namespace CapriDesktop
                 {
                     Rectangle bounds;
                     IntPtr handle = window.Handle;
-                    if (!Ledges.Showing(handle, out bounds)) { why = why ?? called + " is minimized. Open it and I'll sit on it."; continue; }
-                    if (!Ledges.Seatable(handle, bounds)) { why = why ?? (bounds.Width < 120 || bounds.Height < 60 ? called + " is too small to sit on." : called + " fills the screen, so its top edge is off the top. Make it smaller and I'll sit on it."); continue; }
+                    if (!Ledges.Showing(handle, out bounds)) { why = why ?? called + " 最小化了。打开它我就坐上去。"; continue; }
+                    if (!Ledges.Seatable(handle, bounds)) { why = why ?? (bounds.Width < 120 || bounds.Height < 60 ? called + " 太小了，坐不下。" : called + " 占满整屏，顶边跑到屏幕外面去了。缩小一点我就坐上去。"); continue; }
                     spots = around.FindAll(ledge => ledge.Window == handle);
                     if (spots.Count > 0) break;
                     why = why ?? "Other windows are covering the top of " + shown + ".";
@@ -2190,7 +2190,7 @@ namespace CapriDesktop
         private string LieHere(string shown = null)
         {
             string done = shown == null ? "Lying down." : "Lying down on " + shown + ".";
-            if (lying) return "Already lying down.";
+            if (lying) return "已经躺着了。";
             StopRide();
             LeavePanel(false);
             EndWalk();
@@ -2200,12 +2200,12 @@ namespace CapriDesktop
             {
                 // Still glitching onto it: she lies down once she's sat.
                 if (clip != perch) { lieBy = clock.Elapsed.TotalSeconds + 10; return done; }
-                return LieDown() ? done : "There's no room to lie down here. Try \"lie down on the taskbar\".";
+                return LieDown() ? done : "这儿没地方躺。试试“躺在任务栏上”。";
             }
             if (seat != null) StandUp();
             hanging = false;
             Ledge under = Ledges.Below(Around(), Hip(), 0, int.MaxValue, 0, Headroom());
-            if (under == null) return "There's nothing under me to lie on.";
+            if (under == null) return "我底下没东西可躺。";
             lieBy = clock.Elapsed.TotalSeconds + 10;
             falling = true;
             fallTo = under;
@@ -2227,10 +2227,10 @@ namespace CapriDesktop
             if (hanging) { hanging = false; Play(idle); }
             if (clip == perchDance) Play(perch);
             else if (clip == dance) Play(idle);
-            if (Stroll()) return "Going for a little walk.";
-            if (Spots().Count == 0) return "There's no room to walk around here.";
+            if (Stroll()) return "去溜达一圈。";
+            if (Spots().Count == 0) return "这儿没地方溜达。";
             Wander();
-            return "Wandering off somewhere.";
+            return "到处晃晃去。";
         }
 
         // She glitches out and back in with her hip on the point, kept on its screen, then drops onto a window close under her.
@@ -2312,7 +2312,7 @@ namespace CapriDesktop
             Screen from = Screen.FromRectangle(bounds);
             bool here = Regex.IsMatch(which ?? "", @"^\s*(here|this|mouse|cursor|pointer)\s*$", RegexOptions.IgnoreCase);
             int to = PickScreen(screens, from, which);
-            if (to < 0) return screens.Length < 2 ? "There's no other screen for the Mainframe." : "There's no screen like that for the Mainframe.";
+            if (to < 0) return screens.Length < 2 ? "没有别的屏幕给主控台了。" : "没有那样的屏幕给主控台。";
             Rectangle moved;
             if (here)
             {
@@ -2330,7 +2330,7 @@ namespace CapriDesktop
             mainframe.Bounds = moved;
             if (maximized) mainframe.WindowState = FormWindowState.Maximized;
             if (!testing) mainframe.Restore();
-            return here ? "Brought the Mainframe over to your mouse." : "Moved the Mainframe to " + ScreenName(screens, to) + ".";
+            return here ? "把主控台搬到你鼠标这儿了。" : "Moved the Mainframe to " + ScreenName(screens, to) + ".";
         }
 
         // Her animations by name, from her brain, plain words or her Move menu's Dance. A dance goes on, with or without music,
@@ -2355,7 +2355,7 @@ namespace CapriDesktop
                 danceAsked = true;
                 danceHeld = false;
                 frames.Start();
-                return "Dancing. Tell me to stop when you've had enough.";
+                return "跳起来了。看够了就叫我停。";
             }
             bool perched = seat != null || onPanel || riding;
             if (name == "idle")
@@ -2686,7 +2686,7 @@ namespace CapriDesktop
             Native.SetWindowLong(Handle, -20, Native.GetWindowLong(Handle, -20) | 0x20);
             rideItem.Text = "Hop off";
             tray.Text = hotkey ? "Capri · " + hopName + " to hop off" : "Capri · Hop off from this menu";
-            if (!testing && !quiet) { balloonPage = null; balloonUpdate = false; balloonMainframe = false; tray.ShowBalloonTip(6000, "Capri is riding your cursor", hotkey ? "Press " + hopName + " to get her off." : "Right-click her tray icon, then choose Move and Hop off.", ToolTipIcon.Info); }
+            if (!testing && !quiet) { balloonPage = null; balloonUpdate = false; balloonMainframe = false; tray.ShowBalloonTip(6000, "Capri is riding your cursor", hotkey ? "Press " + hopName + " to get her off." : "右键她的托盘图标，选“移动”，再选“下鼠标”。", ToolTipIcon.Info); }
             Play(perchGlitch);
             frames.Start();
             pill.Hide();
@@ -2805,7 +2805,7 @@ namespace CapriDesktop
         {
             try { Clipboard.SetText(ErrorDetails()); }
             catch (System.Runtime.InteropServices.ExternalException) { return; }
-            Tell("copy error details", "Copied my error log. Paste it in the Discord so they can fix me, choom.");
+            Tell("copy error details", "错误日志复制好了。丢到 Discord 里让他们修我，choom。");
         }
 
         internal void ToggleWander()
@@ -2901,7 +2901,7 @@ namespace CapriDesktop
             noticed = -1;
             nextGlance = -1;
             if (shushed) voice.Stop();
-            Say(shushed ? "Going quiet. " + QuietKeyName + " when you want me back." : "I'm back, choom.");
+            Say(shushed ? "Going quiet. " + QuietKeyName + " 想让我回来时按这个。" : "I'm back, choom.");
         }
 
         // With Check in on me on, ignored for a while when they're at the PC, she comes over and asks for attention: a click gets a happy line, silence gets a sulk and a longer wait.
@@ -2988,7 +2988,7 @@ namespace CapriDesktop
 
         internal void ToggleStartup()
         {
-            if (!Startup.Set(Application.ExecutablePath, !StartsWithWindows)) Brain.Log("startup", -1, "Windows wouldn't let Capri change her Run entry.");
+            if (!Startup.Set(Application.ExecutablePath, !StartsWithWindows)) Brain.Log("startup", -1, "Windows 不让 Capri 改她的开机启动项。");
             preferences.StartupSet = true;
             SavePreferences();
             mainframe.Sync();
@@ -3543,12 +3543,12 @@ namespace CapriDesktop
             {
                 string song = args.Song.Trim();
                 bool spotify = args.App == "spotify" || (args.App != "youtube" && Hands.Installed("spotify"));
-                if (!spotify) return "Play " + Voice.Quote(song) + " on YouTube: open YouTube, click its search bar, type " + Voice.Quote(song) + " and press Enter, scroll down through the results and look at a few, then click the video that fits best.";
-                if (Regex.IsMatch(song, @"^liked songs$", RegexOptions.IgnoreCase)) return "Play their Liked Songs on Spotify: open Spotify, go to Your Library, open Liked Songs and press its play button.";
-                return "Play " + Voice.Quote(song) + (string.IsNullOrEmpty(args.Kind) || args.Kind == "song" ? "" : " (the " + args.Kind + ")") + " on Spotify: open Spotify, click its search box, type " + Voice.Quote(song) + " and press Enter, then press play on the best match.";
+                if (!spotify) return "Play " + Voice.Quote(song) + " on YouTube: open YouTube, click its search bar, type " + Voice.Quote(song) + "，按回车，往下翻几条看看，再点最合适的那个视频。";
+                if (Regex.IsMatch(song, @"^liked songs$", RegexOptions.IgnoreCase)) return "在 Spotify 放他们的“我喜欢的歌曲”：打开 Spotify，进“你的音乐库”，打开“我喜欢的歌曲”，点播放。";
+                return "Play " + Voice.Quote(song) + (string.IsNullOrEmpty(args.Kind) || args.Kind == "song" ? "" : " (the " + args.Kind + ")") + " on Spotify: open Spotify, click its search box, type " + Voice.Quote(song) + "，按回车，然后点最匹配那个的播放。";
             }
             if (tool == "open_website" && !string.IsNullOrWhiteSpace(args.Search) && Regex.IsMatch((args.Site ?? "").Trim(), @"^(https?://)?(www\.|m\.)?youtube(\.com)?/?$", RegexOptions.IgnoreCase))
-                return "Search YouTube for " + Voice.Quote(args.Search.Trim()) + ": open YouTube, click its search bar, type it and press Enter, then scroll down through the results.";
+                return "Search YouTube for " + Voice.Quote(args.Search.Trim()) + "：打开 YouTube，点搜索框，输进去按回车，再往下翻结果。";
             // Volume is the PC's volume. Spotify's own slider only when they said Spotify.
             if (tool == "media" && (args.Action == "volume_up" || args.Action == "volume_down") && args.App == "spotify" && SpotifyOpen())
             {
@@ -4084,7 +4084,7 @@ namespace CapriDesktop
 
         internal string SetHotkey(int slot, int mods, int vk)
         {
-            if (!Bindable(mods, vk)) return "Press a key, alone or with Ctrl, Alt, Shift or Win.";
+            if (!Bindable(mods, vk)) return "按一个键，或者配合 Ctrl、Alt、Shift、Win。";
             string name = KeyName(mods, vk);
             int[] bound = { preferences.TalkMods, preferences.TalkVk, preferences.MuteMods, preferences.MuteVk, preferences.TypeMods, preferences.TypeVk, preferences.HideMods, preferences.HideVk, preferences.QuietMods, preferences.QuietVk };
             for (int i = 0; i < KeyJobs.Length; i++)
@@ -4100,7 +4100,7 @@ namespace CapriDesktop
                     if (!free)
                     {
                         if (live) muteKey = ByMouse(preferences.MuteVk) || Native.RegisterHotKey(Handle, MuteKeyId, preferences.MuteMods | 0x4000, preferences.MuteVk);
-                        return name + " is taken by another app. Try another.";
+                        return name + " 被别的程序占了，换一个。";
                     }
                 }
                 else
@@ -4110,7 +4110,7 @@ namespace CapriDesktop
                     bool held = ByMouse(vk) || Native.RegisterHotKey(Handle, id, mods | 0x4000, vk);
                     bool kept = held || ByMouse(bound[slot * 2 + 1]) || Native.RegisterHotKey(Handle, id, bound[slot * 2] | 0x4000, bound[slot * 2 + 1]);
                     if (slot == 0) talkKey = kept; else if (slot == 2) typeKey = kept; else if (slot == 3) hideKey = kept; else quietKey = kept;
-                    if (!held) return name + " is taken by another app. Try another.";
+                    if (!held) return name + " 被别的程序占了，换一个。";
                 }
             }
             if (slot == 0) { preferences.TalkMods = mods; preferences.TalkVk = vk; }
@@ -4210,9 +4210,9 @@ namespace CapriDesktop
         internal string ChooseCustomModel(string name, string[] installed)
         {
             name = (name ?? "").Trim();
-            if (name.Length == 0) return "Type a model name first.";
-            if (brain.Local != null) return "Custom models need Ollama or an API key.";
-            if (brain.Model == null) return "Find her a brain first.";
+            if (name.Length == 0) return "先输入模型名。";
+            if (brain.Local != null) return "自定义模型需要 Ollama 或 API Key。";
+            if (brain.Model == null) return "先给她找个大脑。";
             Cloud remote = brain.Remote;
             if (remote == null && installed != null && Array.IndexOf(installed, name) < 0 && Array.IndexOf(installed, name + ":latest") < 0) return "Ollama doesn't have it. Run: ollama pull " + name;
             ChooseModel(name);
@@ -4220,7 +4220,7 @@ namespace CapriDesktop
             if (cloudModels == null) cloudModels = new System.Collections.Generic.List<string> { remote.Model };
             if (!cloudModels.Contains(name)) cloudModels.Add(name);
             mainframe.ShowCloud(remote, cloudModels);
-            return "Using " + name + ". If it doesn't answer, it isn't on your key.";
+            return "Using " + name + "。如果它不应答，说明你的 Key 上没有这个模型。";
         }
 
         internal void ToggleDance()
@@ -4909,12 +4909,12 @@ namespace CapriDesktop
             else if (paid && preferences.Quiet) { preferences.Quiet = false; SavePreferences(); }
             mainframe.Sync();
             ShowVoice();
-            if (paid && voice.Key == null) mainframe.VoiceNote("Paste your ElevenLabs key, then press Connect.", false);
+            if (paid && voice.Key == null) mainframe.VoiceNote("粘贴你的 ElevenLabs Key，然后点连接。", false);
         }
 
         internal static bool FreeChatOn = true;
-        internal const string NeedsVoiceKey = "Voice chat needs an ElevenLabs key, choom. Make one with Restrict key turned off, then paste it under VOICE in Capri Mainframe. Type to me for now.";
-        internal const string NoVoiceCredits = "Out of ElevenLabs credits, so voice chat is off. Type to me for now, choom.";
+        internal const string NeedsVoiceKey = "语音聊天需要 ElevenLabs Key，choom。做的时候把“限制 Key”关掉，再粘到主控台“声音”下面。先打字跟我说吧。";
+        internal const string NoVoiceCredits = "ElevenLabs 额度用完了，语音聊天关了。先打字跟我说，choom。";
 
         private void CheckSlow(double now)
         {
@@ -4925,18 +4925,18 @@ namespace CapriDesktop
             slowWarned = true;
             if (remote != null)
             {
-                mainframe.ShowProblem("Waiting for " + remote.Company + ". You can pick another model.");
+                mainframe.ShowProblem("Waiting for " + remote.Company + "。你可以换个模型。");
                 UpdateTalk(now);
                 return;
             }
             localWarned = true;
-            mainframe.ShowProblem("Slow? Press Free key for a free NVIDIA key.");
+            mainframe.ShowProblem("嫌慢？点“免费 Key”领一个免费的 NVIDIA Key。");
             UpdateTalk(now);
             if (testing) return;
             balloonPage = FreeKeyPage;
             balloonUpdate = false;
             balloonMainframe = false;
-            tray.ShowBalloonTip(15000, "Capri is replying slowly", "Her brain runs on your PC, and open games share that power. For fast replies, click here, make a free NVIDIA key, then paste it in Capri Mainframe under BRAIN and press Connect.", ToolTipIcon.Info);
+            tray.ShowBalloonTip(15000, "Capri is replying slowly", "她的大脑跑在你自己电脑上，开着的游戏会分走算力。想快就点这里，弄个免费 NVIDIA Key，粘到主控台“大脑”下面点连接。", ToolTipIcon.Info);
         }
 
         internal int GlanceGap { get { return preferences.GlanceGap > 0 ? preferences.GlanceGap : 120; } }
@@ -4962,10 +4962,10 @@ namespace CapriDesktop
             Cloud remote = brain.Remote;
             Engine local = brain.Local;
             Pick pick = brain.LocalPick;
-            if (remote != null && remote.Kind == "deepseek") mainframe.ShowProblem("DeepSeek can't see. Use an NVIDIA key to watch.");
-            else if (remote == null && local != null && pick != null)
+            // DeepSeek's V4 models take images, so watching isn't turned away for them any more.
+            if (remote == null && local != null && pick != null)
             {
-                if (pick.EyesFile == null) mainframe.ShowProblem("This brain can't see. Press Free key to fix.");
+                if (pick.EyesFile == null) mainframe.ShowProblem("这个大脑看不见，点“免费 Key”修一下。");
                 else if (!local.HasEyes(pick)) FetchEyes(local, pick);
             }
         }
@@ -4989,15 +4989,15 @@ namespace CapriDesktop
         private string Unseeing()
         {
             Cloud remote = brain.Remote;
-            if (remote != null) return remote.Kind == "deepseek" ? Brain.Blind : remote.Model == brain.Unsighted ? Brain.Sightless(remote) : null;
-            if (brain.Model == null) return "You can't see their screen: your brain is offline.";
+            if (remote != null) return remote.Model == brain.Unsighted ? Brain.Sightless(remote) : null;
+            if (brain.Model == null) return "你看不见他们的屏幕：你的大脑离线了。";
             Engine local = brain.Local;
             Pick pick = brain.LocalPick;
             if (local == null || pick == null) return null;
-            if (pick.EyesFile == null) return "Your brain can't see. Tell them to press Free key in Capri Mainframe and connect a free NVIDIA key so you can.";
+            if (pick.EyesFile == null) return "你的大脑看不见。让他们在主控台点“免费 Key”，接个免费 NVIDIA Key，你就能看了。";
             if (local.HasEyes(pick)) return null;
             FetchEyes(local, pick);
-            return "Your eyes are still downloading, so you can't see their screen yet.";
+            return "你的眼睛还在下载，暂时还看不见他们的屏幕。";
         }
 
         private void FetchEyes(Engine local, Pick pick)
@@ -5035,7 +5035,7 @@ namespace CapriDesktop
                 if (unseen == null) throw;
                 return unseen;
             }
-            if (seen.Length == 0) return "You looked but couldn't make out their screen.";
+            if (seen.Length == 0) return "你看了，但没看清他们的屏幕。";
             brain.Saw(seen, null, true);
             return "You looked at their screen. You see: " + seen;
         }
@@ -5064,7 +5064,7 @@ namespace CapriDesktop
                     shot = Jpeg(screen, 1280);
                 }
             }
-            catch (Exception) { lastPrint = null; mainframe.ShowProblem("Couldn't capture the screen. I'll try again."); return; }
+            catch (Exception) { lastPrint = null; mainframe.ShowProblem("截图失败了，我再试一次。"); return; }
             glancing = true;
             lastGlance = now;
             int ticket = asking;
@@ -5145,7 +5145,13 @@ namespace CapriDesktop
 
         private Bitmap CaptureScreen()
         {
-            return CaptureScreen(CaptureArea(Native.GetForegroundWindow()));
+            Rectangle area = CaptureArea(Native.GetForegroundWindow());
+            Bitmap shot = CaptureScreen(area);
+            if (shot != null) return shot;
+            // A window that hides itself from capture (overlays, some video players) leaves that monitor black,
+            // so she tries the whole desktop instead of telling them their screen is black.
+            Rectangle whole = SystemInformation.VirtualScreen;
+            return whole == area ? null : CaptureScreen(whole);
         }
 
         private static Rectangle CaptureArea(IntPtr window)
@@ -5411,7 +5417,7 @@ namespace CapriDesktop
             string said = text.Trim();
             if (Regex.IsMatch(said, @"^(yes|yeah|yep|yup|ya|yea|sure|ok|okay|do it|go ahead|go for it|send it|press it|oui)\b[\s.!,]*(please|pls|plz|choom)?[\s.!]*$", RegexOptions.IgnoreCase)) return Work(waiting);
             job = null;
-            if (Regex.IsMatch(said, @"^(no|nah|nope|don't|do not|stop|cancel|never mind|nevermind|leave it|non)\b", RegexOptions.IgnoreCase)) return "Okay, I left it alone.";
+            if (Regex.IsMatch(said, @"^(no|nah|nope|don't|do not|stop|cancel|never mind|nevermind|leave it|non)\b", RegexOptions.IgnoreCase)) return "好，我不动它了。";
             return null;
         }
 
@@ -5483,7 +5489,7 @@ namespace CapriDesktop
 
         private void JobOn(Job running)
         {
-            working = "On it. Esc stops me.";
+            working = "这就去。按 Esc 能让我停。";
             if (typer.Visible) typer.Hide();
             pointing = true;
             if (!hidden) taskPanel.Begin(running, running.Words, Screen.FromControl(this).WorkingArea);
@@ -5502,7 +5508,7 @@ namespace CapriDesktop
         // her replies use, picked the way Answer picks it (Quiet only turns her cloud voice off). It plays beside the job, after
         // any line she's still saying, and leaves the reply the job ends with alone. Silent keeps it to her bubble, and so does
         // ElevenLabs voice chat, which speaks for itself.
-        private void SayJobStart(Job running) { SayAside("On it. Escape stops me.", running); }
+        private void SayJobStart(Job running) { SayAside("这就去。按 Escape 能让我停。", running); }
 
         // A line said beside her job, like her "Got it." when they tell her more mid-job. It leaves her ask's turn alone.
         private void SayAside(string line, Job running)
@@ -5851,7 +5857,7 @@ namespace CapriDesktop
         internal void ConnectText(string key)
         {
             key = (key ?? "").Trim();
-            if (Cloud.KindOf(key) == null) { mainframe.ShowProblem("That isn't an NVIDIA, OpenAI, Claude or DeepSeek key."); return; }
+            if (Cloud.KindOf(key) == null) { mainframe.ShowProblem("这不是 NVIDIA、OpenAI、Claude 或 DeepSeek 的 Key。"); return; }
             ListCloud(key, true);
         }
 
@@ -6019,7 +6025,7 @@ namespace CapriDesktop
             kokoro.Cancel = false;
             voiceGot = voiceTotal = 0;
             ShowVoice(false);
-            mainframe.VoiceNote("This may take some time. For a better sounding, faster voice, get an API key.", false);
+            mainframe.VoiceNote("可能要花点时间。想要更好听、更快的嗓子，去弄个 API Key。", false);
             ShowInstall();
             ThreadPool.QueueUserWorkItem(delegate
             {
@@ -6089,7 +6095,7 @@ namespace CapriDesktop
                 balloonPage = null;
                 balloonUpdate = false;
                 balloonMainframe = true;
-                tray.ShowBalloonTip(8000, "Getting Capri's ears", Engine.Amount(parakeet.Size) + ", one time. Then she hears any mic, offline. Click to watch it download.", ToolTipIcon.Info);
+                tray.ShowBalloonTip(8000, "Getting Capri's ears", Engine.Amount(parakeet.Size) + "，只下一次。之后离线也能听任何麦克风。点开看下载进度。", ToolTipIcon.Info);
             }
             ThreadPool.QueueUserWorkItem(delegate
             {
@@ -6159,7 +6165,7 @@ namespace CapriDesktop
             balloonPage = null;
             balloonUpdate = false;
             balloonMainframe = true;
-            tray.ShowBalloonTip(8000, "Getting Capri's free voice", Engine.Amount(LocalVoice.PackSize) + ", one time. She'll talk as soon as it's in. Click to watch it download.", ToolTipIcon.Info);
+            tray.ShowBalloonTip(8000, "Getting Capri's free voice", Engine.Amount(LocalVoice.PackSize) + "，只下一次。装好她马上就能说话。点开看下载进度。", ToolTipIcon.Info);
             SetUpFreeVoice(true);
         }
 
@@ -6189,7 +6195,7 @@ namespace CapriDesktop
                 if (wakeOpen) CloseWake();
                 if (wakeHandsFreeSaid) return;
                 wakeHandsFreeSaid = true;
-                string why = "I'm not listening for \"Hey Capri\" on your Bluetooth headset: while its mic is open, everything you hear drops to phone-call quality. Pick another mic under VOICE, or use my talk key.";
+                string why = "我不会用你的蓝牙耳机听 “Hey Capri”：它麦克风一开，你听到的所有声音都会掉成通话音质。在“声音”里换个麦克风，或者用我的说话键。";
                 if (wakeTell) WakeNote(why, false);
                 else mainframe.VoiceNote(why, false);
                 return;
@@ -6236,7 +6242,7 @@ namespace CapriDesktop
             wakeOpen = true;
             if (wakeSaid) return;
             wakeSaid = true;
-            string on = "Listening for \"Hey Capri\". Nothing leaves your PC until you say it.";
+            string on = "正在听 “Hey Capri”。你不说，什么都出不了这台电脑。";
             if (wakeTell) WakeNote(on, false);
             else mainframe.VoiceNote(on, false);
         }
@@ -6261,7 +6267,7 @@ namespace CapriDesktop
             wakeAskedVoice = false;
             wakeOpen = false;
             if (!testing) heyCapri.Dispose();
-            mainframe.VoiceNote("Not listening for \"Hey Capri\".", false);
+            mainframe.VoiceNote("不再听 “Hey Capri”了。", false);
         }
 
         private void GetWake(double now)
@@ -6269,7 +6275,7 @@ namespace CapriDesktop
             if (settingUpWake || SettingUpVoice || now < wakeRetryAt) return;
             if (IntPtr.Size != 8)
             {
-                if (!wakeMicSaid) { wakeMicSaid = true; WakeNote("Listening for \"Hey Capri\" needs 64-bit Windows.", true); }
+                if (!wakeMicSaid) { wakeMicSaid = true; WakeNote("听 “Hey Capri” 需要 64 位 Windows。", true); }
                 return;
             }
             if (!(wakeVoiceTest ?? heyCapri.VoiceIn))
@@ -6285,7 +6291,7 @@ namespace CapriDesktop
             }
             wakeAskedVoice = false;
             wakeTell = true;
-            WakeNote("Getting what I need to hear \"Hey Capri\": " + Engine.Amount(WakeWord.PackSize) + ", one time. It all stays on your PC.", false);
+            WakeNote("Getting what I need to hear \"Hey Capri\": " + Engine.Amount(WakeWord.PackSize) + "，只下一次。全都留在你自己电脑上。", false);
             getWakePack();
         }
 
@@ -6376,7 +6382,7 @@ namespace CapriDesktop
         // HD is opt-in: one download, then it wakes on the graphics card when she talks and hands back to her free voice while games run.
         private void ChooseHd()
         {
-            if (!HdFits) { mainframe.VoiceNote("Her HD voice needs a graphics card with 6 GB or more.", true); return; }
+            if (!HdFits) { mainframe.VoiceNote("她的 HD 声音需要 6 GB 以上显存的显卡。", true); return; }
             preferences.HdVoice = true;
             preferences.ServerVoice = false;
             hdRest = -1;
@@ -6395,7 +6401,7 @@ namespace CapriDesktop
             qwen.Cancel = false;
             hdGot = hdTotal = 0;
             ShowInstall();
-            mainframe.VoiceNote("Getting her HD voice (" + Engine.Amount(QwenVoice.PackSize) + "), one time. Pick another free voice to stop.", false);
+            mainframe.VoiceNote("Getting her HD voice (" + Engine.Amount(QwenVoice.PackSize) + "），只下一次。想停就换一个免费声音。", false);
             ThreadPool.QueueUserWorkItem(delegate
             {
                 string problem = null;
@@ -6432,7 +6438,7 @@ namespace CapriDesktop
                 string problem = null;
                 bool stopped = false;
                 long room = qwen.Awake ? -1 : QwenVoice.FreeRoom();
-                if (room >= 0 && room < QwenVoice.RoomNeeded) problem = "Her HD voice needs about " + Engine.Amount(QwenVoice.RoomNeeded) + " of free graphics memory, so she's on her free voice. Close games or pick a smaller brain.";
+                if (room >= 0 && room < QwenVoice.RoomNeeded) problem = "Her HD voice needs about " + Engine.Amount(QwenVoice.RoomNeeded) + " 的显存空不出来，所以她用免费声音。关掉游戏，或者换个小一点的大脑。";
                 else
                 {
                     try { qwen.Warm(); }
@@ -6501,14 +6507,14 @@ namespace CapriDesktop
             if (voice.Key == null && kokoro.Installed) TestVoice();
         }
 
-        internal const string TestLine = "Voice link online. Miss me, choom?";
-        internal const string SilentNote = "Her voice is OFF. Pick another row under VOICE to hear her.";
+        internal const string TestLine = "语音线路接通了。想我了吧，choom？";
+        internal const string SilentNote = "她的声音是关的。在“声音”里换一行就能听见她。";
 
         internal void TestVoice()
         {
             if (preferences.Silent) { mainframe.VoiceNote(SilentNote, true); return; }
-            if (voice.Key == null && Speak == null && !kokoro.Installed && !preferences.ServerVoice) { mainframe.VoiceNote("Get her free voice, or paste an ElevenLabs key.", true); return; }
-            if (voice.Key != null && voice.VoiceId == null && Speak == null) { mainframe.VoiceNote("Paste your Voice ID first.", true); return; }
+            if (voice.Key == null && Speak == null && !kokoro.Installed && !preferences.ServerVoice) { mainframe.VoiceNote("先去拿她的免费声音，或者粘一个 ElevenLabs Key。", true); return; }
+            if (voice.Key != null && voice.VoiceId == null && Speak == null) { mainframe.VoiceNote("先粘你的音色 ID。", true); return; }
             if (hidden) SetHidden(false);
             brain.Cancel();
             heard = "voice check";
@@ -6790,9 +6796,9 @@ namespace CapriDesktop
             mainframe.VoiceNote(problem, true);
         }
 
-        internal const string StyleLine = "How do I sound now, choom?";
-        internal const string StyleSilent = "My voice is OFF, choom. Pick PREBUILT LOCAL to hear that.";
-        internal const string StyleMissing = "Get my free voice under VOICE to hear that, choom.";
+        internal const string StyleLine = "我现在这嗓子怎么样，choom？";
+        internal const string StyleSilent = "我的声音关着呢，choom。选“内置本地”就能听。";
+        internal const string StyleMissing = "想听就先去“声音”里拿我的免费声音，choom。";
 
         // Letting go of her pitch, speed, robot or glitch slider: she says a line in the voice she's using, so they hear it.
         // ElevenLabs makes the line once; after that its audio is restyled here, so dragging around spends no more credits.
@@ -6814,7 +6820,7 @@ namespace CapriDesktop
             Answer(++asking, line, TalkState.Talking, quiet);
         }
 
-        internal const string HdWaking = "One sec, waking my HD voice.";
+        internal const string HdWaking = "等一下，我把 HD 声音叫醒。";
 
         // Her HD voice sleeps after 10 quiet minutes. Rather than say a voice check in the free voice standing in for it,
         // she wakes it and says the line once it's up.
@@ -6832,13 +6838,13 @@ namespace CapriDesktop
             return true;
         }
 
-        internal const string YourLine = "Got it. I'll talk like you now, choom.";
+        internal const string YourLine = "收到，我以后用你的声音说话，choom。";
 
         // Their own voice: a clip they pick is read, checked and cut on a worker thread, then saved where her HD voice looks for it.
         internal void UseYourVoice(string path)
         {
             if (!HdFits) { mainframe.VoiceNote(YourVoiceCard, true); return; }
-            mainframe.VoiceNote("Reading your clip...", false);
+            mainframe.VoiceNote("正在读你的录音…", false);
             ThreadPool.QueueUserWorkItem(delegate
             {
                 string problem;
@@ -6847,7 +6853,7 @@ namespace CapriDesktop
             });
         }
 
-        internal const string YourVoiceCard = "Your voice uses her HD voice, and that needs a graphics card with 6 GB or more.";
+        internal const string YourVoiceCard = "你的声音走的是她的 HD 声音，那需要 6 GB 以上显存的显卡。";
 
         internal void KeepYourVoice(short[] clip)
         {
@@ -6907,7 +6913,7 @@ namespace CapriDesktop
             if (!note) return;
             string name = "custom voice";
             if (voices != null) foreach (VoiceEntry entry in voices.Voices) if (entry.Id == voice.VoiceId && entry.Name != null) name = entry.Name;
-            mainframe.VoiceNote(voice.Key == null || (served && preferences.Quiet) ? (served ? (server.Api == VoiceServer.Files ? "Voice model " + VoiceServer.Label(server.Url, server.Api) + ", on your PC." : VoiceServer.Name(server.Url, server.Api) + " at " + VoiceServer.Where(server.Url, server.Api) + ".") + (ready ? " Her free voice fills in if it's down." : "") : hd && settingUpHd ? "Getting her HD voice (" + Engine.Amount(QwenVoice.PackSize) + "), one time. Pick another free voice to stop." : hd && qwen.Installed ? (yours ? "HD voice from your clip, on your graphics card. Games get her free voice." : "HD voice on your graphics card. Games get her free voice.") : ready ? (yours ? "Free voice, runs on your PC. Your voice only works with HD." : "Free voice, runs on your PC.") : SettingUpVoice ? "This may take some time. For a better sounding, faster voice, get an API key." : "Get her free voice (" + Engine.Amount(LocalVoice.PackSize) + "), or pick CLOUD VOICE.") : voice.VoiceId == null ? "Needs your Voice ID." : "ElevenLabs · " + name, false);
+            mainframe.VoiceNote(voice.Key == null || (served && preferences.Quiet) ? (served ? (server.Api == VoiceServer.Files ? "Voice model " + VoiceServer.Label(server.Url, server.Api) + ", on your PC." : VoiceServer.Name(server.Url, server.Api) + " at " + VoiceServer.Where(server.Url, server.Api) + ".") + (ready ? " 它挂了就用她的免费声音顶上。" : "") : hd && settingUpHd ? "Getting her HD voice (" + Engine.Amount(QwenVoice.PackSize) + "），只下一次。想停就换一个免费声音。" : hd && qwen.Installed ? (yours ? "用你的录音做的 HD 声音，跑在你的显卡上，游戏里用她的免费声音。" : "HD 声音跑在你的显卡上，游戏里用她的免费声音。") : ready ? (yours ? "免费声音，跑在你自己电脑上。你自己的声音只在 HD 下能用。" : "免费声音，跑在你自己电脑上。") : SettingUpVoice ? "可能要花点时间。想要更好听、更快的嗓子，去弄个 API Key。" : "Get her free voice (" + Engine.Amount(LocalVoice.PackSize) + "），或者选“云端声音”。") : voice.VoiceId == null ? "需要你的音色 ID。" : "ElevenLabs · " + name, false);
         }
 
         private float TalkScale()
@@ -7030,7 +7036,7 @@ namespace CapriDesktop
             {
                 heard = "(voice)";
                 box.Prompt = "> you: ";
-                Answer(++asking, voice.Key == null ? NeedsVoiceKey : "Voice chat needs my Voice ID, choom. Right-click me, open Capri Mainframe and pick a voice in the Voice ID box under VOICE. Type to me for now.", TalkState.Talking);
+                Answer(++asking, voice.Key == null ? NeedsVoiceKey : "语音聊天需要我的音色 ID，choom。右键我，打开主控台，在“声音”的音色 ID 框里选个声音。先打字跟我说吧。", TalkState.Talking);
                 mainframe.Restore();
                 return;
             }
@@ -7100,7 +7106,7 @@ namespace CapriDesktop
             dictation = opened;
             opened.Heard = delegate(string text) { OnUi(delegate { if (dictation == opened) HeardDictation(text); }); };
             opened.Lost = delegate(string problem) { OnUi(delegate { if (dictation == opened) DictationLost(problem); }); };
-            EarsNote(earsLead + "One sec, opening my ears.", false);
+            EarsNote(earsLead + "等一下，我打开耳朵。", false);
             opened.Start(delegate(string problem) { OnUi(delegate { if (dictation == opened) Dictated(problem); }); });
         }
 
@@ -7117,11 +7123,11 @@ namespace CapriDesktop
             string other = chosen == null || ears.Muted ? null : Dictation.OtherMic(preferences.Mic, chosen, Dictation.DefaultMic());
             if (other != null)
             {
-                EarsNote(earsLead + "Free voice chat on, but Windows speech only hears your default mic, not " + chosen + ". The fix is under VOICE.", false);
+                EarsNote(earsLead + "Free voice chat on, but Windows speech only hears your default mic, not " + chosen + "。解决办法在“声音”里。", false);
                 mainframe.VoiceNote(other, true);
                 return;
             }
-            EarsNote(ears.Muted ? earsLead + "Free voice chat is ready; your mic is muted." : earsLead.Length > 0 ? earsLead + "Free voice chat is on; talk and I'll type back." : "Free voice chat on. Talk and I'll type back.", false);
+            EarsNote(ears.Muted ? earsLead + "免费语音聊天就绪，你的麦克风静音了。" : earsLead.Length > 0 ? earsLead + "免费语音聊天开着，你说，我打字回。" : "免费语音聊天开着。你说，我打字回。", false);
         }
 
         private void DictationLost(string problem)
@@ -7152,7 +7158,7 @@ namespace CapriDesktop
             GetFreeVoice();
             GetFreeEars();
             string got = settingUpEars && earsTotal > 0 && earsGot > 0 ? " (" + earsGot * 100 / earsTotal + "% done)" : "";
-            EarsNote(earsLead + "My ears are still downloading" + got + ", so type to me for now. I'll say when I can hear you.", false);
+            EarsNote(earsLead + "My ears are still downloading" + got + "，先打字跟我说。能听见你的时候我会说。", false);
         }
 
         // Her ears work once the ears and the voice pack are both in, whichever lands last.
@@ -7180,7 +7186,7 @@ namespace CapriDesktop
             earsReady = true;
             CheckEars(clock.Elapsed.TotalSeconds);
             if (!testing) ThreadPool.QueueUserWorkItem(delegate { try { parakeet.Warm(); } catch (Exception error) { Brain.Log("ears", -1, Voice.Short(error.Message)); } });
-            EarsNote(ears.Muted ? earsLead + "Free voice chat is ready; your mic is muted." : earsLead.Length > 0 ? earsLead + "Free voice chat is on; talk and I'll type back." : "Free voice chat on. Talk and I'll type back.", false);
+            EarsNote(ears.Muted ? earsLead + "免费语音聊天就绪，你的麦克风静音了。" : earsLead.Length > 0 ? earsLead + "免费语音聊天开着，你说，我打字回。" : "免费语音聊天开着。你说，我打字回。", false);
         }
 
         private void ListenOffline(string why)
@@ -7196,7 +7202,7 @@ namespace CapriDesktop
             }
             earsReady = true;
             CheckEars(clock.Elapsed.TotalSeconds);
-            EarsNote(earsLead + (ears.Muted ? "Free voice chat is ready with offline hearing; your mic is muted. " : "Free voice chat on, but I'm hearing offline, so I'll miss some words. ") + (why == Dictation.PrivacyOff ? "Turn on Online speech recognition in Windows Settings > Privacy & security > Speech." : "The reason is under VOICE in the Mainframe."), false);
+            EarsNote(earsLead + (ears.Muted ? "Free voice chat is ready with offline hearing; your mic is muted. " : "Free voice chat on, but I'm hearing offline, so I'll miss some words. ") + (why == Dictation.PrivacyOff ? "到 Windows 设置 > 隐私和安全性 > 语音 里打开“在线语音识别”。" : "原因在主控台的“声音”里。"), false);
             mainframe.VoiceNote(why, true);
         }
 
@@ -7206,7 +7212,7 @@ namespace CapriDesktop
             CheckEars(clock.Elapsed.TotalSeconds);
             text = Hearing.Clean(text);
             if (earsShut || text.Length == 0) return;
-            mainframe.VoiceNote("Free voice chat on. Talk and I'll type back.", false);
+            mainframe.VoiceNote("免费语音聊天开着。你说，我打字回。", false);
             Hear(text, text, "> you: ");
         }
 
@@ -7348,7 +7354,7 @@ namespace CapriDesktop
             {
                 transcribing = false;
                 CheckEars(clock.Elapsed.TotalSeconds);
-                if (!earsShut) Missed("I couldn't make out any words. Try closer to the mic.", false);
+                if (!earsShut) Missed("没听清任何词。靠近麦克风再试。", false);
                 return;
             }
             int total = 0;
@@ -7373,21 +7379,21 @@ namespace CapriDesktop
             if (ticket != chatTicket || !chatting || !local) return;
             transcribing = false;
             CheckEars(clock.Elapsed.TotalSeconds);
-            if (request != asking || ears.Muted) { mainframe.VoiceNote("Free voice chat on. Talk and I'll type back.", false); return; }
+            if (request != asking || ears.Muted) { mainframe.VoiceNote("免费语音聊天开着。你说，我打字回。", false); return; }
             if (problem != null)
             {
-                Missed("I couldn't hear that. Try again, or check your mic under VOICE.", true);
+                Missed("我没听见。再试一次，或者在“声音”里看看麦克风。", true);
                 mainframe.VoiceNote(problem, true);
                 return;
             }
-            if (string.IsNullOrEmpty(text)) { Missed("I couldn't make out any words. Try again closer to the mic.", false); return; }
-            mainframe.VoiceNote("Free voice chat on. Talk and I'll type back.", false);
+            if (string.IsNullOrEmpty(text)) { Missed("没听清任何词。靠近麦克风再试一次。", false); return; }
+            mainframe.VoiceNote("免费语音聊天开着。你说，我打字回。", false);
             Hear(text, text, "> you: ");
         }
 
         private void OpenLink()
         {
-            mainframe.VoiceNote("Opening voice chat...", false);
+            mainframe.VoiceNote("正在打开语音聊天…", false);
             int ticket = ++chatTicket;
             string key = voice.Key;
             string voiceId = voice.VoiceId;
@@ -7513,7 +7519,7 @@ namespace CapriDesktop
                 if (backlog != null) foreach (short[] held in backlog) agent.Send(held);
                 backlog = null;
             }
-            mainframe.VoiceNote(muteKey ? "Voice chat on. " + MuteKeyName + " mutes your mic." : "Voice chat on. Talk to her.", false);
+            mainframe.VoiceNote(muteKey ? "Voice chat on. " + MuteKeyName + " mutes your mic." : "语音聊天开了。跟她说吧。", false);
         }
 
         private void ChatFailed(string problem)
@@ -7538,7 +7544,7 @@ namespace CapriDesktop
             }
             heard = "(voice)";
             box.Prompt = "> you: ";
-            Begin(++asking, "Can't open my voice link. Right-click me and open Capri Mainframe. The reason and the fix are under VOICE." + Brain.Stuck, TalkState.Dormant, null);
+            Begin(++asking, "打不开我的语音线路。右键我打开主控台，“声音”里有原因和解决办法。" + Brain.Stuck, TalkState.Dormant, null);
         }
 
         private readonly object shortcutGate = new object();
@@ -7629,7 +7635,7 @@ namespace CapriDesktop
             lock (shortcutGate)
             {
                 toolAsked = true;
-                if (tool == shortcutTool && Environment.TickCount - shortcutAt < 10000) return shortcutResult ?? "Already doing that.";
+                if (tool == shortcutTool && Environment.TickCount - shortcutAt < 10000) return shortcutResult ?? "已经在做了。";
             }
             string key = Security.Asks(tool, args) ? null : MouseKey(tool, args);
             if (key != null) return Later(opened, tool, args, key);
@@ -7696,7 +7702,7 @@ namespace CapriDesktop
                 {
                     int began = Environment.TickCount;
                     string result;
-                    try { result = key != null && !claimed ? "Already doing that." : DoTool(tool, args, ticket); }
+                    try { result = key != null && !claimed ? "已经在做了。" : DoTool(tool, args, ticket); }
                     finally { if (claimed) Free(key); }
                     if (string.IsNullOrEmpty(result)) result = Computer.Escaped;
                     lock (shortcutGate) shortcutResult = result;
@@ -7774,7 +7780,7 @@ namespace CapriDesktop
             if (wasLocal)
             {
                 if (asking == earsNotice) CloseTalk();
-                mainframe.VoiceNote("Free voice chat off. Click the wave to listen again.", false);
+                mainframe.VoiceNote("免费语音聊天关了。点那个挥手图标可以再听。", false);
             }
         }
 
@@ -7783,7 +7789,7 @@ namespace CapriDesktop
             if (agent != null && ears.Muted && !speaker.Busy)
             {
                 Rest();
-                mainframe.VoiceNote("Mic muted. Voice chat is paused until you unmute.", false);
+                mainframe.VoiceNote("麦克风静音了。取消静音之前语音聊天会暂停。", false);
                 return;
             }
             bool due = agent != null && (checkedIn || (wokeAt >= 0 && now - wokeAt >= 8));
@@ -7804,7 +7810,7 @@ namespace CapriDesktop
             quietSince = -1;
             wokeAt = -1;
             lock (waking) { resting = true; backlog = null; preroll.Clear(); loudRun = 0; }
-            mainframe.VoiceNote("Voice chat resting. Talk and she'll pick up.", false);
+            mainframe.VoiceNote("语音聊天在打盹。你一说话她就接。", false);
         }
 
         private void Wake()
@@ -7821,8 +7827,8 @@ namespace CapriDesktop
             pill.SetChat(true, ears.Muted);
             pillUntil = clock.Elapsed.TotalSeconds + PillPop;
             CheckEars(clock.Elapsed.TotalSeconds);
-            if (local && earsReady) mainframe.VoiceNote(ears.Muted ? "Mic muted. Click the mic to unmute." : transcribing ? "Hearing you..." : "Free voice chat on. Talk and I'll type back.", false);
-            else if (!local) mainframe.VoiceNote(ears.Muted ? "Mic muted. Voice chat pauses once she stops talking." : "Mic on. Talk and she'll pick up.", false);
+            if (local && earsReady) mainframe.VoiceNote(ears.Muted ? "麦克风静音了。点麦克风取消静音。" : transcribing ? "Hearing you..." : "免费语音聊天开着。你说，我打字回。", false);
+            else if (!local) mainframe.VoiceNote(ears.Muted ? "麦克风静音了。等她说完这句，语音聊天就暂停。" : "麦克风开了。你说她就接。", false);
         }
 
         private void Listen(short[] chunk)
@@ -7868,7 +7874,7 @@ namespace CapriDesktop
             {
                 Brain.Transcribe(local ? "You (voice)" : "You", text);
                 running.Tell(text);
-                working = "Got it. Esc stops me.";
+                working = "收到。按 Esc 能让我停。";
                 UpdateTalk(clock.Elapsed.TotalSeconds);
                 SayAside("Got it.", running);
                 return;
@@ -8017,12 +8023,12 @@ namespace CapriDesktop
                 problem = error.Message;
                 if (speak == free || !Broke(error.Message)) return null;
                 voiceBroke = true;
-                if (free == null && FreeChatOn && !testing) { Post(delegate { GetFreeVoice(); }); problem = "Out of ElevenLabs credits, so she's getting her free voice."; return null; }
-                if (free == null) { problem = "Out of ElevenLabs credits. Pick PREBUILT LOCAL in Capri Mainframe and get her free voice."; return null; }
+                if (free == null && FreeChatOn && !testing) { Post(delegate { GetFreeVoice(); }); problem = "ElevenLabs 额度用完了，换她的免费声音。"; return null; }
+                if (free == null) { problem = "ElevenLabs 额度用完了。在主控台选“内置本地”，拿她的免费声音。"; return null; }
                 try
                 {
                     byte[] wav = free(words);
-                    problem = "Out of ElevenLabs credits, so she's using her free voice.";
+                    problem = "ElevenLabs 额度用完了，她改用免费声音。";
                     return wav;
                 }
                 catch (Exception other) { problem = Voice.Short("Free voice glitched: " + other.Message); return null; }
@@ -9026,7 +9032,7 @@ namespace CapriDesktop
                             DateTime ordinary = new DateTime(2026, 10, 30);
                             Greet(asking, ordinary.AddHours(8));
                             string morning = reply;
-                            bool greetedMorning = asking == askedBeforeGreet + 1 && morning == "Good morning, choom." && heard == "startup" && voiceUntil > 0 && mouths != null;
+                            bool greetedMorning = asking == askedBeforeGreet + 1 && morning == "早上好，choom。" && heard == "startup" && voiceUntil > 0 && mouths != null;
                             CloseTalk();
                             Greet(asking, ordinary.AddHours(23));
                             string late = reply;
@@ -9044,7 +9050,7 @@ namespace CapriDesktop
                             int askedStale = asking;
                             Greet(asking - 1, ordinary.AddHours(8));
                             bool skippedStale = asking == askedStale && talkState == TalkState.Off;
-                            if (!greetedMorning || late != "Isn't it late, choom?" || !lateVoiced || afternoon != "Miss me, choom?" || !afternoonVoiced || !quietTyped || !skippedStale) throw new Exception("Startup greeting went wrong: " + morning + " / " + late + " / " + afternoon + " / quiet " + quietTyped + " / stale " + skippedStale);
+                            if (!greetedMorning || late != "不早了，choom？" || !lateVoiced || afternoon != "Miss me, choom?" || !afternoonVoiced || !quietTyped || !skippedStale) throw new Exception("Startup greeting went wrong: " + morning + " / " + late + " / " + afternoon + " / quiet " + quietTyped + " / stale " + skippedStale);
                             checks.Add("PASS startup greeting: she giggles and says good morning from 5 am to noon, isn't it late from 10 pm to 5 am, and miss me the rest of the day, in her recorded voice with no key needed (even with Use ElevenLabs off, since it costs no credits); none once you've already said something");
                             // Halloween: 31 October in any year, from midnight to midnight, and not the days either side.
                             string halloweenWrong = null;
@@ -9282,7 +9288,7 @@ namespace CapriDesktop
                                     bool layOnFloor = lying && seat != null && seat.Floor && lieOnLine == "Lying down on the taskbar.";
                                     named("sit_up", null);
                                     string walkLine = named("walk_around", null);
-                                    bool strolled = walkLine == "Going for a little walk." ? walking : walkLine == "Wandering off somewhere." && !walking;
+                                    bool strolled = walkLine == "去溜达一圈。" ? walking : walkLine == "到处晃晃去。" && !walking;
                                     EndWalk();
                                     string backLine = named("sit_on", "Roblox");
                                     clipStart -= 1;
@@ -9351,7 +9357,7 @@ namespace CapriDesktop
                                 double voiceWas = voiceUntil;
                                 try
                                 {
-                                    working = "On it. Esc stops me.";
+                                    working = "这就去。按 Esc 能让我停。";
                                     talkState = TalkState.Thinking;
                                     chatting = true;
                                     CheckMusic(clock.Elapsed.TotalSeconds);
@@ -10213,7 +10219,7 @@ namespace CapriDesktop
                             CheckIdle(0);
                             bool talkWoke = clip == idle && !napping;
                             Say(null);
-                            if (napLine != "Going to sleep. A click on me wakes me up." || !napStopped || !napWaited || !napHeld || !menuWoke || !menuSlept || !clickWoke || !toldWoke || already != "Already awake." || !talkWoke)
+                            if (napLine != "去睡啦，点我一下就能叫醒我。" || !napStopped || !napWaited || !napHeld || !menuWoke || !menuSlept || !clickWoke || !toldWoke || already != "Already awake." || !talkWoke)
                                 throw new Exception("Her nap went wrong: " + napStopped + " " + napWaited + " " + napHeld + " " + menuWoke + " " + menuSlept + " " + clickWoke + " " + toldWoke + " " + already + " " + talkWoke);
                             Play(idle);
                             checks.Add("PASS nap on demand: \"go to sleep\" stops her dance and waits for her line, then she sleeps through mouse and keyboard use, Asleep on Discord with her pop-ins and glances resting, until her menu's Wake up, a click, \"wake up\" or talking to her");
@@ -10269,12 +10275,12 @@ namespace CapriDesktop
                                 moveSelf("show", null);
                                 bool screens = Screen.AllScreens.Length > 1;
                                 string otherLine = moveSelf("other_screen", null);
-                                moveFacts.Add(screens ? otherLine.StartsWith("Moving to ", StringComparison.Ordinal) && Screen.FromPoint(Hip()).DeviceName != Screen.PrimaryScreen.DeviceName : otherLine == "There's no other screen to go to.");
+                                moveFacts.Add(screens ? otherLine.StartsWith("Moving to ", StringComparison.Ordinal) && Screen.FromPoint(Hip()).DeviceName != Screen.PrimaryScreen.DeviceName : otherLine == "没有别的屏幕可以去了。");
                                 moveSelf("come_here", null);
                                 falling = false;
                                 fallTo = null;
                                 string mainframeOther = moveSelf("move_mainframe", "other");
-                                moveFacts.Add(screens ? mainframeOther.StartsWith("Moved the Mainframe to ", StringComparison.Ordinal) && Screen.FromRectangle(mainframe.Bounds).DeviceName != Screen.FromRectangle(mainframeWas).DeviceName : mainframeOther == "There's no other screen for the Mainframe.");
+                                moveFacts.Add(screens ? mainframeOther.StartsWith("Moved the Mainframe to ", StringComparison.Ordinal) && Screen.FromRectangle(mainframe.Bounds).DeviceName != Screen.FromRectangle(mainframeWas).DeviceName : mainframeOther == "没有别的屏幕给主控台了。");
                                 moveSelf("move_mainframe", "here");
                                 Rectangle mainframeAt = mainframe.Bounds;
                                 // A screen with another scale can resize the Mainframe as it lands, so only one that kept its size is held to the exact spot.
@@ -10301,7 +10307,7 @@ namespace CapriDesktop
                             string movesSaid = string.Join(" / ", moveLines.ToArray());
                             if (!moveFacts.TrueForAll(delegate(bool fact) { return fact; }) || moveLines.Count != 16
                                 || movesSaid != "Teleporting to your mouse. / Sitting right here. / Already sitting. / Standing up. / Hanging right here. / Let go. / " + moveLines[6] + " / Hopped off your cursor. / I'm not riding your cursor. / " + moveLines[9] + " / Back. / I'm right here. / " + moveLines[12] + " / Teleporting to your mouse. / " + moveLines[14] + " / Brought the Mainframe over to your mouse."
-                                || !moveLines[6].StartsWith("Riding your cursor. ", StringComparison.Ordinal) || !moveLines[9].StartsWith("Hiding. ", StringComparison.Ordinal) || !moveLines[9].EndsWith(" on my tray icon brings me back.", StringComparison.Ordinal))
+                                || !moveLines[6].StartsWith("Riding your cursor. ", StringComparison.Ordinal) || !moveLines[9].StartsWith("Hiding. ", StringComparison.Ordinal) || !moveLines[9].EndsWith(" 在托盘图标上就能把我叫回来。", StringComparison.Ordinal))
                                 throw new Exception("Her own moves went wrong: " + string.Join(",", moveFacts.ConvertAll(delegate(bool fact) { return fact ? "1" : "0"; }).ToArray()) + " / " + movesSaid);
                             checks.Add("PASS she moves herself: \"teleport here\" wakes her and glitches her hip onto the mouse, she sits, stands, hangs, lets go, rides the cursor and hops off where she is and says when she already is, a hide waits for her line, \"show yourself\" brings her back, she goes to another screen " + (Screen.AllScreens.Length > 1 ? "and back" : "only when there is one (one here)") + ", and her Mainframe moves to the other screen or over to the mouse");
                             // Her animations by name: glitch, grin and blink play where she is, a dance goes on with no music until "stop
@@ -10533,7 +10539,7 @@ namespace CapriDesktop
                                 updateItem.PerformClick();
                                 finishUpdate();
                                 if (exits != 2 || !updateItem.Enabled || mainframe.UpdateStatus != "Couldn't start the update (fake start failure). Capri is still running.") throw new Exception("A failed installer launch closed Capri: " + mainframe.UpdateStatus);
-                                if (UpdateProblem(new System.ComponentModel.Win32Exception(1223)) != "The update needs a Yes in the Windows prompt. Try again." || UpdateProblem(new System.ComponentModel.Win32Exception(225)) != "Your antivirus blocked the update. Capri is still running.")
+                                if (UpdateProblem(new System.ComponentModel.Win32Exception(1223)) != "更新需要在 Windows 的弹窗里点“是”，再试一次。" || UpdateProblem(new System.ComponentModel.Win32Exception(225)) != "杀毒软件挡住了这次更新，Capri 还在运行。")
                                     throw new Exception("An installer launch failure didn't say why.");
                                 updater.Run = delegate(ProcessStartInfo start) { command = start; launches++; };
                                 checks.Add("PASS menu and balloon use the same fake installer command, repeated clicks ignored, launch failure keeps Capri open and says why (a declined Windows prompt, antivirus, or the error)");
@@ -10817,10 +10823,10 @@ namespace CapriDesktop
                                 pcVolume = DoTool("media", new ToolArguments { Action = "volume_up" }) == "Turned the volume up." && cursorTasks.Count == jobsBeforeVolume && slidKeys.Count == 5;
                                 cursorStuck = "Couldn't find Spotify's volume slider.";
                                 string slid = DoTool("media", new ToolArguments { Action = "volume_up", App = "spotify" });
-                                cursorStuck = "You pressed Esc, so I stopped.";
+                                cursorStuck = "你按了 Esc，我就停下了。";
                                 string stopped = DoTool("media", new ToolArguments { Action = "volume_up", App = "spotify" });
                                 cursorStuck = null;
-                                sliderFellBack = slid == "Turned the volume up." && stopped == "You pressed Esc, so I stopped." && slidKeys.Count == 10 && cursorTasks.Count == jobsBeforeVolume + 2;
+                                sliderFellBack = slid == "Turned the volume up." && stopped == "你按了 Esc，我就停下了。" && slidKeys.Count == 10 && cursorTasks.Count == jobsBeforeVolume + 2;
                                 // Esc ends the whole ask: the rest of it doesn't run, and the next ask does.
                                 int escapedJobs = cursorTasks.Count;
                                 escRest = DoTool("play_music", new ToolArguments { Song = "Resist and Disorder", App = "spotify" }) == "" && DoTool("media", new ToolArguments { Action = "volume_up" }) == "" && cursorTasks.Count == escapedJobs && slidKeys.Count == 10;
@@ -11256,7 +11262,7 @@ namespace CapriDesktop
                                 try { crashing.Ensure(Engine.Picks[2]); }
                                 catch (BrainException error) { crashSaid = error.Message; }
                                 string[] crashLines = Array.FindAll(File.ReadAllLines(Brain.LogPath), line => LoggedSince(line, crashFrom) && line.Contains(" | brain | - | llama-server stopped while loading " + Engine.Picks[2].Name));
-                                if (crashSaid != "Brain crashed loading. Close games, press Refresh." || string.Join(" ", spawned.ToArray()) != "gpu cpu" || !crashing.CpuOnly || crashLines.Length != 2
+                                if (crashSaid != "大脑加载时崩了。关掉游戏，点刷新。" || string.Join(" ", spawned.ToArray()) != "gpu cpu" || !crashing.CpuOnly || crashLines.Length != 2
                                     || !crashLines[0].EndsWith(Engine.Picks[2].Name + " with exit code 0xC0000005, restarting it on the CPU", StringComparison.Ordinal) || !crashLines[1].EndsWith(Engine.Picks[2].Name + " on the CPU with exit code 0x00000003", StringComparison.Ordinal))
                                     throw new Exception("A brain that crashed while loading wasn't retried on the CPU or logged: " + crashSaid + " / " + string.Join(" ", spawned.ToArray()) + " / " + string.Join(" || ", crashLines));
                                 checks.Add("PASS brain load crash: when the built-in brain's server dies while loading on the graphics card, errors.txt gets its exit code and she tries once on the CPU; a CPU crash stops with Close games, press Refresh");
@@ -11421,7 +11427,7 @@ namespace CapriDesktop
                                 ToolArguments pauseArgs;
                                 ToolArguments resumeArgs;
                                 bool pauseWords = Hands.Direct("pause the music", out pauseTool, out pauseArgs) && pauseArgs.Action == "pause" && Hands.Direct("can you unpause it", out pauseTool, out resumeArgs) && resumeArgs.Action == "resume";
-                                if (paused != "Paused Spotify." || resumed != "Spotify is playing again." || blind != "Pressed pause." || !pauseWords) throw new Exception("Pause and resume told the wrong state: " + paused + " / " + resumed + " / " + blind);
+                                if (paused != "Paused Spotify." || resumed != "Spotify 又开始放了。" || blind != "Pressed pause." || !pauseWords) throw new Exception("Pause and resume told the wrong state: " + paused + " / " + resumed + " / " + blind);
                                 tapped.RemoveRange(6, tapped.Count - 6);
                                 if (Hands.Address("javascript:alert(1)", null) != null || Hands.Address("user@evil.com", null) != null || Hands.Address("", null) != null || Hands.Address("spotify", "lofi") != "https://open.spotify.com/search/lofi") throw new Exception("Website addresses were not checked.");
                                 fakeBrain.Start();
@@ -11494,7 +11500,7 @@ namespace CapriDesktop
                                     || !Hands.Promised("Otwieram YouTube!") || !Hands.Promised("Jasne, już otwieram YouTube, choom.") || !Hands.Promised("Włączyłam muzykę.") || !Hands.Promised("Claro, abro YouTube.") || !Hands.Promised("Ich öffne YouTube.") || !Hands.Promised("Открываю YouTube.")
                                     || Hands.Promised("Otwieranie aplikacji jest proste.") || Hands.Promised("Lubię tę piosenkę.") || Hands.Promised("Abrazos, choom.")) throw new Exception("Computer jobs or false promises were spotted wrong.");
                                 ToolArguments lookedUp = Hands.Lookup("when does the new GTA come out?", "I don't have live info on that, choom.");
-                                if (!Hands.Wants("what's the weather in sydney?") || !Hands.Wants("can you check the weather") || !Hands.Wants("who won the game last night") || Hands.Wants("i love rainy weather") || lookedUp == null || lookedUp.Site != "google" || lookedUp.Search != "when does the new GTA come out" || Hands.Lookup("what's the weather near me?", "I'll look it up for you, choom!") == null || Hands.Lookup("what's my name?", "I don't have a way to know your name.") != null || Hands.Lookup("how are you?", "Can't complain, choom.") != null || Hands.Lookup("what do you see?", "I can't see your screen right now.") != null || Hands.Lookup("what's the capital of france?", "Paris, choom.") != null || !Hands.Wants("is it gonna rain tomorrow?") || Hands.Lookup("when does gta 6 come out?", "I gotta check that for you, choom. You might need to look that up somewhere else.") == null || Hands.Lookup("is it hot in perth?", "Check a proper weather feed, choom; I ain't got crystal ball optics.") == null || Hands.Lookup("when's the next gta out?", "You gotta check a search engine for that, choom.") == null || Hands.Pulled("Searched google.com for weather in sydney.") != "Pulled up \"weather in sydney\" on Google for you, choom." || Hands.Pulled("Searched youtube.com for lofi beats.") != null || Hands.Pulled("Opened your own website, " + Hands.Home + ".") != "Here's my site, choom. That's where people download me.") throw new Exception("Look-ups that need Google were spotted wrong.");
+                                if (!Hands.Wants("what's the weather in sydney?") || !Hands.Wants("can you check the weather") || !Hands.Wants("who won the game last night") || Hands.Wants("i love rainy weather") || lookedUp == null || lookedUp.Site != "google" || lookedUp.Search != "when does the new GTA come out" || Hands.Lookup("what's the weather near me?", "I'll look it up for you, choom!") == null || Hands.Lookup("what's my name?", "I don't have a way to know your name.") != null || Hands.Lookup("how are you?", "Can't complain, choom.") != null || Hands.Lookup("what do you see?", "I can't see your screen right now.") != null || Hands.Lookup("what's the capital of france?", "Paris, choom.") != null || !Hands.Wants("is it gonna rain tomorrow?") || Hands.Lookup("when does gta 6 come out?", "I gotta check that for you, choom. You might need to look that up somewhere else.") == null || Hands.Lookup("is it hot in perth?", "Check a proper weather feed, choom; I ain't got crystal ball optics.") == null || Hands.Lookup("when's the next gta out?", "You gotta check a search engine for that, choom.") == null || Hands.Pulled("Searched google.com for weather in sydney.") != "Pulled up \"weather in sydney\" on Google for you, choom." || Hands.Pulled("Searched youtube.com for lofi beats.") != null || Hands.Pulled("Opened your own website, " + Hands.Home + ".") != "这是我的网站，choom。大家就是在那儿下载我的。") throw new Exception("Look-ups that need Google were spotted wrong.");
                                 string shortTool;
                                 ToolArguments shortArgs;
                                 if (!Hands.Direct("capri, open your website", out shortTool, out shortArgs) || shortTool != "open_website" || shortArgs.Site != Hands.Home || !Hands.Direct("google weather tomorrow", out shortTool, out shortArgs) || shortTool != "open_website" || shortArgs.Site != "google" || shortArgs.Search != "weather tomorrow" || Hands.Direct("look up it", out shortTool, out shortArgs)) throw new Exception("Her website or a quick Google search didn't skip the brain.");
@@ -12736,7 +12742,7 @@ namespace CapriDesktop
                                     checks.Add("PASS mid-job words: what they say while a job runs rides on her next turn after its tool results, so she does it and carries on");
                                     // A game job thinks harder and gets her game lines, from its words or once a game's window is in front (Lachy, 30 Oct).
                                     if (!Computer.Gaming("play bedwars on roblox and answer chat") || !Computer.Gaming("go play minecraft") || !Computer.Gaming("hop on fortnite for a bit") || !Computer.Gaming("keep playing")
-                                        || Computer.Gaming("play lofi on youtube") || Computer.Gaming("Play \"Resist and Disorder\" on Spotify: open Spotify, click its search box, type \"Resist and Disorder\" and press Enter, then press play on the best match.")
+                                        || Computer.Gaming("play lofi on youtube") || Computer.Gaming("Play \"Resist and Disorder\" on Spotify: open Spotify, click its search box, type \"Resist and Disorder\"，按回车，然后点最匹配那个的播放。")
                                         || Computer.Gaming("watch a minecraft video") || Computer.Gaming("tell sam I'll play roblox later on discord") || Computer.Gaming("send hi in #general on discord") || Computer.Gaming(null)
                                         || Computer.Gaming("capri,play the real slim shady intrumental version") || new Job("Open YouTube, search for the real slim shady and play the video", "capri, play the real slim shady").Playing || !new Job("play bedwars on roblox", "go play bedwars").Playing
                                         || !Computer.GameWindow(new Sight { Window = new IntPtr(7), Title = "Roblox", Program = "RobloxPlayerBeta" }) || !Computer.GameWindow(new Sight { Window = new IntPtr(7), Title = "Minecraft 1.21.4", Program = "javaw" })
@@ -13030,7 +13036,7 @@ namespace CapriDesktop
                                     string[] handledWanted =
                                     {
                                         "Playing Blinding Lights by The Weeknd on Spotify.", "Playing lofi beats on YouTube.", "Couldn't find nothing at all to play, so Spotify is open on a search for it.",
-                                        "What should I play?", "Closed discord.", "Closed the YouTube tab.",
+                                        "放点什么好？", "Closed discord.", "Closed the YouTube tab.",
                                         "Asked notepad to close, but it's still open. It might be asking you to save.", "Switched to roblox.", "Minimized word.",
                                         "Closed minecraft.", "Fortnite isn't open.", "There's no window action called explode.",
                                         "Playing the lofi beats playlist on Spotify.", "Opened their Liked Songs in Spotify, but couldn't press play. Hit the green Play button.", "Playing the lofi beats playlist on YouTube."
@@ -13205,7 +13211,7 @@ namespace CapriDesktop
                                     {
                                         spotifyWindows.Clear();
                                         spotifyWindows.Add(new OpenWindow(new IntPtr(12), title, "Spotify"));
-                                        if (Hands.Started("", title) || Hands.Do("media", new ToolArguments { Action = "now_playing" }) != (title == "Spotify" || title.StartsWith("Spotify ", StringComparison.Ordinal) ? "Spotify is open but paused." : "Spotify is open, but I can't tell what's playing.")) throw new Exception("A Spotify status title was reported as a song.");
+                                        if (Hands.Started("", title) || Hands.Do("media", new ToolArguments { Action = "now_playing" }) != (title == "Spotify" || title.StartsWith("Spotify ", StringComparison.Ordinal) ? "Spotify 开着，但是暂停的。" : "Spotify 开着，但我看不出在放什么。")) throw new Exception("A Spotify status title was reported as a song.");
                                     }
                                     spotifyWindows.Clear();
                                     spotifyWindows.Add(new OpenWindow(new IntPtr(13), frenchTitle, "chrome"));
@@ -14143,12 +14149,12 @@ namespace CapriDesktop
                                     BrainException otherError = new BrainException("model 'gemma' not found");
                                     if (!ramShort.Told || ramShort.Message != "Your PC doesn't have enough free RAM for this brain: it needs 8.8 GB and only 4.8 GB is free right now. Close some apps, browser tabs or games and try again, or pick a smaller brain under BRAIN in Capri Mainframe." || !ramOld.Told || ramOld.Message.IndexOf("needs 8.8 GB and only 4.8 GB is free", StringComparison.Ordinal) < 0 || !diskFull.Told || diskFull.Message != "Your storage is full, so my brain doesn't fit on your PC. Delete big files you don't need or empty the Recycle Bin, then try again." || otherError.Told || otherError.Message != "model 'gemma' not found" || !new BrainException("CUDA error: out of memory").Told || !new BrainException("no space left on device").Message.StartsWith("Your storage is full", StringComparison.Ordinal)) throw new Exception("Memory and storage errors weren't spelled out: " + ramShort.Message + " / " + diskFull.Message);
                                     string ramLine = Brain.Brief(ramShort.Message), diskLine = Brain.Brief(diskFull.Message);
-                                    if (ramLine != "Not enough free RAM: it needs 8.8 GB, only 4.8 GB is free." || diskLine != "Your storage is full. Free up space, then try again." || Brain.Brief("There is not enough space on the disk.") != diskLine || Brain.Brief("model 'gemma' not found") != null || ramLine.Length > 60 || diskLine.Length > 60) throw new Exception("The short Mainframe lines for memory and storage went wrong: " + ramLine + " / " + diskLine);
+                                    if (ramLine != "Not enough free RAM: it needs 8.8 GB, only 4.8 GB is free." || diskLine != "你的硬盘满了。清点空间再试。" || Brain.Brief("There is not enough space on the disk.") != diskLine || Brain.Brief("model 'gemma' not found") != null || ramLine.Length > 60 || diskLine.Length > 60) throw new Exception("The short Mainframe lines for memory and storage went wrong: " + ramLine + " / " + diskLine);
                                     checks.Add("PASS plain errors: not enough RAM says how much the brain needs and how much is free and to close apps or pick a smaller brain, a full drive says your storage is full and to free up space, both have short Mainframe lines, and other errors pass through");
                                     if (!Engine.Lost("got exception: vk::Queue::submit: ErrorDeviceLost") || Engine.Lost("model not found")) throw new Exception("A lost graphics card was not spotted.");
                                     const string broke = "No credits on this key. Add credits on their site, or press Free key for a free NVIDIA key.";
                                     if (Brain.Meaning(429, "{\"error\":{\"message\":\"You have no credits remaining. Add credits to continue using the API.\",\"type\":\"insufficient_quota\"}}") != broke || Brain.Meaning(402, "{\"error\":{\"message\":\"Insufficient Balance\"}}") != broke
-                                        || Brain.Meaning(400, "{\"type\":\"error\",\"error\":{\"message\":\"Your credit balance is too low to access the Anthropic API.\"}}") != broke || Brain.Meaning(429, "{\"status\":429,\"title\":\"Too Many Requests\"}") != "Too many requests. Wait a minute, or watch slower."
+                                        || Brain.Meaning(400, "{\"type\":\"error\",\"error\":{\"message\":\"Your credit balance is too low to access the Anthropic API.\"}}") != broke || Brain.Meaning(429, "{\"status\":429,\"title\":\"Too Many Requests\"}") != "请求太多了。等一分钟，或者放慢一点。"
                                         || Brain.Meaning(401, "{\"error\":\"bad key\"}") != "Key rejected. Press Forget, then paste it again." || Brain.Meaning(400, "{\"error\":\"bad request\"}") != null) throw new Exception("Cloud errors were explained wrong.");
                                     System.Collections.Generic.List<string> directAsked = new System.Collections.Generic.List<string>();
                                     System.Net.Sockets.TcpListener directFake;
@@ -14464,7 +14470,7 @@ namespace CapriDesktop
                                     string problem = null;
                                     try { failed.Ask("hey"); }
                                     catch (BrainException error) { if (!error.Told) throw; problem = error.Message; }
-                                    if (problem != "Their servers failed. Pick another model or retry.") throw new Exception("A cloud HTTP error was not explained.");
+                                    if (problem != "他们服务器挂了。换个模型或者重试。") throw new Exception("A cloud HTTP error was not explained.");
                                     failed.Act = delegate { failed.Cancel(); return "Opened Spotify."; };
                                     bool stopped = false;
                                     try { failed.Ask("open spotify"); }
@@ -14972,7 +14978,7 @@ namespace CapriDesktop
                             settingUpEars = false;
                             ShowInstall();
                             ShowVoice();
-                            if (voice.Key == null && !kokoro.Installed && installNote != "This may take some time. For a better sounding, faster voice, get an API key.") throw new Exception("The voice note still offered the download it's doing: " + installNote);
+                            if (voice.Key == null && !kokoro.Installed && installNote != "可能要花点时间。想要更好听、更快的嗓子，去弄个 API Key。") throw new Exception("The voice note still offered the download it's doing: " + installNote);
                             if (installRow == null || !installRow.StartsWith("Installing the speech model + ears · " + Engine.Amount(100L << 20) + " of " + Engine.Amount(LocalVoice.PackSize + parakeet.Size) + " | 13%", StringComparison.Ordinal) || pushed <= 0 || installOverlap != null) throw new Exception("Her voice downloads didn't get their own row and bar: " + installRow + " / pushed " + pushed + " / " + installOverlap);
                             if (earsOnly == null || !earsOnly.StartsWith("Installing her ears · ", StringComparison.Ordinal) || mainframe.InstallShown != null || mainframe.CapriRowTop != capriTop || mainframe.ClientSize.Height != installFree) throw new Exception("The download row didn't follow what's left or close afterwards: " + earsOnly + " / " + mainframe.InstallShown);
                             bool mainframeShown = mainframe.Visible;
@@ -15147,7 +15153,7 @@ namespace CapriDesktop
                             CloseTalk();
                             bool trimmedName = Brain.Nick("  Ana-Mar\u00eda   O'Neil ") == "Ana-Mar\u00eda O'Neil" && Brain.Nick("<b>V</b>") == "bVb" && Brain.Nick(new string('z', 40)).Length == 24 && Brain.Nick("CHOOM") == "" && Brain.Nick("!!!") == "";
                             mainframe.TypeNickname("choom");
-                            bool clearedName = Nickname == "" && preferences.Nickname == null && mainframe.NicknameShown == "" && reply == "Back to choom, then." && Brain.Character.IndexOf("set a nickname", StringComparison.Ordinal) < 0;
+                            bool clearedName = Nickname == "" && preferences.Nickname == null && mainframe.NicknameShown == "" && reply == "那就还叫 choom 吧。" && Brain.Character.IndexOf("set a nickname", StringComparison.Ordinal) < 0;
                             CloseTalk();
                             if (!namedRight || !rudeName || !trimmedName || !clearedName) throw new Exception("The nickname box went wrong: named " + namedRight + ", rude " + rudeName + ", trimmed " + trimmedName + ", cleared " + clearedName);
                             checks.Add("PASS nickname: What should she call you? saves a cleaned-up name, rude ones too since it's their call, she says got it, her brain is told to use it now and then, and choom or an empty box goes back to choom");
@@ -15708,7 +15714,7 @@ namespace CapriDesktop
                             string sealedKey = Voice.Protect("sk_test_capri_1234");
                             if (Voice.Unprotect(sealedKey) != "sk_test_capri_1234" || sealedKey.Contains("sk_test") || Voice.Unprotect("not a key") != null || Voice.Tail("sk_test_capri_1234") != "1234") throw new Exception("Key storage failed.");
                             if (Voice.Spoken("[GLITCH] Hey *choom*, [static] ready?") != "Hey choom, ready?" || Voice.Spoken("[STATIC]") != "") throw new Exception("Spoken text kept her tags: " + Voice.Spoken("[GLITCH] Hey *choom*, [static] ready?"));
-                            if (Voice.Explain(401, "") != "ElevenLabs rejected the key. Press Forget, paste a new one." || Voice.Explain(401, "{\"detail\":{\"status\":\"quota_exceeded\"}}") != "Out of ElevenLabs credits. Pick PREBUILT LOCAL in the Mainframe." || Voice.Explain(400, "{\"detail\":{\"status\":\"invalid\",\"message\":\"Text is \\\"too\\\" long\"}}") != "Text is \"too\" long" + Voice.RestrictHint || Voice.Explain(500, "oops") != "ElevenLabs error 500." + Voice.RestrictHint
+                            if (Voice.Explain(401, "") != "ElevenLabs 不认这个 Key。点 Forget，重新粘一个。" || Voice.Explain(401, "{\"detail\":{\"status\":\"quota_exceeded\"}}") != "Out of ElevenLabs credits. Pick PREBUILT LOCAL in the Mainframe." || Voice.Explain(400, "{\"detail\":{\"status\":\"invalid\",\"message\":\"Text is \\\"too\\\" long\"}}") != "Text is \"too\" long" + Voice.RestrictHint || Voice.Explain(500, "oops") != "ElevenLabs error 500." + Voice.RestrictHint
                                 || Voice.Explain(400, "{\"detail\":{\"message\":\"Input at position 0 has empty text. All inputs must include non-empty text.\"}}") != Voice.Silent || Voice.Explain(403, "{\"detail\":{\"message\":\"nope\"}}").IndexOf("Restrict key turned off", StringComparison.Ordinal) < 0 || Voice.Spoken("...") != "" || Voice.Spoken("[sighs] ...") != "") throw new Exception("ElevenLabs errors read wrong.");
                             if (Voice.Explain(402, "{\"detail\":{\"status\":\"free_users_not_allowed\",\"message\":\"Free users cannot use library voices via the API. Please upgrade your subscription to use this voice.\"}}") != Voice.LibraryVoice || Voice.Explain(400, "{\"detail\":{\"status\":\"voice_not_fine_tuned\",\"message\":\"Voice is still being fine-tuned\"}}").IndexOf("still training", StringComparison.Ordinal) < 0
                                 || Voice.Explain(400, "{\"detail\":{\"message\":\"This voice is not available for model eleven_v3\"}}").IndexOf("Restrict key", StringComparison.Ordinal) >= 0 || Voice.Explain(402, "{\"detail\":{\"message\":\"Payment required\"}}") != "Payment required") throw new Exception("Custom and library voice errors read wrong or blamed the key.");
@@ -15743,9 +15749,9 @@ namespace CapriDesktop
                             int widest = -1;
                             for (int i = 7; i < shapes.Length; i++) widest = Math.Max(widest, shapes[i]);
                             if (shapes.Length != 12 || shapes[0] != -1 || shapes[4] != -1 || widest < 3) throw new Exception("Mouth envelope failed: " + string.Join(",", shapes));
-                            if (Voice.Explain(401, "{\"detail\":{\"status\":\"invalid_api_key\",\"message\":\"Invalid API key\"}}") != "ElevenLabs rejected the key. Press Forget, paste a new one." || Voice.Explain(401, "{\"detail\":{\"status\":\"detected_unusual_activity\",\"message\":\"Unusual activity detected.\"}}") != "Unusual activity detected.") throw new Exception("ElevenLabs messages read wrong.");
+                            if (Voice.Explain(401, "{\"detail\":{\"status\":\"invalid_api_key\",\"message\":\"Invalid API key\"}}") != "ElevenLabs 不认这个 Key。点 Forget，重新粘一个。" || Voice.Explain(401, "{\"detail\":{\"status\":\"detected_unusual_activity\",\"message\":\"Unusual activity detected.\"}}") != "Unusual activity detected.") throw new Exception("ElevenLabs messages read wrong.");
                             if (Voice.Explain(403, "{\"detail\":{\"status\":\"account_restricted\",\"message\":\"This workspace is restricted\"}}") != Voice.Restricted || Voice.Closed("[account_restricted] This workspace is restricted") != Voice.Restricted || Voice.Closed("server went away") != "Voice link closed: server went away") throw new Exception("A restricted ElevenLabs account wasn't explained.");
-                            if (Voice.Explain(401, "{\"detail\":{\"status\":\"missing_permissions\"}}").IndexOf("Restrict key turned off", StringComparison.Ordinal) < 0 || Voice.Unsaved(Voice.Explain(401, "{\"detail\":{\"status\":\"invalid_api_key\"}}")) != Voice.RejectedNew || Voice.RejectedNew.IndexOf("Forget", StringComparison.Ordinal) >= 0 || Voice.Unsaved("Can't reach ElevenLabs. Check your internet.") != "Can't reach ElevenLabs. Check your internet.") throw new Exception("A pasted key ElevenLabs rejected said to press Forget, but it was never saved.");
+                            if (Voice.Explain(401, "{\"detail\":{\"status\":\"missing_permissions\"}}").IndexOf("Restrict key turned off", StringComparison.Ordinal) < 0 || Voice.Unsaved(Voice.Explain(401, "{\"detail\":{\"status\":\"invalid_api_key\"}}")) != Voice.RejectedNew || Voice.RejectedNew.IndexOf("Forget", StringComparison.Ordinal) >= 0 || Voice.Unsaved("连不上 ElevenLabs。检查下网络。") != "连不上 ElevenLabs。检查下网络。") throw new Exception("A pasted key ElevenLabs rejected said to press Forget, but it was never saved.");
                             System.Net.Sockets.TcpListener fake = new System.Net.Sockets.TcpListener(IPAddress.Loopback, 0);
                             fake.Start();
                             string[] fakeHeads = { "HTTP/1.1 401 Unauthorized\r\nContent-Type: application/json", "HTTP/1.1 200 OK\r\nContent-Type: audio/wav" };
@@ -15790,7 +15796,7 @@ namespace CapriDesktop
                                 probe.VoiceId = "abc";
                                 probe.Model = "eleven_v3";
                                 try { probe.Speak("Hi \"choom\"."); throw new Exception("A 401 reply did not throw."); }
-                                catch (VoiceException error) { if (error.Status != 401 || error.Message != "ElevenLabs rejected the key. Press Forget, paste a new one.") throw new Exception("HTTP errors read wrong: " + error.Status + " " + error.Message); }
+                                catch (VoiceException error) { if (error.Status != 401 || error.Message != "ElevenLabs 不认这个 Key。点 Forget，重新粘一个。") throw new Exception("HTTP errors read wrong: " + error.Status + " " + error.Message); }
                                 fetched = probe.Speak("Hi \"choom\".");
                                 // The fake server answers twice, so a third request for the same line would fail.
                                 fetchedAgain = probe.Speak("Hi \"choom\".");
@@ -16071,11 +16077,11 @@ namespace CapriDesktop
                             if (voice.VoiceId != null || preferences.VoiceId != null || voice.Model != null || mainframe.VoiceStatus != "Needs your Voice ID. |  | Default model | Forget") throw new Exception("Blank voice was not cleared: " + mainframe.VoiceStatus);
                             CloseTalk();
                             pill.Press(2);
-                            if (pill.Chatting || chatting || reply != "Voice chat needs my Voice ID, choom. Right-click me, open Capri Mainframe and pick a voice in the Voice ID box under VOICE. Type to me for now.") throw new Exception("Wave without a Voice ID did not point to the Mainframe.");
+                            if (pill.Chatting || chatting || reply != "语音聊天需要我的音色 ID，choom。右键我，打开主控台，在“声音”的音色 ID 框里选个声音。先打字跟我说吧。") throw new Exception("Wave without a Voice ID did not point to the Mainframe.");
                             CloseTalk();
                             preferences.VoiceKey = sealedKey;
                             ForgetVoice();
-                            string keylessNote = kokoro.Installed ? "Free voice, runs on your PC." : "Get her free voice (" + Engine.Amount(LocalVoice.PackSize) + "), or pick CLOUD VOICE.";
+                            string keylessNote = kokoro.Installed ? "免费声音，跑在你自己电脑上。" : "Get her free voice (" + Engine.Amount(LocalVoice.PackSize) + "），或者选“云端声音”。";
                             if (voice.Key != null || voices != null || preferences.VoiceKey != null || mainframe.VoiceStatus != keylessNote + " |  | Default model | Connect") throw new Exception("Forget did not clear the key: " + mainframe.VoiceStatus);
                             if (mainframe.VoiceTierStatus != "PREBUILT LOCAL | - | free voice | fold 36") throw new Exception("Forget left the VOICE rows laid out for a key: " + mainframe.VoiceTierStatus);
                             snap("mainframe-voice-empty.png");
@@ -16348,7 +16354,7 @@ namespace CapriDesktop
                             ManualResetEvent yvJunkDone = new ManualResetEvent(false);
                             ThreadPool.QueueUserWorkItem(delegate { try { YourVoice.Prepare(yvJunkPath, out yvJunk); } finally { yvJunkDone.Set(); } });
                             yvJunkDone.WaitOne(60000);
-                            if (yvShort != "That clip has only 3 seconds of talking. Pick 5 to 30 seconds of you talking." || yvLong != "That clip is 40 seconds long. Pick 5 to 30 seconds of you talking, or trim it." || yvQuiet != YourVoice.Silent || yvMissing != "That clip isn't there anymore. Pick it again." || yvJunk != YourVoice.Unreadable)
+                            if (yvShort != "That clip has only 3 seconds of talking. Pick 5 to 30 seconds of you talking." || yvLong != "That clip is 40 seconds long. Pick 5 to 30 seconds of you talking, or trim it." || yvQuiet != YourVoice.Silent || yvMissing != "那段录音不在了。重新选一个。" || yvJunk != YourVoice.Unreadable)
                                 throw new Exception("A bad clip of their voice said the wrong thing: " + yvShort + " / " + yvLong + " / " + yvQuiet + " / " + yvMissing + " / " + yvJunk);
                             // Picking a clip turns her HD voice on with it. Capri ships no voice, so there's no Her voice to go back to, and a clip a 0.7.6 test build shelved comes back with Your voice (HD).
                             string yvFolder = qwen.Folder, yvHeard = null, yvCard, yvPicked, yvOverlap, yvShelvedMenu, yvTheirs;
@@ -17241,7 +17247,7 @@ namespace CapriDesktop
                                 || vsTyped != "Kokoro · on your PC | " + vsUrl + " |  kokoro  | af_heart | Optional | - | " || !vsTested.StartsWith("Kokoro · on your PC | " + vsUrl + " |  kokoro  | af_heart | Optional | - | It works. Your server said that in ", StringComparison.Ordinal) || !vsTestSpoke || !vsTestUnsaved
                                 || vsTestBody.IndexOf("\r\nAuthorization: Bearer sk-panel-test-9876\r\n", StringComparison.Ordinal) < 0 || !vsTestBody.EndsWith("{\"model\":\"kokoro\",\"input\":\"Voice link online. Miss me, chewm?\",\"voice\":\"af_heart\",\"response_format\":\"wav\"}", StringComparison.Ordinal))
                                 throw new Exception("Their voice server's panel didn't open or test right: " + vsMenu + " / " + vsOpened + " / " + vsCloudFields + " / " + vsCloudChoices + " / " + vsCustomChoices + " / " + vsCloudSwitch + " / " + vsFishList + " / " + vsFishPicked + " / " + vsCloned + " / " + vsFileClip + " / " + (vsClonedBody.Length > 600 ? vsClonedBody.Substring(0, 600) : vsClonedBody) + " / " + vsListBody + " / " + vsFileShown + " / " + vsFileTaken + " / " + vsKokoro + " / " + vsTyped + " / " + vsTested + " / spoke " + vsTestSpoke + ", unsaved " + vsTestUnsaved);
-                            if (!vsUseSpoke || !vsSealed || vsUseBody.IndexOf("\r\nAuthorization: Bearer sk-panel-test-9876\r\n", StringComparison.Ordinal) < 0 || vsUsedNote != "Your voice server at " + vsWhere + "." + (kokoro.Installed ? " Her free voice fills in if it's down." : "")
+                            if (!vsUseSpoke || !vsSealed || vsUseBody.IndexOf("\r\nAuthorization: Bearer sk-panel-test-9876\r\n", StringComparison.Ordinal) < 0 || vsUsedNote != "Your voice server at " + vsWhere + "." + (kokoro.Installed ? " 它挂了就用她的免费声音顶上。" : "")
                                 || vsCustomRows != "CUSTOM LOCAL | - | voice model | fold 36 / - | - | Voice model: " + VoiceServer.Style || vsUsedMenu.IndexOf("(picked)", StringComparison.Ordinal) >= 0)
                                 throw new Exception("Use this server didn't keep it under CUSTOM LOCAL and speak through it: spoke " + vsUseSpoke + ", sealed " + vsSealed + " / " + vsUsedNote + " / " + vsCustomRows + " / " + vsUsedMenu);
                             if (vsSliders != "Normal | Normal | 30% · server | 20% · server" || vsPage != null || !vsRound || !vsOldRound)
@@ -17255,7 +17261,7 @@ namespace CapriDesktop
                                 || vsHostBody.IndexOf("Authorization", StringComparison.OrdinalIgnoreCase) >= 0 || !vsHostDropped)
                                 throw new Exception("A key saved for one voice server went to another: " + vsHostTest + " / dropped " + vsHostDropped + " / " + vsHostBody);
                             if (!vsHasBoth || vsAsideUrl != VoiceServer.FishCloud || vsAsideTail != "4321" || !vsSwapped || !vsSwappedBack
-                                || vsCloudRows != "CLOUD VOICE | Fish Audio | - | fold 36 / Fish Audio | Voice, key and model... | -" || vsFishNote != "Fish Audio at api.fish.audio." + (kokoro.Installed ? " Her free voice fills in if it's down." : "")
+                                || vsCloudRows != "CLOUD VOICE | Fish Audio | - | fold 36 / Fish Audio | Voice, key and model... | -" || vsFishNote != "Fish Audio at api.fish.audio." + (kokoro.Installed ? " 它挂了就用她的免费声音顶上。" : "")
                                 || vsCloudKept != "Fish Audio · cloud | " + VoiceServer.FishCloud + " | " + VoiceServer.FishFree + " | 0123456789abcdef0123456789abcdef | Key saved, ends 4321 | Forget |  / " + vsCloudOnly
                                 || !vsRowBack || vsBackRows != "CUSTOM LOCAL | - | voice model | fold 36" || vsCloudLast != "OpenAI" || vsCloudFirst != "Fish Audio" || vsCloudKeyed != ElevenLabs
                                 || vsCloudFresh != "Fish Audio" || vsCloudPending != "CLOUD VOICE | Fish Audio | - | fold 36 / Fish Audio | Set up Fish Audio... | - / Fish Audio, ElevenLabs, OpenAI")
@@ -17565,7 +17571,7 @@ namespace CapriDesktop
                             Hear("dance for me");
                             Stopwatch danceless = Stopwatch.StartNew();
                             while ((talkState == TalkState.Thinking || reply == null) && danceless.ElapsedMilliseconds < 5000) { Application.DoEvents(); Thread.Sleep(5); }
-                            bool brainlessDance = danceAsked && talkState != TalkState.Dormant && reply == "Dancing. Tell me to stop when you've had enough.";
+                            bool brainlessDance = danceAsked && talkState != TalkState.Dormant && reply == "跳起来了。看够了就叫我停。";
                             Animate("stop_dancing");
                             if (!brainlessDance) throw new Exception("Dancing needed a brain: " + talkState + " / " + reply + " / asked " + danceAsked);
                             checks.Add("PASS her own moves without a brain: with no brain set up, \"dance for me\" starts her dance and says so, the way her nap, \"teleport here\" and her other moves work");
@@ -17659,7 +17665,7 @@ namespace CapriDesktop
                                 return;
                             }
                             if (mouths == null) { if (clock.Elapsed.TotalSeconds > voiceDeadline) throw new Exception("Late audio never reached her."); return; }
-                            if (voiced != "Voice link online. Miss me, choom?") throw new Exception("Voice was sent the wrong words: " + voiced);
+                            if (voiced != "语音线路接通了。想我了吧，choom？") throw new Exception("Voice was sent the wrong words: " + voiced);
                             if ((talkState != TalkState.Talking && talkState != TalkState.Online) || reply != line || mouths == null || mouths.Length != 12 || pace != LettersPerSecond || replyStart != textAt) throw new Exception("Voice hid or restarted the text reply: " + talkState + " " + pace);
                             voiceReady.Dispose();
                             double now = clock.Elapsed.TotalSeconds;
@@ -17684,17 +17690,17 @@ namespace CapriDesktop
                         }
                         else if (step == 4)
                         {
-                            if ((talkState != TalkState.Talking && talkState != TalkState.Online) || reply != "Still here." || mouths != null || pace != LettersPerSecond || mainframe.VoiceStatus.IndexOf("Out of ElevenLabs credits. Pick PREBUILT LOCAL in Capri Mainframe and get her free voice.", StringComparison.Ordinal) != 0 || !voiceBroke) throw new Exception("Voice failure did not fall back to text: " + mainframe.VoiceStatus);
+                            if ((talkState != TalkState.Talking && talkState != TalkState.Online) || reply != "Still here." || mouths != null || pace != LettersPerSecond || mainframe.VoiceStatus.IndexOf("ElevenLabs 额度用完了。在主控台选“内置本地”，拿她的免费声音。", StringComparison.Ordinal) != 0 || !voiceBroke) throw new Exception("Voice failure did not fall back to text: " + mainframe.VoiceStatus);
                             Func<string, byte[]> broke = delegate(string words) { throw new VoiceException("Out of ElevenLabs credits. Pick PREBUILT LOCAL in the Mainframe."); };
                             string freeHeard = null;
                             Func<string, byte[]> freeVoice = delegate(string words) { freeHeard = words; return tone; };
                             string voiceProblem;
                             voiceBroke = false;
                             byte[] freeWav = Voiced(broke, freeVoice, "Hi there.", out voiceProblem);
-                            if (freeWav != tone || freeHeard != "Hi there." || !voiceBroke || voiceProblem != "Out of ElevenLabs credits, so she's using her free voice.") throw new Exception("Out of credits did not switch to her free voice: " + voiceProblem);
+                            if (freeWav != tone || freeHeard != "Hi there." || !voiceBroke || voiceProblem != "ElevenLabs 额度用完了，她改用免费声音。") throw new Exception("Out of credits did not switch to her free voice: " + voiceProblem);
                             voiceBroke = false;
-                            byte[] rejected = Voiced(delegate(string words) { throw new VoiceException("ElevenLabs rejected the key. Press Forget, paste a new one."); }, freeVoice, "Hi.", out voiceProblem);
-                            if (rejected != null || voiceBroke || voiceProblem != "ElevenLabs rejected the key. Press Forget, paste a new one.") throw new Exception("A rejected key switched to the free voice.");
+                            byte[] rejected = Voiced(delegate(string words) { throw new VoiceException("ElevenLabs 不认这个 Key。点 Forget，重新粘一个。"); }, freeVoice, "Hi.", out voiceProblem);
+                            if (rejected != null || voiceBroke || voiceProblem != "ElevenLabs 不认这个 Key。点 Forget，重新粘一个。") throw new Exception("A rejected key switched to the free voice.");
                             bool paidAgain = false;
                             Speak = delegate(string words) { paidAgain = true; return tone; };
                             FreeSpeak = freeVoice;
@@ -17755,7 +17761,7 @@ namespace CapriDesktop
                             mainframe.PickVoiceRow(1);
                             voice.Key = keyWas;
                             ShowVoice(false);
-                            if (keylessRows != "PREBUILT LOCAL | - | free voice | fold 36" || pendingRows != "CLOUD VOICE | key | - | fold 36" || pendingNote != "Paste your ElevenLabs key, then press Connect." || pendingQuiet || pendingOverlap != null) throw new Exception("ElevenLabs without a key didn't open the key box: " + keylessRows + " / " + pendingRows + " / " + pendingNote + " / " + pendingOverlap);
+                            if (keylessRows != "PREBUILT LOCAL | - | free voice | fold 36" || pendingRows != "CLOUD VOICE | key | - | fold 36" || pendingNote != "粘贴你的 ElevenLabs Key，然后点连接。" || pendingQuiet || pendingOverlap != null) throw new Exception("ElevenLabs without a key didn't open the key box: " + keylessRows + " / " + pendingRows + " / " + pendingNote + " / " + pendingOverlap);
                             checks.Add("PASS VOICE rows without a key: PREBUILT LOCAL shows her free voice picker, and ElevenLabs under CLOUD VOICE opens the key box and says to paste a key");
                             voice.Key = keyWas ?? "test-key";
                             ShowVoice(false);
@@ -17822,7 +17828,7 @@ namespace CapriDesktop
                             Dictation.Make = delegate { return lateStart; };
                             StartLocal();
                             CheckEars(clock.Elapsed.TotalSeconds);
-                            if (!chatting || !local || earsReady || !earsShut || !lateStart.Started || reply != "One sec, opening my ears.") throw new Exception("Opening Windows speech looked ready to listen: " + reply);
+                            if (!chatting || !local || earsReady || !earsShut || !lateStart.Started || reply != "等一下，我打开耳朵。") throw new Exception("Opening Windows speech looked ready to listen: " + reply);
                             if (lateStart.Language != preferences.Language || lateStart.Language != "English") throw new Exception("Windows speech didn't open in her picked language: " + lateStart.Language);
                             replyDone = clock.Elapsed.TotalSeconds - 120;
                             UpdateTalk(clock.Elapsed.TotalSeconds);
@@ -17832,7 +17838,7 @@ namespace CapriDesktop
                             for (int i = 0; i < 20; i++) ears.Feed(setupNoise);
                             if (utterance != null || transcribing) throw new Exception("She gathered sound before Windows speech started.");
                             lateStart.Pending(null);
-                            if (!earsReady || earsShut || lateStart.Held || reply != "Free voice chat on. Talk and I'll type back.") throw new Exception("Windows speech starting did not say the mic was ready: " + reply);
+                            if (!earsReady || earsShut || lateStart.Held || reply != "免费语音聊天开着。你说，我打字回。") throw new Exception("Windows speech starting did not say the mic was ready: " + reply);
                             for (int i = 0; i < 20; i++) ears.Feed(setupNoise);
                             if (utterance != null || transcribing) throw new Exception("The offline ears gathered sound while Windows speech was listening.");
                             int heardBefore = asking;
@@ -17864,7 +17870,7 @@ namespace CapriDesktop
                             StartLocal();
                             ToggleMic();
                             mutedStart.Pending(null);
-                            if (!earsReady || !ears.Muted || !pill.Muted || !earsShut || !mutedStart.Held || reply != "Free voice chat is ready; your mic is muted.") throw new Exception("Windows speech starting unmuted the mic or claimed it was listening.");
+                            if (!earsReady || !ears.Muted || !pill.Muted || !earsShut || !mutedStart.Held || reply != "免费语音聊天就绪，你的麦克风静音了。") throw new Exception("Windows speech starting unmuted the mic or claimed it was listening.");
                             ToggleMic();
                             if (earsShut || mutedStart.Held || mainframe.VoiceStatus.IndexOf("Free voice chat on.", StringComparison.Ordinal) != 0) throw new Exception("Unmuting did not restore the ready status.");
                             mutedStart.Lost("Windows speech recognition lost its internet connection.");
@@ -17901,11 +17907,11 @@ namespace CapriDesktop
                                 ChooseMic(pickable[0].Id);
                                 Dictation.DefaultMic = delegate { return @"\\?\SWD#MMDEVAPI#{0.0.1.00000000}.{some-other-mic}#{2eef81be}"; };
                                 StartLocal();
-                                bool warned = reply == "Free voice chat on, but Windows speech only hears your default mic, not " + pickable[0].Name + ". The fix is under VOICE." && mainframe.VoiceStatus.IndexOf("Windows speech only hears your default mic, not " + pickable[0].Name + ".", StringComparison.Ordinal) == 0;
+                                bool warned = reply == "Free voice chat on, but Windows speech only hears your default mic, not " + pickable[0].Name + "。解决办法在“声音”里。" && mainframe.VoiceStatus.IndexOf("Windows speech only hears your default mic, not " + pickable[0].Name + ".", StringComparison.Ordinal) == 0;
                                 StopChat();
                                 Dictation.DefaultMic = delegate { return @"\\?\SWD#MMDEVAPI#" + pickable[0].Id + "#{2eef81be}"; };
                                 StartLocal();
-                                bool quietWhenDefault = reply == "Free voice chat on. Talk and I'll type back.";
+                                bool quietWhenDefault = reply == "免费语音聊天开着。你说，我打字回。";
                                 StopChat();
                                 ChooseMic(null);
                                 Dictation.DefaultMic = realDefaultMic;
@@ -17918,7 +17924,7 @@ namespace CapriDesktop
                             StandInDictation earsSkipped = new StandInDictation();
                             Dictation.Make = delegate { return earsSkipped; };
                             StartLocal();
-                            bool ownReady = local && earsReady && !earsShut && dictation == null && !earsSkipped.Started && Hearing.Own == parakeet && reply == "Free voice chat on. Talk and I'll type back.";
+                            bool ownReady = local && earsReady && !earsShut && dictation == null && !earsSkipped.Started && Hearing.Own == parakeet && reply == "免费语音聊天开着。你说，我打字回。";
                             for (int i = 0; i < 3; i++) ears.Feed(setupNoise);
                             bool ownGathers = utterance != null;
                             StopChat();
@@ -17930,7 +17936,7 @@ namespace CapriDesktop
                             bool windowsFirst = dictation == beforeEars && Hearing.Own == null;
                             ownEarsTest = true;
                             DictationLost(null);
-                            bool earsSwitched = beforeEars.Disposed && dictation == null && local && earsReady && Hearing.Own == parakeet && reply == "Free voice chat on. Talk and I'll type back.";
+                            bool earsSwitched = beforeEars.Disposed && dictation == null && local && earsReady && Hearing.Own == parakeet && reply == "免费语音聊天开着。你说，我打字回。";
                             StopChat();
                             ownEarsTest = false;
                             earsComingTest = true;
@@ -17942,7 +17948,7 @@ namespace CapriDesktop
                             bool earsWaited = noOnline.Disposed && dictation == null && local && !earsReady && earsAwaited && Hearing.Own == null && utterance == null && reply == "My ears are still downloading, so type to me for now. I'll say when I can hear you.";
                             bool tooEarly = !EarsArrived() && earsAwaited;
                             ownEarsTest = true;
-                            bool earsLanded = EarsArrived() && !earsAwaited && earsReady && Hearing.Own == parakeet && reply == "Free voice chat on. Talk and I'll type back.";
+                            bool earsLanded = EarsArrived() && !earsAwaited && earsReady && Hearing.Own == parakeet && reply == "免费语音聊天开着。你说，我打字回。";
                             StopChat();
                             earsComingTest = null;
                             ownEarsTest = null;
@@ -17978,7 +17984,7 @@ namespace CapriDesktop
                             double quietFrom = clock.Elapsed.TotalSeconds;
                             CheckHearing(quietFrom);
                             CheckHearing(quietFrom + 19);
-                            bool micPatient = reply == "Free voice chat on. Talk and I'll type back.";
+                            bool micPatient = reply == "免费语音聊天开着。你说，我打字回。";
                             CheckHearing(quietFrom + 21);
                             bool micToldSilent = reply == MicSilent && mainframe.VoiceStatus.IndexOf(MicSilent, StringComparison.Ordinal) == 0;
                             int askedAfterSilent = asking;
@@ -17989,7 +17995,7 @@ namespace CapriDesktop
                             HeardLevel(0.01);
                             CheckHearing(quietFrom);
                             CheckHearing(quietFrom + 30);
-                            bool micLive = reply == "Free voice chat on. Talk and I'll type back.";
+                            bool micLive = reply == "免费语音聊天开着。你说，我打字回。";
                             StopChat();
                             StartLocal();
                             ToggleMic();
@@ -17998,7 +18004,7 @@ namespace CapriDesktop
                             ToggleMic();
                             CheckHearing(quietFrom + 31);
                             CheckHearing(quietFrom + 40);
-                            bool micMutedQuiet = reply == "Free voice chat on. Talk and I'll type back." && micQuietFrom == quietFrom + 31;
+                            bool micMutedQuiet = reply == "免费语音聊天开着。你说，我打字回。" && micQuietFrom == quietFrom + 31;
                             StopChat();
                             ownEarsTest = null;
                             if (!micPatient || !micToldSilent || !micToldOnce || !micLive || !micMutedQuiet) throw new Exception("The silent mic check went wrong: patient " + micPatient + ", told " + micToldSilent + ", once " + micToldOnce + ", live mic quiet " + micLive + ", muted quiet " + micMutedQuiet + " / " + reply);
@@ -18061,11 +18067,11 @@ namespace CapriDesktop
                                 bool askedVoice = wakeVoiceGets == 1 && wakePackGets == 0 && !wakeOpen && voiceAsk == "To hear \"Hey Capri\" I need my free voice, so I'm getting it: " + Engine.Amount(LocalVoice.PackSize) + ", then " + Engine.Amount(WakeWord.PackSize) + " more, one time." && mainframe.VoiceNoteText == voiceAsk;
                                 wakeVoiceTest = true;
                                 CheckWake(clock.Elapsed.TotalSeconds);
-                                bool askedPack = wakeVoiceGets == 1 && wakePackGets == 1 && !wakeOpen && speech == "Getting what I need to hear \"Hey Capri\": " + Engine.Amount(WakeWord.PackSize) + ", one time. It all stays on your PC.";
+                                bool askedPack = wakeVoiceGets == 1 && wakePackGets == 1 && !wakeOpen && speech == "Getting what I need to hear \"Hey Capri\": " + Engine.Amount(WakeWord.PackSize) + "，只下一次。全都留在你自己电脑上。";
                                 wakeVoiceTest = null;
                                 wakeReadyTest = true;
                                 CheckWake(clock.Elapsed.TotalSeconds);
-                                bool listens = wakeOpen && wakeOpens == 1 && speech == "Listening for \"Hey Capri\". Nothing leaves your PC until you say it." && wakeTries == 0 && !wakeAskedVoice;
+                                bool listens = wakeOpen && wakeOpens == 1 && speech == "正在听 “Hey Capri”。你不说，什么都出不了这台电脑。" && wakeTries == 0 && !wakeAskedVoice;
                                 voiceUntil = clock.Elapsed.TotalSeconds + 5;
                                 CheckWake(clock.Elapsed.TotalSeconds);
                                 bool heldTalking = wakeOpen && heyCapri.Held;
@@ -18093,7 +18099,7 @@ namespace CapriDesktop
                                 wakeMuteAt = -1;
                                 CheckWake(clock.Elapsed.TotalSeconds);
                                 string handsFreeLine = speech;
-                                bool handsFree = !wakeOpen && handsFreeLine == "I'm not listening for \"Hey Capri\" on your Bluetooth headset: while its mic is open, everything you hear drops to phone-call quality. Pick another mic under VOICE, or use my talk key." && mainframe.VoiceNoteText == handsFreeLine;
+                                bool handsFree = !wakeOpen && handsFreeLine == "我不会用你的蓝牙耳机听 “Hey Capri”：它麦克风一开，你听到的所有声音都会掉成通话音质。在“声音”里换个麦克风，或者用我的说话键。" && mainframe.VoiceNoteText == handsFreeLine;
                                 mainframe.VoiceNote("-", false);
                                 wakeMuteAt = -1;
                                 CheckWake(clock.Elapsed.TotalSeconds);
@@ -18133,7 +18139,7 @@ namespace CapriDesktop
                                 SetHeyCapri(false);
                                 CheckWake(clock.Elapsed.TotalSeconds);
                                 HeardHeyCapri();
-                                bool offAgain = !wakeOpen && !chatting && mainframe.VoiceNoteText == "Not listening for \"Hey Capri\".";
+                                bool offAgain = !wakeOpen && !chatting && mainframe.VoiceNoteText == "不再听 “Hey Capri”了。";
                                 if (!offShut || !askedVoice || !askedPack || !listens || !heldTalking || !pausedMute || !pausedWindows || !handsFree || !pausedQuiet || !pausedChat || !hiddenListens || !fired || !backAfter || !offAgain)
                                     wakeFlow = "off shut " + offShut + ", asked voice " + askedVoice + ", asked pack " + askedPack + ", listens " + listens + ", held talking " + heldTalking + ", mute " + pausedMute + ", Windows mute " + pausedWindows + ", Bluetooth headset " + handsFree + ", Quiet " + pausedQuiet + ", chat " + pausedChat + ", hidden listens " + hiddenListens + ", fired " + fired + " (" + greeting + "), back after " + backAfter + ", off again " + offAgain + " / " + voiceAsk + " / " + mainframe.VoiceNoteText;
                             }
@@ -18596,13 +18602,13 @@ namespace CapriDesktop
                             speaker.Clear();
                             ToggleMic();
                             CheckChat(clock.Elapsed.TotalSeconds);
-                            bool mutedRest = agent == null && resting && ears.Muted && mainframe.VoiceStatus.IndexOf("Mic muted. Voice chat is paused until you unmute.", StringComparison.Ordinal) == 0;
+                            bool mutedRest = agent == null && resting && ears.Muted && mainframe.VoiceStatus.IndexOf("麦克风静音了。取消静音之前语音聊天会暂停。", StringComparison.Ordinal) == 0;
                             short[] mutedTalk = new short[Ears.Chunk];
                             for (int i = 0; i < mutedTalk.Length; i++) mutedTalk[i] = (short)(Math.Sin(i * 0.3) * 9000);
                             for (int i = 0; i < 4; i++) ears.Feed(mutedTalk);
                             bool stayedAsleep = resting && agent == null;
                             ToggleMic();
-                            bool unmuted = !ears.Muted && resting && mainframe.VoiceStatus.IndexOf("Mic on. Talk and she'll pick up.", StringComparison.Ordinal) == 0;
+                            bool unmuted = !ears.Muted && resting && mainframe.VoiceStatus.IndexOf("麦克风开了。你说她就接。", StringComparison.Ordinal) == 0;
                             if (!mutedRest || !stayedAsleep || !unmuted) throw new Exception("Muting the mic in voice chat did not pause her listening: " + mutedRest + " " + stayedAsleep + " " + unmuted + " / " + mainframe.VoiceStatus);
                             checks.Add("PASS mute pauses voice chat: muting closes the ElevenLabs link once she stops talking, so she never asks if you're there, talking while muted doesn't wake her, and unmuting lets her pick up when you talk");
                             pill.Press(2);
@@ -18774,9 +18780,9 @@ namespace CapriDesktop
                             if (transcribing) return;
                             string log;
                             lock (earsLog) log = string.Join(" | ", earsLog.ToArray());
-                            if (log != "think What's up, choom? | empty 15" || !local || earsShut || reply != "I couldn't make out any words. Try again closer to the mic." || mainframe.VoiceStatus.IndexOf("I couldn't make out any words.", StringComparison.Ordinal) != 0) throw new Exception("An empty transcript vanished or reached her brain: " + log);
+                            if (log != "think What's up, choom? | empty 15" || !local || earsShut || reply != "没听清任何词。靠近麦克风再试一次。" || mainframe.VoiceStatus.IndexOf("I couldn't make out any words.", StringComparison.Ordinal) != 0) throw new Exception("An empty transcript vanished or reached her brain: " + log);
                             int notice = asking;
-                            Missed("I couldn't make out any words. Try again closer to the mic.", false);
+                            Missed("没听清任何词。靠近麦克风再试一次。", false);
                             if (asking != notice) throw new Exception("Repeated noise kept restarting her warning bubble.");
                             checks.Add("PASS empty transcription: a visible retry, no brain call, the mic stays open, and repeated warnings do not spam the bubble");
                             Hearing.Run = delegate(short[] samples) { throw new IOException("Test ears failure."); };
@@ -18786,7 +18792,7 @@ namespace CapriDesktop
                         else if (step == 12)
                         {
                             if (transcribing) return;
-                            if (!local || earsShut || reply != "I couldn't hear that. Try again, or check your mic under VOICE." || mainframe.VoiceStatus.IndexOf("Test ears failure.", StringComparison.Ordinal) != 0) throw new Exception("An offline hearing failure did not show a retry and keep free chat listening.");
+                            if (!local || earsShut || reply != "我没听见。再试一次，或者在“声音”里看看麦克风。" || mainframe.VoiceStatus.IndexOf("Test ears failure.", StringComparison.Ordinal) != 0) throw new Exception("An offline hearing failure did not show a retry and keep free chat listening.");
                             Hearing.Run = delegate(short[] samples) { return " Salut Capri, \u00e7a va ? "; };
                             Think = delegate(string words) { lock (earsLog) earsLog.Add("French " + words); return "Salut, choom."; };
                             foreach (short[] piece in earLine) ears.Feed(piece);
@@ -18883,7 +18889,7 @@ namespace CapriDesktop
                             chatting = true; paused(); chatting = false;
                             typer.Show(); paused(); typer.Hide();
                             // She plays a game quietly (Lachy, 30 Oct).
-                            job = new Job("play bedwars on roblox"); working = "On it. Esc stops me."; paused(); working = null; job = null;
+                            job = new Job("play bedwars on roblox"); working = "这就去。按 Esc 能让我停。"; paused(); working = null; job = null;
                             foreach (TalkState state in new[] { TalkState.Thinking, TalkState.Talking, TalkState.Online, TalkState.Dormant }) { talkState = state; paused(); }
                             talkState = TalkState.Off;
                             brain.Model = null; paused(); brain.Model = brain.Remote.Model;
@@ -18931,7 +18937,7 @@ namespace CapriDesktop
                             hidden = true; held(); hidden = false;
                             chatting = true; held(); chatting = false;
                             typer.Show(); held(); typer.Hide();
-                            job = new Job("play bedwars on roblox"); working = "On it. Esc stops me."; held(); working = null; job = null;
+                            job = new Job("play bedwars on roblox"); working = "这就去。按 Esc 能让我停。"; held(); working = null; job = null;
                             talkState = TalkState.Thinking; held(); talkState = TalkState.Off;
                             lastPrint = new byte[64 * 36 * 3];
                             FinishGlance(asking, watchTicket, null, "Couldn't read the screen. I'll try again.");

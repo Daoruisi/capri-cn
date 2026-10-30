@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -261,7 +261,7 @@ namespace CapriDesktop
             while (got < count)
             {
                 IAsyncResult reading = pipe.BeginRead(buffer, got, count - got, null, null);
-                if (!reading.AsyncWaitHandle.WaitOne(wait)) throw new TimeoutException("Discord didn't answer.");
+                if (!reading.AsyncWaitHandle.WaitOne(wait)) throw new TimeoutException("Discord 没应答。");
                 int read = pipe.EndRead(reading);
                 if (read == 0) throw new EndOfStreamException("Discord hung up.");
                 got += read;

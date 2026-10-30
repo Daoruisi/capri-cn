@@ -2,3 +2,11 @@ out/
 cross/bin/
 cross/obj/
 node_modules/
+
+# local build and IDE leftovers
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.log

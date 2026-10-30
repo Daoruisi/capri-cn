@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -10,9 +10,9 @@ namespace CapriDesktop
 {
     internal abstract class Dictation : IDisposable
     {
-        internal const string PrivacyOff = "Online speech recognition is off in Windows. Turn it on in Settings > Privacy & security > Speech.";
-        internal const string MicBlocked = "Windows is blocking the mic. Turn on Let desktop apps access your microphone in Settings > Privacy & security > Microphone.";
-        internal const string NoMic = "Windows can't find a mic. Plug one in, or pick one in Settings > System > Sound.";
+        internal const string PrivacyOff = "Windows 的在线语音识别是关的。去 设置 > 隐私和安全性 > 语音 打开它。";
+        internal const string MicBlocked = "Windows 在拦麦克风。去 设置 > 隐私和安全性 > 麦克风 打开“允许桌面应用访问你的麦克风”。";
+        internal const string NoMic = "Windows 找不到麦克风。插一个，或者在 设置 > 系统 > 声音 里选一个。";
         internal static Func<Dictation> Make = delegate { return new WindowsDictation(); };
         internal static Func<string> DefaultMic = delegate
         {
@@ -31,7 +31,7 @@ namespace CapriDesktop
         internal static string OtherMic(string chosen, string name, string defaultId)
         {
             if (string.IsNullOrEmpty(chosen) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(defaultId) || defaultId.IndexOf(chosen, StringComparison.OrdinalIgnoreCase) >= 0) return null;
-            return "Windows speech only hears your default mic, not " + name + ". Make " + name + " the default in Windows Settings > System > Sound > Input, or pick Mic: default here.";
+            return "Windows speech only hears your default mic, not " + name + ". Make " + name + " 在 Windows 设置 > 系统 > 声音 > 输入 里是默认设备，或者在这儿选“麦克风：默认”。";
         }
 
         internal static string Explain(Exception error)

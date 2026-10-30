@@ -272,16 +272,16 @@ namespace CapriDesktop
         internal const string Recommended = " · recommended";
         private static readonly string[] NvidiaDead = { "google/gemma-4-31b-it", "deepseek-ai/deepseek-v4.1-flash", "z-ai/glm-5.3", "z-ai/glm-5.3-flash", "moonshotai/kimi-k2.6", "google/gemma-3-12b-it", "meta/llama-3.2-90b-vision-instruct" };
         internal static string NvidiaDefault { get { return NvidiaPicks[0]; } }
-        internal const string Gone = "That model isn't on your key. Pick another one.";
-        internal const string Down = "Their servers failed. Pick another model or retry.";
-        internal const string Busy = "Too many requests. Wait a minute, or watch slower.";
-        internal const string Blind = "DeepSeek can't see your screen. In Capri Mainframe, press Free key and connect a free NVIDIA key instead.";
+        internal const string Gone = "你的 Key 上没有这个模型。换一个。";
+        internal const string Down = "他们服务器挂了。换个模型或者重试。";
+        internal const string Busy = "请求太多了。等一分钟，或者放慢一点。";
+        internal const string Blind = "DeepSeek 看不见你的屏幕。在主控台点“免费 Key”，换一个免费的 NVIDIA Key。";
 
-        internal static string Sightless(Cloud remote) { return remote.Model + " can't see screens. In Capri Mainframe, pick a model that can" + (remote.Kind == "nvidia" ? ", like nvidia/nemotron-3.5-super-vl-120b-a12b." : "."); }
+        internal static string Sightless(Cloud remote) { return remote.Model + " can't see screens. In Capri Mainframe, pick a model that can" + (remote.Kind == "nvidia" ? "，比如 nvidia/nemotron-3.5-super-vl-120b-a12b。" : "."); }
         private const string Parts = "@capri-image@";
         internal const string Declined = "[SIGNAL CORRUPTED] Lost that one in the static. Ask me something else?";
-        internal const string Stuck = " If you're stuck, just join the Discord, choom. It's under Help in my right-click menu.";
-        internal const string Offline = "My brain's offline. Right-click me, open Capri Mainframe and press Set up her brain, or press Free key there for a free NVIDIA key." + Stuck;
+        internal const string Stuck = " 卡住了就来 Discord 找我，choom。右键菜单里的“帮助”有。";
+        internal const string Offline = "我的大脑离线了。右键我，打开主控台，点“给她装个脑子”，或者点“免费 Key”领一个免费 NVIDIA Key。" + Stuck;
         private static readonly string[] Favourites = { "gemma4:e4b", "gemma4:e2b", "qwen3:4b-instruct-2507", "qwen3.5:4b", "qwen3:4b", "llama3.2:3b", "qwen3:1.7b", "llama3.2:1b", "gemma3:1b" };
         private readonly List<ChatMessage> history = new List<ChatMessage>();
         private readonly object gate = new object();
@@ -397,7 +397,7 @@ namespace CapriDesktop
             return string.Equals(name, "choom", StringComparison.OrdinalIgnoreCase) ? "" : name;
         }
 
-        internal static string Renamed(string name) { return name.Length == 0 ? "Back to choom, then." : "Got it, " + name + "."; }
+        internal static string Renamed(string name) { return name.Length == 0 ? "那就还叫 choom 吧。" : "Got it, " + name + "."; }
 
         private static string Called()
         {
@@ -422,14 +422,14 @@ namespace CapriDesktop
         internal static int Budget { get { return Budgets[Math.Max(0, Math.Min(2, Wordiness))]; } }
 
         internal static string MemoryPath;
-        internal static string Greeting(int hour) { return hour >= 5 && hour < 12 ? "Good morning, choom." : hour >= 22 || hour < 5 ? "Isn't it late, choom?" : "Miss me, choom?"; }
+        internal static string Greeting(int hour) { return hour >= 5 && hour < 12 ? "早上好，choom。" : hour >= 22 || hour < 5 ? "不早了，choom？" : "Miss me, choom?"; }
 
         internal static string GreetingClip(int hour) { return hour >= 5 && hour < 12 ? "morning" : hour >= 22 || hour < 5 ? "late" : "miss"; }
 
         // Her lines for a holiday on its day, by their clock, or null on an ordinary day. Halloween so far (Lachy, 30 Oct).
         internal static string[] Holiday(DateTime day) { return day.Month == 10 && day.Day == 31 ? HalloweenLines : null; }
 
-        internal static readonly string[] HalloweenLines = { "Happy Halloween, choom!", "Happy Halloween, choom. Trick or treat?", "Boo! Happy Halloween, choom." };
+        internal static readonly string[] HalloweenLines = { "万圣节快乐，choom！", "万圣节快乐，choom。不给糖就捣蛋？", "嗷！万圣节快乐，choom。" };
 
         internal const string NotesHead = "# What Capri remembers about you\n> She reads this every time you chat. Edit or delete anything here.\n\n";
         private static readonly object noting = new object();
@@ -479,7 +479,7 @@ namespace CapriDesktop
             if (text.Length > 200) text = text.Substring(0, 200).TrimEnd();
             text = char.ToUpperInvariant(text[0]) + text.Substring(1);
             string path = MemoryPath;
-            if (path == null) return "I can't keep notes on this computer yet.";
+            if (path == null) return "这台电脑上我还记不了笔记。";
             lock (noting)
             {
                 try
@@ -487,12 +487,12 @@ namespace CapriDesktop
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
                     string current = File.Exists(path) ? File.ReadAllText(path) : NotesHead;
                     if (Regex.IsMatch(current, @"^- " + Regex.Escape(text) + @"\.?\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase)) return "Already in my notes: " + text + ".";
-                    if (current.Length > 8000) return "My notes are full. Clear some out in me.md first.";
+                    if (current.Length > 8000) return "我的笔记满了。先去 me.md 里清点。";
                     if (current.Length > 0 && !current.EndsWith("\n", StringComparison.Ordinal)) current += "\n";
                     File.WriteAllText(path, current + "- " + text + "\n");
                 }
-                catch (IOException) { return "Couldn't save that to my notes."; }
-                catch (UnauthorizedAccessException) { return "Couldn't save that to my notes."; }
+                catch (IOException) { return "这个没能存进我的笔记。"; }
+                catch (UnauthorizedAccessException) { return "这个没能存进我的笔记。"; }
             }
             return "Saved to my notes: " + text + ".";
         }
@@ -533,7 +533,7 @@ namespace CapriDesktop
             string text = Regex.Replace((value ?? "").Trim(), @"\s+", " ").Trim(' ', '-', ',', '"');
             if (text.Length > 200) text = text.Substring(0, 200).TrimEnd();
             string path = MemoryPath;
-            if (path == null) return "I can't keep notes on this computer yet.";
+            if (path == null) return "这台电脑上我还记不了笔记。";
             string line = "- " + label + ": " + text;
             lock (noting)
             {
@@ -545,14 +545,14 @@ namespace CapriDesktop
                     if (old.IsMatch(current)) current = old.Replace(current, line.Replace("$", "$$"), 1);
                     else
                     {
-                        if (current.Length > 8000) return "My notes are full. Clear some out in me.md first.";
+                        if (current.Length > 8000) return "我的笔记满了。先去 me.md 里清点。";
                         if (current.Length > 0 && !current.EndsWith("\n", StringComparison.Ordinal)) current += "\n";
                         current += line + "\n";
                     }
                     File.WriteAllText(path, current);
                 }
-                catch (IOException) { return "Couldn't save that to my notes."; }
-                catch (UnauthorizedAccessException) { return "Couldn't save that to my notes."; }
+                catch (IOException) { return "这个没能存进我的笔记。"; }
+                catch (UnauthorizedAccessException) { return "这个没能存进我的笔记。"; }
             }
             return null;
         }
@@ -570,7 +570,7 @@ namespace CapriDesktop
                 sightings.Add(new Sighting { At = DateTime.Now.ToString("o", System.Globalization.CultureInfo.InvariantCulture), Saw = text, Said = string.IsNullOrEmpty(said) ? null : said, Asked = asked });
                 if (sightings.Count > 30) sightings.RemoveRange(0, sightings.Count - 30);
             }
-            Transcribe(null, (asked ? "She looked at your screen: " : "She glanced at your screen: ") + text.TrimEnd('.') + (string.IsNullOrEmpty(said) && !asked ? ". She stayed quiet." : "."));
+            Transcribe(null, (asked ? "She looked at your screen: " : "She glanced at your screen: ") + text.TrimEnd('.') + (string.IsNullOrEmpty(said) && !asked ? "。她没吭声。" : "."));
             lock (gate) Save();
         }
 
@@ -590,7 +590,7 @@ namespace CapriDesktop
                 if (ago > TimeSpan.FromHours(3)) break;
                 string saw = all[i].Saw.Length > 300 ? all[i].Saw.Substring(0, 300).TrimEnd() + "..." : all[i].Saw;
                 string when = ago.TotalMinutes < 1 ? "Just now" : ago.TotalMinutes < 60 ? (int)ago.TotalMinutes + " min ago" : ago.TotalHours < 2 ? "An hour ago" : (int)ago.TotalHours + " hours ago";
-                lines.Insert(0, "- " + when + (all[i].Asked ? ", when they asked you to look: " : ": ") + saw.TrimEnd('.') + ". " + (all[i].Said != null ? "You said: " + Voice.Quote(all[i].Said) : all[i].Asked ? "You told them about it." : "You stayed quiet."));
+                lines.Insert(0, "- " + when + (all[i].Asked ? ", when they asked you to look: " : ": ") + saw.TrimEnd('.') + ". " + (all[i].Said != null ? "You said: " + Voice.Quote(all[i].Said) : all[i].Asked ? "你已经跟他们说过了。" : "You stayed quiet."));
             }
             return lines.Count == 0 ? "" : "\nWhat you really saw on their screen lately, oldest first. These were real looks, not guesses: use them when they ask what you saw or what's going on, and never say you guessed. Don't bring them up out of nowhere:\n" + string.Join("\n", lines.ToArray());
         }
@@ -1243,7 +1243,7 @@ namespace CapriDesktop
             string said = Sparing(Clean(raw), lately, name);
             if (Regex.IsMatch(said, @"\A[`'""\s]*chat[.!`'""\s]*\z", RegexOptions.IgnoreCase) || Hands.Typed(raw, out written, out writtenArgs)) said = "";
             if (said.Length == 0 && done != null) said = done;
-            if (said.Length == 0) throw new BrainException("My brain sent an empty reply. Try again or pick another model in Capri Mainframe.", true);
+            if (said.Length == 0) throw new BrainException("我的大脑回了个空。再试一次，或者在主控台换个模型。", true);
             lock (gate)
             {
                 Check(ticket);
@@ -1279,7 +1279,7 @@ namespace CapriDesktop
             List<KeyValuePair<string, ToolArguments>> several = calls.Count == 0 ? Hands.Written(raw) : null;
             if (several != null && several.Count > 1) calls.AddRange(several);
             else if (calls.Count == 0 && Hands.Typed(raw, out written, out writtenArgs, true)) calls.Add(new KeyValuePair<string, ToolArguments>(written, writtenArgs));
-            if (calls.Exists(call => !Hands.Valid(call.Key, call.Value))) { calls.Clear(); throw new BrainException("Couldn't read that tool call. Try again."); }
+            if (calls.Exists(call => !Hands.Valid(call.Key, call.Value))) { calls.Clear(); throw new BrainException("那个工具调用没读懂。再试一次。"); }
             return raw;
         }
 
@@ -1290,7 +1290,7 @@ namespace CapriDesktop
             string model = Model;
             if (model == null) throw new BrainException(Offline);
             Cloud remote = Remote;
-            if (remote != null && remote.Kind == "deepseek") throw new BrainException(Blind);
+            // DeepSeek's V4 models take images like the others, so she looks instead of refusing (Lachy assumed text-only).
             string data = Convert.ToBase64String(jpeg);
             string parts = null;
             if (remote != null && remote.Claude) parts = "[{\"type\":\"image\",\"source\":{\"type\":\"base64\",\"media_type\":\"image/jpeg\",\"data\":\"" + data + "\"}},{\"type\":\"text\",\"text\":" + Voice.Quote(instruction) + "}]";
@@ -1585,7 +1585,7 @@ namespace CapriDesktop
         {
             CompletionChoice choice = reply != null && reply.Choices != null && reply.Choices.Length > 0 ? reply.Choices[0] : null;
             CompletionMessage message = choice != null ? choice.Message : null;
-            if (message == null) throw new BrainException("My brain sent an empty reply. Try again or pick another model in Capri Mainframe.", true);
+            if (message == null) throw new BrainException("我的大脑回了个空。再试一次，或者在主控台换个模型。", true);
             int before = calls.Count;
             if (message.Calls != null) foreach (CompletionCall call in message.Calls) if (call != null && call.Function != null) calls.Add(new KeyValuePair<string, ToolArguments>(call.Function.Name, Hands.Read(call.Function.Arguments)));
             if (calls.Count == before && Garbled(message.Content)) throw new BrainException(Gibberish, true);
@@ -1593,7 +1593,7 @@ namespace CapriDesktop
             {
                 if (choice.Stopped == "length") throw new BrainException("That model ran out of room before answering. Pick another model in Capri Mainframe.", true);
                 if (!string.IsNullOrWhiteSpace(message.Reasoning) || !string.IsNullOrWhiteSpace(message.Thinking)) throw new BrainException("That model sent thoughts without an answer. Pick another model in Capri Mainframe.", true);
-                throw new BrainException("My brain sent an empty reply. Try again or pick another model in Capri Mainframe.", true);
+                throw new BrainException("我的大脑回了个空。再试一次，或者在主控台换个模型。", true);
             }
             return Visible(message.Content);
         }
@@ -1692,7 +1692,7 @@ namespace CapriDesktop
             ClaudeReply reply;
             using (MemoryStream data = new MemoryStream(Encoding.UTF8.GetBytes(text))) reply = (ClaudeReply)new DataContractJsonSerializer(typeof(ClaudeReply)).ReadObject(data);
             reply.Raw = Field(text, "content");
-            if (reply.Raw == null) throw new BrainException("My brain sent an empty reply. Try again or pick another model in Capri Mainframe.", true);
+            if (reply.Raw == null) throw new BrainException("我的大脑回了个空。再试一次，或者在主控台换个模型。", true);
             return reply;
         }
 
@@ -1900,10 +1900,10 @@ namespace CapriDesktop
             WebException web = error as WebException;
             if (web != null && web.Status == WebExceptionStatus.RequestCanceled) return null;
             if (web != null && remote != null && web.Status == WebExceptionStatus.Timeout) return remote.Company + " didn't answer in time. Try again or pick another model " + BrainMenu + ".";
-            if (web != null && remote != null && web.Response == null) return "Can't reach " + remote.Company + ", choom. Check your internet, then try me again.";
+            if (web != null && remote != null && web.Response == null) return "Can't reach " + remote.Company + "，choom。检查下网络，再叫我一次。";
             if (web != null && web.Status == WebExceptionStatus.Timeout) return "Took too long to think, choom. My brain runs on your PC, so open games slow me down. Close one, or " + FreeKeyHow + ".";
             if (web != null && web.Response == null) return Offline;
-            return "[SIGNAL CORRUPTED] Something in my head just sparked. Try me again?";
+            return "[信号损坏] 我脑子里刚刚冒了个火花。再叫我一次？";
         }
 
         internal static string BrainMenu = "under BRAIN in Capri Mainframe";
@@ -1927,17 +1927,17 @@ namespace CapriDesktop
         internal static string Brief(string error)
         {
             if (string.IsNullOrEmpty(error)) return null;
-            if (NoRoom.IsMatch(error) || error.StartsWith("Your storage is full", StringComparison.Ordinal)) return "Your storage is full. Free up space, then try again.";
+            if (NoRoom.IsMatch(error) || error.StartsWith("Your storage is full", StringComparison.Ordinal)) return "你的硬盘满了。清点空间再试。";
             Match needs = Needs.Match(error);
             if (!needs.Success) needs = Spelled.Match(error);
             if (needs.Success) return "Not enough free RAM: it needs " + needs.Groups["need"].Value + " GB, only " + needs.Groups["free"].Value + " GB is free.";
-            if (NoMemory.IsMatch(error) || error.StartsWith("Your PC ran out of free RAM", StringComparison.Ordinal)) return "Not enough free RAM. Close some apps, then try again.";
+            if (NoMemory.IsMatch(error) || error.StartsWith("Your PC ran out of free RAM", StringComparison.Ordinal)) return "内存不够了。关几个程序再试。";
             return null;
         }
 
         internal static string Now() { return "\nRight now it's " + DateTime.Now.ToString("dddd d MMMM yyyy, h:mm tt", System.Globalization.CultureInfo.InvariantCulture) + " where they are."; }
 
-        internal const string Gibberish = "My brain sent gibberish. Pick another model in Capri Mainframe.";
+        internal const string Gibberish = "我的大脑回了一堆乱码。在主控台换一个模型。";
         private static readonly Regex Junk = new Regex(@"<(unused\d+|pad|mask|unk|eos|bos|start_of_(turn|image|audio)|end_of_(turn|image|audio))>", RegexOptions.IgnoreCase);
 
         internal static bool Garbled(string text)
@@ -2044,7 +2044,7 @@ namespace CapriDesktop
                         T reply;
                         if (typeof(T) == typeof(string)) using (StreamReader text = new StreamReader(incoming, Encoding.UTF8)) reply = (T)(object)text.ReadToEnd();
                         else reply = (T)new DataContractJsonSerializer(typeof(T)).ReadObject(incoming);
-                        if (System.Threading.Interlocked.CompareExchange(ref expired, 0, 0) != 0) throw new WebException("The reply took too long.", WebExceptionStatus.Timeout);
+                        if (System.Threading.Interlocked.CompareExchange(ref expired, 0, 0) != 0) throw new WebException("回复等太久了。", WebExceptionStatus.Timeout);
                         return reply;
                     }
                 }
@@ -2060,7 +2060,7 @@ namespace CapriDesktop
                 if (System.Threading.Interlocked.CompareExchange(ref expired, 0, 0) != 0)
                 {
                     Log(url, took.ElapsedMilliseconds, "Timeout");
-                    throw new WebException("The reply took too long.", error, WebExceptionStatus.Timeout, null);
+                    throw new WebException("回复等太久了。", error, WebExceptionStatus.Timeout, null);
                 }
                 WebException web = error as WebException;
                 if (web != null && web.Status != WebExceptionStatus.RequestCanceled) Log(url, took.ElapsedMilliseconds, web.Status.ToString());

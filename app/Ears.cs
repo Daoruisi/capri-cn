@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -188,7 +188,7 @@ namespace CapriDesktop
             {
                 signal.Dispose();
                 signal = null;
-                throw new VoiceException("Can't open your mic. Pick another under VOICE.");
+                throw new VoiceException("打不开你的麦克风。在“声音”里换一个。");
             }
             headers = new IntPtr[Buffers];
             for (int i = 0; i < Buffers; i++)
@@ -1723,7 +1723,7 @@ namespace CapriDesktop
 
         internal void Install(Action<string, long, long> progress)
         {
-            if (IntPtr.Size != 8) throw new IOException("Listening for \"Hey Capri\" needs 64-bit Windows.");
+            if (IntPtr.Size != 8) throw new IOException("听 “Hey Capri” 需要 64 位 Windows。");
             string folder = Folder;
             Directory.CreateDirectory(root);
             long needed = PackSize * 3 + (16L << 20);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -678,7 +678,7 @@ namespace CapriSetup
             launch.Visible = false;
             section.Text = "SPEECH MODEL";
             stage.Text = "Installing the local speech model";
-            note.Text = "This may take some time. For a better sounding, faster voice, get an API key.";
+            note.Text = "可能要花点时间。想要更好听、更快的嗓子，去弄个 API Key。";
             stage.Visible = true;
             note.Visible = true;
             if (!stopping) cancel.Text = "Skip";

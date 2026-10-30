@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -104,7 +104,7 @@ namespace CapriDesktop
         // Two looks at an unchanged screen get a nudge to check whether the job is done. It's a hint, not a stop.
         internal const int Unmoved = 2;
         internal const int Longest = 1280;
-        internal const string Bigger = "Bigger brain models handle jobs like this better. Pick one under BRAIN in Capri Mainframe.";
+        internal const string Bigger = "更大的大脑模型干这种活更稳。在主控台“大脑”里换一个。";
         internal const string Confused = "Got lost before I could start that job. " + Bigger;
         internal const string Stalled = "Got stuck on that one. " + Bigger;
         internal const string Exact = "\nTheir exact words: ";
@@ -1300,7 +1300,7 @@ namespace CapriDesktop
 
         internal static string Why { get { return why ?? "I stopped."; } }
 
-        internal const string Escaped = "You pressed Esc, so I stopped.";
+        internal const string Escaped = "你按了 Esc，我就停下了。";
         // Whether Esc is down right now. The smoke test presses it without a keyboard.
         internal static Func<bool> Escape = delegate { return (GetAsyncKeyState(0x1B) & 0x8000) != 0; };
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -208,7 +208,7 @@ namespace CapriDesktop
                 string staging = Folder + ".new";
                 if (Directory.Exists(staging)) Directory.Delete(staging, true);
                 ZipFile.ExtractToDirectory(zip, staging);
-                if (!File.Exists(Path.Combine(staging, "llama-server.exe"))) throw new IOException("The engine download is missing llama-server.exe.");
+                if (!File.Exists(Path.Combine(staging, "llama-server.exe"))) throw new IOException("引擎下载里少了 llama-server.exe。");
                 if (Directory.Exists(Folder)) Directory.Delete(Folder, true);
                 Directory.Move(staging, Folder);
                 File.Delete(zip);
@@ -261,13 +261,13 @@ namespace CapriDesktop
                 if (have < size)
                 {
                     stalls = have > before ? 0 : stalls + 1;
-                    if (stalls >= 4) throw new IOException("The download of " + label + " keeps stopping. Check your connection and try again.");
+                    if (stalls >= 4) throw new IOException("The download of " + label + " 老是断。检查下网络再试。");
                     Thread.Sleep(1500 * stalls);
                 }
             }
-            if (have != size) { File.Delete(part); throw new IOException(label + " came down the wrong size. Try again."); }
+            if (have != size) { File.Delete(part); throw new IOException(label + " 大小不对。再试一次。"); }
             progress("Checking " + label, size, size);
-            if (!string.Equals(Hash(part), sha256, StringComparison.OrdinalIgnoreCase)) { File.Delete(part); throw new IOException(label + " failed its checksum. Try again."); }
+            if (!string.Equals(Hash(part), sha256, StringComparison.OrdinalIgnoreCase)) { File.Delete(part); throw new IOException(label + " 校验失败。再试一次。"); }
             if (File.Exists(target)) File.Delete(target);
             File.Move(part, target);
         }
@@ -318,7 +318,7 @@ namespace CapriDesktop
                 int window = Brain.Window;
                 if (server != null && !server.HasExited && serverEyes == eyes && serverCpu == CpuOnly && serverWindow == window) return;
                 if (server != null) Stop();
-                if (!File.Exists(Server) || !File.Exists(ModelPath(pick))) throw new BrainException("Brain not downloaded. Press Set up her brain.");
+                if (!File.Exists(Server) || !File.Exists(ModelPath(pick))) throw new BrainException("大脑还没下载。点“给她装个脑子”。");
                 port = FreePort();
                 serverEyes = eyes;
                 serverCpu = CpuOnly;
@@ -338,7 +338,7 @@ namespace CapriDesktop
                     // Its own log is off, so the exit code is the only clue Copy error details can carry. A graphics driver that crashes it while loading gets one try on the CPU, as a crash mid-chat does.
                     bool retry = running != null && onGpu;
                     Brain.Log("brain", -1, "llama-server stopped while loading " + pick.Name + (onGpu ? "" : " on the CPU") + (running == null ? "" : " with exit code 0x" + ((uint)ExitCode(running)).ToString("X8")) + (retry ? ", restarting it on the CPU" : ""));
-                    if (!retry) throw new BrainException("Brain crashed loading. Close games, press Refresh.");
+                    if (!retry) throw new BrainException("大脑加载时崩了。关掉游戏，点刷新。");
                     CpuOnly = true;
                     Ensure(pick);
                     return;
@@ -353,7 +353,7 @@ namespace CapriDesktop
                 catch (WebException) { }
                 Thread.Sleep(400);
             }
-            throw new BrainException("Brain loaded too slowly. Close games, press Refresh.");
+            throw new BrainException("大脑加载太慢。关掉游戏，点刷新。");
         }
 
         internal static bool Lost(string problem) { return Regex.IsMatch(problem ?? "", @"ErrorDeviceLost|DEVICE_LOST|device lost|vk::", RegexOptions.IgnoreCase); }

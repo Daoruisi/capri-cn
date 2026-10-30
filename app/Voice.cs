@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 #if !CROSS
@@ -180,7 +180,7 @@ namespace CapriDesktop
             catch (WebException error)
             {
                 HttpWebResponse response = error.Response as HttpWebResponse;
-                if (response == null) throw new VoiceException("Can't reach ElevenLabs. Check your internet.");
+                if (response == null) throw new VoiceException("连不上 ElevenLabs。检查下网络。");
                 int status = (int)response.StatusCode;
                 string detail;
                 using (response)
@@ -190,13 +190,13 @@ namespace CapriDesktop
                 Brain.Log(request.RequestUri.GetLeftPart(UriPartial.Path), -1, "HTTP " + status + " " + (said.Length > 200 ? said.Substring(0, 200) : said));
                 throw new VoiceException(Explain(status, detail), status);
             }
-            catch (IOException) { throw new VoiceException("Can't reach ElevenLabs. Check your internet."); }
+            catch (IOException) { throw new VoiceException("连不上 ElevenLabs。检查下网络。"); }
         }
 
-        internal const string Rejected = "ElevenLabs rejected the key. Press Forget, paste a new one.";
-        internal const string RejectedNew = "ElevenLabs rejected that key. Copy it again from ElevenLabs and paste it.";
+        internal const string Rejected = "ElevenLabs 不认这个 Key。点 Forget，重新粘一个。";
+        internal const string RejectedNew = "ElevenLabs 不认这个 Key。回 ElevenLabs 重新复制一遍再粘。";
 
-        internal const string Restricted = "ElevenLabs has restricted your account, so her voice can't connect. Sign in at elevenlabs.io to see why, or pick PREBUILT LOCAL in the Mainframe.";
+        internal const string Restricted = "ElevenLabs 限制了你账号，她的声音连不上。去 elevenlabs.io 登录看看原因，或者在主控台选“内置本地”。";
 
         internal static string Unsaved(string problem) { return problem == Rejected ? RejectedNew : problem; }
 
@@ -245,7 +245,7 @@ namespace CapriDesktop
 
         internal static T Read<T>(byte[] json) { using (MemoryStream stream = new MemoryStream(json)) return (T)new DataContractJsonSerializer(typeof(T)).ReadObject(stream); }
 
-        internal const string Unreadable = "ElevenLabs sent a reply Capri couldn't read. Right-click her, Help, Copy error details, and send it in the Discord.";
+        internal const string Unreadable = "ElevenLabs 回了个 Capri 读不懂的东西。右键她，帮助，复制错误详情，发到 Discord 里。";
 
         internal static T Reply<T>(byte[] json, string path)
         {
@@ -1925,7 +1925,7 @@ namespace CapriDesktop
         internal static short[] Read(string path)
         {
             FileInfo file = new FileInfo(path);
-            if (!file.Exists) throw new VoiceException("That clip isn't there anymore. Pick it again.");
+            if (!file.Exists) throw new VoiceException("那段录音不在了。重新选一个。");
             bool wave = file.Extension.Equals(".wav", StringComparison.OrdinalIgnoreCase);
             if (file.Length > (wave ? 64L << 20 : 16L << 20)) throw new VoiceException("That clip is too long. Pick " + Shortest + " to " + Longest + " seconds of you talking.");
             int rate = 0;
@@ -3023,17 +3023,17 @@ namespace CapriDesktop
         internal static readonly Service[] Services =
         {
             new Service("Fish Audio · cloud", Fish, FishCloud, FishFree, "", "Voice ID or fish.audio link", "Paste your Fish Audio key",
-                "Fish Audio's voices. Paste a key from fish.audio, then make your own voice with Fish Audio's Voice Design and paste its link or ID. Capri prohibits cloning or impersonating a living person's voice without explicit, informed consent or other valid authorization. " + FishFree + " is its free tier."),
+                "Fish Audio 的音色。粘一个 fish.audio 的 Key，然后用 Fish Audio 的 Voice Design 做一个自己的声音，把链接或 ID 粘进来。Capri 禁止在未获明确、知情同意或其他有效授权的情况下克隆或模仿真人声音。 " + FishFree + " 是它的免费档。"),
             new Service("Voice model file · on your PC", Files, "", "", "", "Number or clip, optional", "Optional",
-                "A Piper, Kokoro, Kitten or Pocket TTS model for sherpa-onnx, run with no server. Browse to its .tar.bz2 or .onnx. Pocket TTS copies a voice clip you pick."),
+                "给 sherpa-onnx 用的 Piper、Kokoro、Kitten 或 Pocket TTS 模型，不用服务器。选它的 .tar.bz2 或 .onnx。Pocket TTS 会照你选的录音复制声音。"),
             new Service("Fish Speech · on your PC", Fish, "http://127.0.0.1:8080", "", "", "Reference ID, optional", "Optional",
-                "Fish Speech running on your PC with tools/api_server.py. Voice is a reference ID you added to it, or blank."),
+                "跑在你自己电脑上的 Fish Speech（tools/api_server.py）。音色填你加进去的参考 ID，或者留空。"),
             new Service("Kokoro · on your PC", OpenAi, Address, "kokoro", "af_heart", "Optional", "Optional",
-                "Kokoro-FastAPI running on your PC, with voices like af_heart, af_bella and am_adam."),
+                "跑在你自己电脑上的 Kokoro-FastAPI，音色有 af_heart、af_bella、am_adam 这些。"),
             new Service("OpenAI · cloud", OpenAi, OpenAiCloud, "gpt-4o-mini-tts", "marin", "Optional", "Paste your OpenAI key",
-                "OpenAI's voices with your OpenAI key: marin, cedar, coral, alloy and more."),
+                "用你的 OpenAI Key 调 OpenAI 的音色：marin、cedar、coral、alloy 等等。"),
             new Service("Any OpenAI-style server", OpenAi, null, null, null, "Optional", "Optional",
-                "Any speech model you run whose server speaks OpenAI's speech API, like Qwen3-TTS through vLLM-Omni, AllTalk or LocalAI.")
+                "任何你自己的、接口兼容 OpenAI 语音 API 的语音模型，比如通过 vLLM-Omni、AllTalk 或 LocalAI 跑的 Qwen3-TTS。")
         };
 
         // The APIs she knows; anything else is OpenAI's.
@@ -3199,14 +3199,14 @@ namespace CapriDesktop
                 catch (WebException error)
                 {
                     HttpWebResponse response = error.Response as HttpWebResponse;
-                    if (response == null) throw new VoiceException("Can't reach Fish Audio. Check your internet connection.");
+                    if (response == null) throw new VoiceException("连不上 Fish Audio。检查下网络。");
                     int status = (int)response.StatusCode;
                     response.Close();
-                    if (status == 401 || status == 403) throw new VoiceException(string.IsNullOrEmpty(key) ? "Paste your Fish Audio key first." : "Fish Audio turned down its key (HTTP " + status + ").");
+                    if (status == 401 || status == 403) throw new VoiceException(string.IsNullOrEmpty(key) ? "先粘你的 Fish Audio Key。" : "Fish Audio turned down its key (HTTP " + status + ").");
                     throw new VoiceException("Fish Audio said HTTP " + status + ".");
                 }
-                catch (SerializationException) { throw new VoiceException("Fish Audio sent a voice list Capri can't read."); }
-                catch (IOException) { throw new VoiceException("Can't reach Fish Audio. Check your internet connection."); }
+                catch (SerializationException) { throw new VoiceException("Fish Audio 发的音色列表 Capri 读不懂。"); }
+                catch (IOException) { throw new VoiceException("连不上 Fish Audio。检查下网络。"); }
                 if (found == null || found.Items == null) break;
                 foreach (FishModel model in found.Items)
                     if (!string.IsNullOrEmpty(model.Id)) voices.Add(new KeyValuePair<string, string>(model.Id, string.IsNullOrEmpty(model.Title) ? model.Id : model.Title));
@@ -3225,10 +3225,10 @@ namespace CapriDesktop
         // (POST /model). Fish Audio writes down what's said in it. Returns its ID.
         internal static string MakeFishVoice(string url, string key, string clip)
         {
-            if (string.IsNullOrEmpty(key)) throw new VoiceException("Paste your Fish Audio key first.");
+            if (string.IsNullOrEmpty(key)) throw new VoiceException("先粘你的 Fish Audio Key。");
             FileInfo file = new FileInfo(clip);
-            if (!file.Exists) throw new VoiceException("That clip isn't there anymore. Pick it again.");
-            if (file.Length > 50L << 20) throw new VoiceException("That clip is too big. Pick 10 to 30 seconds of talking.");
+            if (!file.Exists) throw new VoiceException("那段录音不在了。重新选一个。");
+            if (file.Length > 50L << 20) throw new VoiceException("这段录音太大。选 10 到 30 秒的说话录音。");
             Uri tts = Endpoint(url, Fish);
             string boundary = "capri" + Guid.NewGuid().ToString("N");
             Func<string, string, string> field = delegate(string name, string value) { return "--" + boundary + "\r\nContent-Disposition: form-data; name=\"" + name + "\"\r\n\r\n" + value + "\r\n"; };
@@ -3258,13 +3258,13 @@ namespace CapriDesktop
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 using (Stream stream = response.GetResponseStream())
                     made = (FishMade)new DataContractJsonSerializer(typeof(FishMade)).ReadObject(stream);
-                if (made == null || string.IsNullOrEmpty(made.Id)) throw new VoiceException("Fish Audio didn't say which voice it made. Look for it on fish.audio.");
+                if (made == null || string.IsNullOrEmpty(made.Id)) throw new VoiceException("Fish Audio 没说做出来的是哪个音色。去 fish.audio 找找。");
                 return made.Id;
             }
             catch (WebException error)
             {
                 HttpWebResponse response = error.Response as HttpWebResponse;
-                if (response == null) throw new VoiceException("Can't reach Fish Audio. Check your internet connection.");
+                if (response == null) throw new VoiceException("连不上 Fish Audio。检查下网络。");
                 int status = (int)response.StatusCode;
                 string detail;
                 using (response)
@@ -3272,8 +3272,8 @@ namespace CapriDesktop
                 if (status == 401 || status == 403) throw new VoiceException("Fish Audio turned down its key (HTTP " + status + ").");
                 throw new VoiceException("Fish Audio couldn't make that voice (HTTP " + status + ")" + (detail.Length > 0 ? ": " + Voice.Short(detail) : "."));
             }
-            catch (SerializationException) { throw new VoiceException("Fish Audio didn't say which voice it made. Look for it on fish.audio."); }
-            catch (IOException) { throw new VoiceException("Can't reach Fish Audio. Check your internet connection."); }
+            catch (SerializationException) { throw new VoiceException("Fish Audio 没说做出来的是哪个音色。去 fish.audio 找找。"); }
+            catch (IOException) { throw new VoiceException("连不上 Fish Audio。检查下网络。"); }
         }
 
         // A Fish Audio voice's ID, taken from its fish.audio link if that's what they pasted.
@@ -3334,7 +3334,7 @@ namespace CapriDesktop
                 said.AddRange(Ask(endpoint, key, fish ? model : null, body.ToString(), name));
             }
             short[] samples = said.ToArray();
-            if (samples.Length == 0) throw new VoiceException(name + " sent back no sound.");
+            if (samples.Length == 0) throw new VoiceException(name + " 返回了空音频。");
             if (!VoiceFx.Plain(pitch, speed, robot, glitch, layers)) samples = VoiceFx.Restyled(samples, YourVoice.Rate, pitch, speed, robot, glitch, VoiceFx.Seed(text), layers);
             return Voice.Wave(samples, YourVoice.Rate);
         }
@@ -3375,29 +3375,29 @@ namespace CapriDesktop
                 {
                     if (error.Status == WebExceptionStatus.Timeout) throw new VoiceException(Slow(name));
                     if (error.Status == WebExceptionStatus.ConnectFailure || error.Status == WebExceptionStatus.NameResolutionFailure)
-                        throw new VoiceException(theirs ? "Can't reach your voice server at " + Where(endpoint) + ". Is it running?" : "Can't reach " + name + ". Check your internet connection.");
-                    throw new VoiceException(name + " at " + Where(endpoint) + " stopped answering.");
+                        throw new VoiceException(theirs ? "Can't reach your voice server at " + Where(endpoint) + ". Is it running?" : "Can't reach " + name + "。检查下网络。");
+                    throw new VoiceException(name + " at " + Where(endpoint) + " 不应答了。");
                 }
                 int status = (int)response.StatusCode;
                 string detail;
                 using (response)
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) detail = Said(reader.ReadToEnd());
                 // Fish Audio's 404 is a voice it can't find, and its 429 is too many lines too fast.
-                if (status == 404 && name == "Fish Audio") throw new VoiceException("Fish Audio can't find that voice (HTTP 404). Check its ID or link on fish.audio.");
-                if (status == 404) throw new VoiceException(name + " has no " + endpoint.AbsolutePath + " (HTTP 404). Check its address.");
-                if (status == 429) throw new VoiceException(name + " is busy (HTTP 429). Try again in a moment.");
+                if (status == 404 && name == "Fish Audio") throw new VoiceException("Fish Audio 找不到这个音色（HTTP 404）。去 fish.audio 核对它的 ID 或链接。");
+                if (status == 404) throw new VoiceException(name + " has no " + endpoint.AbsolutePath + " （HTTP 404）。检查它的地址。");
+                if (status == 429) throw new VoiceException(name + " 忙不过来（HTTP 429）。稍等再试。");
                 if (status == 401 || status == 403) throw new VoiceException(string.IsNullOrEmpty(key) ? name + " wants a key (HTTP " + status + "). Add it under " + (theirs ? "CUSTOM LOCAL > Set up" : "CLOUD VOICE") + "." : name + " turned down its key (HTTP " + status + ").");
                 // Fish Audio's paid models answer 402 on an account with no credit. Its free tier is a model of its own.
-                if (status == 402 && name == "Fish Audio" && model != FishFree) throw new VoiceException("Fish Audio wants credit for " + (string.IsNullOrEmpty(model) ? "its usual model" : model) + " (HTTP 402). For its free tier, set Model to " + FishFree + ".");
+                if (status == 402 && name == "Fish Audio" && model != FishFree) throw new VoiceException("Fish Audio 要收费了：" + (string.IsNullOrEmpty(model) ? "它默认模型" : model) + " （HTTP 402）。用它免费档的话，把模型设成 " + FishFree + "。");
                 throw new VoiceException(name + " said HTTP " + status + (detail.Length > 0 ? ": " + Voice.Short(detail) : "."));
             }
-            catch (IOException) { throw new VoiceException(name + " at " + Where(endpoint) + " stopped answering."); }
+            catch (IOException) { throw new VoiceException(name + " at " + Where(endpoint) + " 不应答了。"); }
         }
 
         // Its sound as 24 kHz mono: a WAV in any coding YourVoice reads, or anything Windows' own decoders can, like MP3.
         private static short[] Sound(byte[] reply, string type, string name)
         {
-            if (reply.Length == 0) throw new VoiceException(name + " sent back no sound.");
+            if (reply.Length == 0) throw new VoiceException(name + " 返回了空音频。");
             int rate;
             float[] mono = YourVoice.Wav(reply, out rate);
             if (mono == null && Regex.IsMatch(type ?? "", "json|text|html", RegexOptions.IgnoreCase)) throw new VoiceException(name + " sent words, not sound: " + Voice.Short(Said(Encoding.UTF8.GetString(reply))));

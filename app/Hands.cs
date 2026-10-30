@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -108,7 +108,7 @@ namespace CapriDesktop
         // Saves and redraws whatever shows them, once a toggle or preset changes.
         internal static Action Changed;
         internal const string Yes = " Say yes and I will.";
-        internal const string Left = "Okay, I left it alone.";
+        internal const string Left = "好，我不动它了。";
         // A tool result that held the call to ask first. Voice chat reads it as it is; text chat says only the question.
         internal const string Hold = "Not done yet: their SECURITY settings ask first. Ask them ";
 
@@ -626,7 +626,7 @@ namespace CapriDesktop
         internal static Func<string, bool> Exists = File.Exists;
         internal static Action<string> Run = Start;
         internal static Action<byte> Press = Tap;
-        internal static Func<string, string> Look = delegate { return "You can't see their screen right now."; };
+        internal static Func<string, string> Look = delegate { return "你现在看不见他们的屏幕。"; };
         internal static Func<string, string> Fetch = Download;
         internal static Func<List<OpenWindow>> Windows = ReadWindows;
         internal static Func<OpenWindow, string, bool> Steer = Apply;
@@ -638,19 +638,19 @@ namespace CapriDesktop
         internal static Func<string, string> Instead = delegate { return null; };
         internal static Func<string, bool> PressPlay = ClickPlay;
         internal static Func<string> NowPlaying = SpotifyTitle;
-        internal static Func<string, string, string> Work = delegate { return "Using the mouse and keyboard isn't ready on this PC yet."; };
+        internal static Func<string, string, string> Work = delegate { return "这台电脑上鼠标键盘控制还没准备好。"; };
         internal static Func<string, string> Resume = delegate { return null; };
         // Puts dots over a password she typed into a password box, wherever it would show or be saved.
         internal static Func<string, string> Hush = delegate(string text) { return text; };
         internal static Action<byte[]> Chord = PressChord;
         internal static Func<string, int, bool> Power = Switch;
         // Puts her to sleep (true) or wakes her (false), and says how it went. Her window sets it.
-        internal static Func<bool, string> Nap = delegate { return "Couldn't nap just now."; };
+        internal static Func<bool, string> Nap = delegate { return "刚才没能去睡。"; };
         // Moves her, or her Mainframe, and says how it went: an action like come_here, and which screen if they said, or for sit_on
         // and lie_down the window they named. Her window sets it.
-        internal static Func<string, string, string> MoveSelf = delegate { return "Couldn't move just now."; };
+        internal static Func<string, string, string> MoveSelf = delegate { return "刚才没能动。"; };
         // Plays one of her animations by name, or starts or stops her dance, and says how it went. Her window sets it.
-        internal static Func<string, string> Animate = delegate { return "Couldn't do that just now."; };
+        internal static Func<string, string> Animate = delegate { return "刚才那事没做成。"; };
         private static readonly string[] Browsers = { "chrome", "msedge", "firefox", "brave", "opera", "vivaldi" };
         private static readonly string[] Shell = { "Progman", "WorkerW", "Shell_TrayWnd", "Shell_SecondaryTrayWnd" };
         private delegate bool Visit(IntPtr window, IntPtr data);
@@ -854,11 +854,11 @@ namespace CapriDesktop
 
         internal static string Pulled(string result)
         {
-            if ((result ?? "").StartsWith("Opened your own website", StringComparison.Ordinal)) return "Here's my site, choom. That's where people download me.";
+            if ((result ?? "").StartsWith("打开了我的网站", StringComparison.Ordinal)) return "这是我的网站，choom。大家就是在那儿下载我的。";
             // Power lines go out as they are: no second brain call while the shutdown counts down.
             if (Regex.IsMatch(result ?? "", @"^(Shutting your PC down|Restarting your PC|Signing you out|Putting your PC to sleep|Lock(ed|ing) your PC|Cancelled it\.)")) return result;
             Match searched = Regex.Match(result ?? "", @"^Searched google\.com for (.+)\.$");
-            return searched.Success ? "Pulled up \"" + searched.Groups[1].Value + "\" on Google for you, choom." : null;
+            return searched.Success ? "Pulled up \"" + searched.Groups[1].Value + "” 这个我帮你在谷歌搜了，choom。" : null;
         }
 
         internal const string Unpromised = "I haven't done that yet, choom. Tell me what to open or click and I'm on it.";
@@ -1714,7 +1714,7 @@ namespace CapriDesktop
             List<InstalledApp> found = Match(Apps(), wanted);
             string nicknamed = found.Count == 0 ? Nickname(wanted) : null;
             if (nicknamed != null) found = Match(Apps(), nicknamed);
-            if (found.Count == 0) return "No app called " + wanted.Trim() + " is installed on this PC.";
+            if (found.Count == 0) return "No app called " + wanted.Trim() + " 装在这台电脑上。";
             // When several match equally well, the one with the fewest extra words is closest to what they said.
             InstalledApp chosen = found[0];
             foreach (InstalledApp app in found) if (AppName(app).Length < AppName(chosen).Length) chosen = app;
@@ -1811,7 +1811,7 @@ namespace CapriDesktop
             reader.SetApartmentState(ApartmentState.STA);
             reader.IsBackground = true;
             reader.Start();
-            if (!reader.Join(10000)) throw new TimeoutException("The app list took too long.");
+            if (!reader.Join(10000)) throw new TimeoutException("应用列表读太久了。");
             if (failed != null) throw failed;
             return WithSteam(apps, SteamApps(SteamFolder()));
         }
@@ -1895,9 +1895,9 @@ namespace CapriDesktop
         private static string OpenSite(string site, string search)
         {
             string address = Address(site, search);
-            if (address == null) return "That isn't a website.";
+            if (address == null) return "这不是个网址。";
             Run(address);
-            if (address.TrimEnd('/') == "https://" + Home) return "Opened your own website, " + Home + ".";
+            if (address.TrimEnd('/') == "https://" + Home) return "打开了我的网站，" + Home + "。";
             string host = new Uri(address).Host;
             if (host.StartsWith("www.", StringComparison.Ordinal)) host = host.Substring(4);
             return string.IsNullOrWhiteSpace(search) ? "Opened " + host + "." : "Searched " + host + " for " + search.Trim() + ".";
@@ -1994,8 +1994,8 @@ namespace CapriDesktop
                 Match video = Regex.Match(window.Title, @"^(?:\(\d+\)\s*)?(.+?) - YouTube( Music)?( - |$)");
                 if (video.Success) return "Their YouTube tab is on " + video.Groups[1].Value + ".";
             }
-            if (Regex.IsMatch(title, @"^Spotify( \w+)?$")) return "Spotify is open but paused.";
-            return title.Length > 0 ? "Spotify is open, but I can't tell what's playing." : "Nothing's playing that I can see.";
+            if (Regex.IsMatch(title, @"^Spotify( \w+)?$")) return "Spotify 开着，但是暂停的。";
+            return title.Length > 0 ? "Spotify 开着，但我看不出在放什么。" : "我这儿看不到有东西在播。";
         }
 
         private static string Toggle(string action)
@@ -2007,10 +2007,10 @@ namespace CapriDesktop
                 Thread.Sleep(250);
                 string after = NowPlaying();
                 if (after == before) continue;
-                if (TrackTitle(after)) return "Spotify is playing again.";
+                if (TrackTitle(after)) return "Spotify 又开始放了。";
                 if (TrackTitle(before)) return "Paused Spotify.";
             }
-            return action == "pause" ? "Pressed pause." : action == "resume" ? "Pressed play." : "Pressed play/pause.";
+            return action == "pause" ? "Pressed pause." : action == "resume" ? "Pressed play." : "按了播放/暂停。";
         }
 
         private static readonly string[,] Shortcuts =
@@ -2079,10 +2079,10 @@ namespace CapriDesktop
                 string opened = OpenApp("Discord");
                 if (!opened.StartsWith("Opened", StringComparison.Ordinal)) return "Discord isn't open, so I couldn't press its shortcut. " + opened;
                 for (int i = 0; i < 20 && discord == null; i++) { Thread.Sleep(250); discord = FindDiscord(); }
-                if (discord == null) return "Opened Discord, but its window didn't show up in time. Ask again in a sec.";
+                if (discord == null) return "Discord 打开了，但窗口没及时出来。过一会儿再叫我。";
             }
             IntPtr before = Native.GetForegroundWindow();
-            if (!Steer(discord, "switch_to")) return "Couldn't bring Discord to the front to press its shortcut.";
+            if (!Steer(discord, "switch_to")) return "没能把 Discord 切到前台按快捷键。";
             Chord(keys);
             Thread.Sleep(150);
             if (before != IntPtr.Zero && before != discord.Handle) Steer(new OpenWindow(before, "", ""), "switch_to");
@@ -2231,7 +2231,7 @@ namespace CapriDesktop
 
         private static string PlayMusic(string song, string app, string kind)
         {
-            if (string.IsNullOrWhiteSpace(song)) return "What should I play?";
+            if (string.IsNullOrWhiteSpace(song)) return "放点什么好？";
             song = song.Trim();
             if (Regex.IsMatch(song, @"^((what('|\u2019)?s|what is)\s+)?((currently|now)\s+)?playing( now)?$|^(this|that|the current) (song|track)$", RegexOptions.IgnoreCase)) return Playing();
             if (Regex.IsMatch(song, @"^(play\s+)?(me\s+)?((some|any|a|random|good)\s+)?(music|songs?|tunes|tracks?|something)(\s+for me)?$", RegexOptions.IgnoreCase)) { song = Pick(); kind = "song"; }
@@ -2254,20 +2254,20 @@ namespace CapriDesktop
                 {
                     string before = NowPlaying();
                     Run("spotify:track:" + spotted);
-                    return Started(before) || PressPlay(song) ? "Playing " + song + " on Spotify." : "Opened " + song + " in Spotify, but couldn't press play. Hit the green Play button.";
+                    return Started(before) || PressPlay(song) ? "Playing " + song + " on Spotify." : "Opened " + song + " 在 Spotify 里了，但按不到播放键。点那个绿色播放键。";
                 }
                 if (liked || spotted != null)
                 {
                     Run(liked ? "spotify:collection:tracks" : "spotify:" + kind + ":" + spotted);
-                    return PressPlay(liked ? "Liked Songs" : song) ? "Playing " + named + " on Spotify." : "Opened " + named + " in Spotify, but couldn't press play. Hit the green Play button.";
+                    return PressPlay(liked ? "Liked Songs" : song) ? "Playing " + named + " on Spotify." : "Opened " + named + " 在 Spotify 里了，但按不到播放键。点那个绿色播放键。";
                 }
                 Run("spotify:search:" + Uri.EscapeDataString(song));
-                return PressPlay(song) ? "Playing " + named + " on Spotify." : "Couldn't find " + named + " to play, so Spotify is open on a search for it.";
+                return PressPlay(song) ? "Playing " + named + " on Spotify." : "Couldn't find " + named + " 放不了，所以 Spotify 已经打开并搜到它了。";
             }
             string where = Searches[0, 1] + Uri.EscapeDataString(look);
             System.Text.RegularExpressions.Match list = Regex.Match(kind == "song" ? "" : Fetch(where + "&sp=EgIQAw%253D%253D") ?? "", @"""watchEndpoint"":\{""videoId"":""([A-Za-z0-9_-]{11})"",""playlistId"":""([A-Za-z0-9_-]+)""");
             string video = list.Success ? null : Find(Fetch(where), "\"videoId\":\"([A-Za-z0-9_-]{11})\"");
-            if (!list.Success && video == null) { Run(where); return "Couldn't find " + named + " to play, so YouTube is open on a search for it."; }
+            if (!list.Success && video == null) { Run(where); return "Couldn't find " + named + " 放不了，所以 YouTube 已经打开并搜到它了。"; }
             Run(list.Success ? "https://www.youtube.com/watch?v=" + list.Groups[1].Value + "&list=" + list.Groups[2].Value : "https://www.youtube.com/watch?v=" + video);
             return (app == "spotify" ? "Spotify isn't installed, so playing " : "Playing ") + named + " on YouTube.";
         }
@@ -2415,7 +2415,7 @@ namespace CapriDesktop
             bool all = true;
             foreach (OpenWindow window in top) all &= Steer(window, action);
             if (action == "minimize") return "Minimized " + wanted + ".";
-            return all ? "Closed " + wanted + "." : "Asked " + wanted + " to close, but it's still open. It might be asking you to save.";
+            return all ? "Closed " + wanted + "." : "Asked " + wanted + " 关不掉，它还开着。可能在等你保存。";
         }
 
         // The open windows whose program or title matches best, front first.
