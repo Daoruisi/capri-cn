@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -1442,6 +1442,7 @@ namespace CapriDesktop
             voice.Key = Voice.Unprotect(preferences.VoiceKey);
             Hands.Look = LookAt;
             Hands.Work = RunJob;
+            Hands.CheckBalance = delegate { return brain.Balance(); };
             brain.Act = DoTool;
             Hands.Resume = ResumeJob;
             Hands.Rename = CallThem;

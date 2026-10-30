@@ -259,6 +259,23 @@ namespace CapriDesktop
         internal Moment(string on, string line, string[] words) { On = on; Line = line; Words = words; }
     }
 
+    // What DeepSeek's /user/balance answers with.
+    [DataContract]
+    internal sealed class BalanceReport
+    {
+        [DataMember(Name = "is_available")] public bool Available;
+        [DataMember(Name = "balance_infos")] public BalanceEntry[] Entries;
+    }
+
+    [DataContract]
+    internal sealed class BalanceEntry
+    {
+        [DataMember(Name = "currency")] public string Currency;
+        [DataMember(Name = "total_balance")] public string Total;
+        [DataMember(Name = "granted_balance")] public string Granted;
+        [DataMember(Name = "topped_up_balance")] public string Topped;
+    }
+
     internal sealed class Brain
     {
         internal static string Ollama = "http://127.0.0.1:11434";
@@ -1281,6 +1298,42 @@ namespace CapriDesktop
             else if (calls.Count == 0 && Hands.Typed(raw, out written, out writtenArgs, true)) calls.Add(new KeyValuePair<string, ToolArguments>(written, writtenArgs));
             if (calls.Exists(call => !Hands.Valid(call.Key, call.Value))) { calls.Clear(); throw new BrainException("那个工具调用没读懂。再试一次。"); }
             return raw;
+        }
+
+        // What's left on their key. DeepSeek is the one provider that answers; the others get a plain no.
+        internal string Balance()
+        {
+            Cloud remote = Remote;
+            if (remote == null) return "我这儿没接 API Key，查不了余额。";
+            if (remote.Kind != "deepseek") return remote.Name + " 没有余额查询接口，只有 DeepSeek 能查。";
+            try
+            {
+                ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(DeepSeek + "/user/balance");
+                request.Method = "GET";
+                request.UserAgent = "Capri-Desktop";
+                request.Headers["Authorization"] = "Bearer " + remote.Key;
+                request.Timeout = 15000;
+                using (WebResponse response = request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (MemoryStream copy = new MemoryStream())
+                {
+                    stream.CopyTo(copy);
+                    BalanceReport report = Voice.Read<BalanceReport>(copy.ToArray());
+                    if (report == null || report.Entries == null || report.Entries.Length == 0) return "余额查不到，DeepSeek 没回数。";
+                    StringBuilder said = new StringBuilder();
+                    foreach (BalanceEntry entry in report.Entries)
+                    {
+                        string sign = entry.Currency == "CNY" ? "¥" : entry.Currency == "USD" ? "$" : entry.Currency + " ";
+                        if (said.Length > 0) said.Append("，");
+                        said.Append(sign).Append(entry.Total);
+                        if (!string.IsNullOrEmpty(entry.Topped) || !string.IsNullOrEmpty(entry.Granted))
+                            said.Append("（充值 ").Append(sign).Append(entry.Topped).Append("，赠送 ").Append(sign).Append(entry.Granted).Append("）");
+                    }
+                    return "DeepSeek 余额 " + said + "。" + (report.Available ? "" : " 账户现在不可用。");
+                }
+            }
+            catch (Exception error) { return "查余额失败了：" + error.Message; }
         }
 
         internal string See(byte[] jpeg, string system, string instruction, int limit)

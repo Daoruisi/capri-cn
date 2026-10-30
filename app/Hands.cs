@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -488,7 +488,9 @@ namespace CapriDesktop
             { "move_yourself", "Move yourself on their screens: teleport to their mouse (come_here), go to another monitor, sit down or stand up where you are, sit on top of a window they name, like their Roblox or Discord window, or the taskbar (sit_on), lie down along the window you sit on or the one they name, or sit back up, walk around, wander off to a random window, hang where you are, ride their cursor or hop off it, hide or come back. move_mainframe moves your Capri Mainframe window to another monitor, or to the one their mouse is on. Use it whenever they tell you to come here, teleport, go somewhere, sit, lie down, walk, stand, hang, hide or show yourself.",
               "{\"type\":\"object\",\"properties\":{\"action\":{\"type\":\"string\",\"description\":\"What to do\",\"enum\":[\"come_here\",\"other_screen\",\"sit\",\"sit_on\",\"lie_down\",\"sit_up\",\"stand_up\",\"walk_around\",\"wander\",\"hang\",\"ride_cursor\",\"hop_off\",\"hide\",\"show\",\"move_mainframe\"]},\"screen\":{\"type\":\"string\",\"description\":\"For other_screen or move_mainframe, which monitor, only if they said: next, left, right, up, down, main, here for the one their mouse is on, or a number like 2\"},\"window\":{\"type\":\"string\",\"description\":\"For sit_on, and lie_down if they named one, the app or game whose window to sit on, like Roblox, or taskbar\"}},\"required\":[\"action\"]}" },
             { "animate", "Play one of your own animations on their screen: your idle, your glitch, your grin or a blink, or dance until they tell you to stop. Use it when they ask you to dance, stop dancing, do your glitch, grin, smile or blink, or play an animation by name.",
-              "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"description\":\"Which animation\",\"enum\":[\"idle\",\"glitch\",\"grin\",\"blink\",\"dance\",\"stop_dancing\"]}},\"required\":[\"name\"]}" }
+              "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\",\"description\":\"Which animation\",\"enum\":[\"idle\",\"glitch\",\"grin\",\"blink\",\"dance\",\"stop_dancing\"]}},\"required\":[\"name\"]}" },
+            { "check_balance", "Check how much credit is left on the API key you're using, or what you've cost them: their DeepSeek balance. Use it when they ask how much credit, quota, balance or money is left on you, or what you've been costing them.",
+              "{\"type\":\"object\",\"properties\":{}}" }
         };
 
         internal static readonly string Tools = Render(false);
@@ -497,6 +499,12 @@ namespace CapriDesktop
         private const string LookupWords = @"^(what('?s| is| are)|how('?s| is)|is it|will it|when('?s| is| does| do)|who won|did|check|get|tell me|show me|find)\b.*\b(weather|forecast|temperature|raining|snowing|news|headlines|scores?|stock price|price of|exchange rate|time (is it )?in|opening hours|open (today|now|tonight)|release date|showtimes|rain|snow|sunny|hot out|cold out)\b|^(weather|forecast|news|headlines)\b|^who (won|is winning)\b";
         // Burmese asks with ပေး (for me), လိုက် (go ahead) or ပါ (please) after the verb, and ends a sentence with "။".
         private const string BurmeseAsk = @"(လိုက်|ပေး|စမ်း|ပါ)+(ဦး|ဥ\u102Eး)?(နော်)?[။၊!?.\s]*$";
+
+        // "How much credit is left?" in her languages, so the balance tool is the only way she answers it.
+        private static readonly Regex BalanceAsk = new Regex(
+            @"余额|额度|充值了|还有多少(钱|额度|余额)|还剩多少(钱|额度|余额)|花了多少(钱|token|额度)|用了多少(钱|token|额度)|" +
+            @"\b(balance|credits?|quota|how much (money|credit|balance)|spent|cost me|cost so far)\b",
+            RegexOptions.IgnoreCase);
 
         private static readonly Regex Asks = new Regex(
             @"^(open|launch|start|run|load up|boot up|fire up|play|shuffle|put on|blast|queue|close|quit|exit|kill|shut down|switch (back |over )?to|back to|go to|bring up|pull up|show me|minimi[sz]e|pause|unpause|resume|stop the music|skip|next|previous|go back|volume|louder|quieter|mute|unmute|search|google|look up|mind (opening|launching|playing|closing))\b" +
@@ -638,6 +646,9 @@ namespace CapriDesktop
         internal static Func<string, string> Instead = delegate { return null; };
         internal static Func<string, bool> PressPlay = ClickPlay;
         internal static Func<string> NowPlaying = SpotifyTitle;
+
+        // Reads what's left on their key; Capri wires this to her brain, since only it holds the key.
+        internal static Func<string> CheckBalance;
         internal static Func<string, string, string> Work = delegate { return "这台电脑上鼠标键盘控制还没准备好。"; };
         internal static Func<string, string> Resume = delegate { return null; };
         // Puts dots over a password she typed into a password box, wherever it would show or be saved.
@@ -703,6 +714,7 @@ namespace CapriDesktop
                 if (tool == "nap") return Nap(args.Action != "wake");
                 if (tool == "move_yourself") return MoveSelf(args.Action, args.Action == "sit_on" || args.Action == "lie_down" ? args.Window : args.Screen);
                 if (tool == "animate") return Animate(args.Name);
+                if (tool == "check_balance") return CheckBalance != null ? CheckBalance() : "There's no balance to check.";
                 return "There's no tool called " + tool + ".";
             }
             catch (Exception error) { return "That didn't work: " + error.Message; }
@@ -812,6 +824,7 @@ namespace CapriDesktop
 
         internal static bool Wants(string said)
         {
+            if (BalanceAsk.IsMatch(said ?? "")) return true;
             if (Regex.IsMatch(said ?? "", @"\b(please|pls|plz|stp)\s*[.!?]*$", RegexOptions.IgnoreCase) && Site(Asked(said))) return true;
             foreach (string part in Regex.Split(said ?? "", @"[,;!?，；！？。．،؟।።፣፧။၊։՝]\s*|\.\s+"))
             {
@@ -1369,6 +1382,8 @@ namespace CapriDesktop
             if (Moon.IsMatch(said ?? "")) { tool = "play_music"; args.Song = MoonSong; args.Kind = "song"; return true; }
             string text = Asked(said);
             if (Chatter.IsMatch(text) || Regex.IsMatch(text, @"\b(if|unless|until|after|before|when) (i|you|we|it|the)\b", RegexOptions.IgnoreCase)) return false;
+            // Asking about her credit is a tool call, not chat: she can't guess a balance.
+            if (BalanceAsk.IsMatch(text)) { tool = "check_balance"; return true; }
             string minutes;
             string switched = PowerFor(text, out minutes);
             if (switched != null) { tool = "power"; args.Action = switched; args.Minutes = minutes; return true; }
