@@ -149,23 +149,24 @@ Capri 每 1.5 秒读一次，`doneId` 变化时播报「「<会话标题>」搞�
 
 ---
 
-## 八、立绘桌宠 `sprite-pet/`（与本体的关系）
+## 八、立绘皮肤（三套立绘直接长在主程序里）
 
-`sprite-pet/` 是一个**只做立绘**的独立小程序（单文件 `Pet.cs`，约 480 行，编译出来 16 KB）：
+主程序现在内置三套第三方立绘，在**她自己的右键菜单 → 立绘**里切换：
 
-- 三套素材：`pets/capri-clear`、`pets/capri-pixel`、`pets/capri-anime`（各 8 列 × 9 行，192×208/帧）
-- 右键换装 / 调大小 / 总在最前；拖拽、双击挥手、自己溜达；托盘可「呼到这里」
-- 分层窗口 + 逐像素透明，能压在任何窗口上，不依赖 DSH
-- 编译：`sprite-pet\build.cmd`（用系统自带 csc，不需要 SDK），或
-  ```
-  csc /target:winexe /out:CapriPet.exe /reference:System.Windows.Forms.dll /reference:System.Drawing.dll Pet.cs
-  ```
+- 原版（她自带的画师素材，含趴窗/躺下/跳舞等全部动画）
+- 清晰 Q 版 / 像素版 / 动漫版（来自 X1a0heZzzz/capri-desktop-pet，8×9 图集，192×208/帧）
 
-它和主程序 `Capri.exe` **互不依赖**：主程序管大脑/语音/工具，这个只管把立绘放到桌面上。
-两边可以同时跑，也可以只跑其中一个。
+皮肤切换是纯画面替换：大脑、语音、工具、走动/趴窗/说话的**逻辑全部不变**，只把贴图换成所选皮肤。
+皮肤帧数少（9 个状态），所以趴窗、口型、躺下这些多帧动作在皮肤模式下退化成「站立/走动/跳/挥手」的最小映射；
+想要完整动作就用「原版」。
 
-### 素材授权（重要）
+实现要点：
 
-`pets/` 下的图集来自 [X1a0heZzzz/capri-desktop-pet](https://github.com/X1a0heZzzz/capri-desktop-pet)，
-该项目的 `ASSET_RIGHTS.md` 明确：**MIT 只覆盖代码，不覆盖角色素材**，公开可下载不等于获得再分发授权。
-这里存放只为构建方便，**不在本仓库许可证范围内**；对外再分发前请自行确认权利，权利方可要求移除。
+- `app/Capri.cs`：`Preferences.ArtPack`（0=原版，1..3=皮肤）、右键菜单「立绘」、`DrawPack()` 按
+  `PackRow()` 做状态映射后从图集取帧
+- 图集在构建时以资源打进 exe：`ci/build-cn.ps1` 把 `pets\packs\<id>\spritesheet.png` 嵌成
+  `Capri.Pack.<id>.png`
+- 开启动画：皮肤模式下她的开机 glitch 会映射成「跳」那一帧，等于一个简短的进场动画
+
+素材授权同前：`pets/` 下的图集来自 X1a0heZzzz/capri-desktop-pet，MIT 不覆盖角色素材，
+对外再分发前请自行确认权利。

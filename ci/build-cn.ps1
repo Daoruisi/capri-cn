@@ -36,6 +36,9 @@ $shared = @('/nologo', '/target:winexe', '/platform:anycpu', '/optimize+', '/utf
 $references = @('/reference:System.Runtime.Serialization.dll', '/reference:System.IO.Compression.dll', '/reference:System.IO.Compression.FileSystem.dll', '/reference:System.Security.dll', ('/reference:' + (Join-Path $wpf 'UIAutomationClient.dll')), ('/reference:' + (Join-Path $wpf 'UIAutomationTypes.dll')), ('/reference:' + (Join-Path $wpf 'WindowsBase.dll')), ('/reference:' + (Join-Path $wpf 'System.Speech.dll')), ('/reference:' + (Join-Path $framework 'System.Runtime.dll')), ('/reference:' + (Join-Path $framework 'System.Runtime.WindowsRuntime.dll')), ('/reference:' + (Join-Path $framework 'System.Runtime.InteropServices.WindowsRuntime.dll'))) + ($winmds | ForEach-Object { '/reference:' + $_ })
 $resources = @(('/resource:' + $icon + ',Capri.Chip.ico'), ('/resource:' + (Join-Path $root 'assets\fonts\ShareTechMono-Regular.ttf') + ',Capri.Font.Mono.ttf'))
 $resources += Get-ChildItem -LiteralPath (Join-Path $root 'assets\sprites') -Filter *.png | ForEach-Object { '/resource:' + $_.FullName + ',Capri.Sprite.' + $_.Name }
+foreach ($pack in 'capri-clear','capri-pixel','capri-anime') {
+    $resources += '/resource:' + (Join-Path $root ("pets\packs\" + $pack + "\spritesheet.png")) + ',Capri.Pack.' + $pack + '.png'
+}
 $resources += Get-ChildItem -LiteralPath (Join-Path $root 'assets\voice') -Filter *.wav | ForEach-Object { '/resource:' + $_.FullName + ',Capri.Voice.' + $_.Name }
 $sources = @('Capri', 'Brain', 'Talk', 'Mainframe', 'Neon', 'Notice', 'Engine', 'Ledges', 'Voice', 'Ears', 'Dictation', 'Agent', 'Hands', 'Computer', 'VoicePack', 'Startup', 'Presence', 'Player', 'AssemblyInfo') | ForEach-Object { Join-Path $root ('app\' + $_ + '.cs') }
 & $compiler ($shared + $references + $resources + @('/out:' + $app) + $sources)

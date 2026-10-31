@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -236,6 +236,8 @@ namespace CapriDesktop
         // Check in on me is on by default. Before 0.7.3 it was saved as PopIns, off by default, so the new name turns it on once for everyone.
         [DataMember] public bool CheckIns = true;
         [DataMember] public string VoiceStyle;
+        // 立绘皮肤：0 原版，1 清晰，2 像素，3 动漫（素材来自 X1a0heZzzz/capri-desktop-pet）
+        [DataMember] public int ArtPack;
         [DataMember] public bool StartupSet;
         [DataMember] public bool QuickHands;
         [DataMember] public bool Bypass;
@@ -912,6 +914,10 @@ namespace CapriDesktop
         private readonly string settingsPath;
         private readonly bool testing;
         private readonly Stopwatch clock = Stopwatch.StartNew();
+        private int packCell;
+        private long packAt;
+        private Bitmap packCache;
+        private string packCacheId;
         private Preferences preferences;
         private Bitmap frame;
         private Point anchor;
@@ -1361,6 +1367,16 @@ namespace CapriDesktop
             visibilityItem = new ToolStripMenuItem("Hide Capri", null, delegate { SetHidden(!hidden); });
             menu.Items.Add(visibilityItem);
             ToolStripMenuItem sizes = new ToolStripMenuItem("Size");
+            ToolStripMenuItem artItem = new ToolStripMenuItem("立绘");
+            string[] artNames = { "原版", "清晰", "像素", "动漫" };
+            for (int a = 0; a <= 3; a++)
+            {
+                int pick = a;
+                ToolStripMenuItem artOpt = new ToolStripMenuItem(artNames[a], null, delegate { SetArtPack(pick); });
+                artOpt.Checked = preferences.ArtPack == pick;
+                artItem.DropDownItems.Add(artOpt);
+            }
+            menu.Items.Add(artItem);
             AddSize(sizes, "Small", 170);
             AddSize(sizes, "Medium", 240);
             AddSize(sizes, "Large", 320);
@@ -8371,7 +8387,56 @@ namespace CapriDesktop
             veilUntil = now + Shatter.Handoff;
         }
 
-        // tween, when given, is a spare cell to draw in place of the clip's own.
+        // 立绘皮肤：三套 8×9 图集（192×208/帧）。状态只做最小映射，动作/口型/趴窗逻辑不变，
+        // 画面上换成所选皮肤对应的帧。
+        internal static readonly string[] ArtPackIds = { "capri-clear", "capri-pixel", "capri-anime" };
+        private static readonly int[] PackCounts = { 6, 8, 8, 4, 5, 8, 6, 6, 6 };
+
+        private Bitmap PackArt(string id)
+        {
+            if (packCacheId == id && packCache != null) return packCache;
+            if (packCache != null) packCache.Dispose();
+            packCache = LoadArt("Capri.Pack." + id + ".png");
+            packCacheId = id;
+            return packCache;
+        }
+
+        private void DrawPack(Graphics graphics)
+        {
+            long now = Environment.TickCount;
+            if (packAt == 0) packAt = now;
+            if (now - packAt >= 110) { packCell++; packAt = now; }
+            int row = PackRow();
+            int count = PackCounts[row];
+            int cell = count <= 0 ? 0 : packCell % count;
+            Bitmap atlas = PackArt(ArtPackIds[preferences.ArtPack - 1]);
+            float h = preferences.Size * 1.11f; // 对齐 idle 的 Height，避免把 Size 当像素缩放成几万
+
+            float w = h * 192f / 208f;
+            graphics.DrawImage(atlas, new RectangleF(-w / 2f, -h / 2f, w, h), new RectangleF(cell * 192f, row * 208f, 192f, 208f), GraphicsUnit.Pixel);
+        }
+
+        private int PackRow()
+        {
+            if (clip == walk || walking) return facingLeft ? 2 : 1;
+            if (Asleep || clip == sleep) return 5;
+            if (clip == arrive || clip == leave || clip == glitch) return 4;
+            if (clip == wake || clip == dance || clip == perchDance) return 3;
+            if (clip == dangle) return 8;
+            return 0;
+        }
+
+        internal void SetArtPack(int pick)
+        {
+            preferences.ArtPack = pick;
+            packCell = 0;
+            packAt = 0;
+            if (packCache != null) { packCache.Dispose(); packCache = null; packCacheId = null; }
+            SavePreferences();
+            UpdateAnimation();
+        }
+
+                // tween, when given, is a spare cell to draw in place of the clip's own.
         private void Draw(Graphics graphics, Clip shown, int cell, int talk = -1, Bitmap tween = null)
         {
             if (veiled || clock.Elapsed.TotalSeconds < veilUntil) return;
@@ -8387,6 +8452,7 @@ namespace CapriDesktop
             graphics.TranslateTransform(Width / 2f, Height / 2f + breathe);
             graphics.RotateTransform(tilt + (float)leanAngle);
             if (facingLeft) graphics.ScaleTransform(-1, 1);
+            if (preferences.ArtPack > 0) { DrawPack(graphics); return; }
             Bitmap art = Art(shown), strip = tween ?? art;
             int width = art.Width / shown.Count;
             if (tween != null) cell = 0;
