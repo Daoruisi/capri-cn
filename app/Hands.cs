@@ -88,11 +88,11 @@ namespace CapriDesktop
         internal static readonly string[] Presets = { "封锁", "戒备", "信任", "黑墙", "自定义" };
         private static readonly string[] Told =
         {
-            "Everything is off: she asks first before she does anything on your PC.",
-            "She opens apps and sites, plays music and presses shortcuts, and asks first for the rest.",
-            "She does what you ask, and asks first before paying or anything you didn't mention.",
-            "Everything is on: she never asks, types passwords and card numbers, and listens for \"Hey Capri\".",
-            "Your own mix. Pick a preset to start again from it."
+            "全关：在你电脑上做什么都先问。",
+            "她开应用和网站、放音乐、按快捷键，其余先问。",
+            "她做你要她做的，付款和没提到的事先问你。",
+            "全开：从不问，会输入密码卡号，还会听“嘿 Capri”。",
+            "你自己的组合。选个预设可以重新开始。"
         };
         // The Settings line under her SECURITY button, short enough for its row.
         private static readonly string[] Shorts = { "凡事都先问你。", "应用、音乐和快捷键；其余先问。", "付款和你没说的，她会先问。", "从不问，还听“嘿 Capri”。", "你自己配的一套。" };
