@@ -592,16 +592,18 @@ namespace CapriDesktop
             perchNote.Bounds = new Rectangle(28 + c, 756, 328, 18);
             artRotate = Switch("随机换装立绘", c, 770, delegate { if (!syncing) capri.ToggleArtRotate(); });
             artRotate.AccessibleName = "随机换装立绘。开着时每隔一段时间随机换一套，停留一会儿再回到你选的那套";
-            artEvery = Input(28 + c, 796, 168, 22);
+            artEvery = Input(28 + c, 796, 108, 22);
             artEvery.Cue = "间隔（分钟）";
             artEvery.Box.AccessibleName = "随机换装的间隔，分钟";
             artEvery.Box.Leave += delegate { ApplyArtRotate(); };
             artEvery.Box.KeyDown += delegate(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; ApplyArtRotate(); } };
-            artHold = Input(208 + c, 796, 168, 22);
+            artHold = Input(208 + c, 796, 108, 22);
             artHold.Cue = "停留（秒）";
             artHold.Box.AccessibleName = "每套立绘停留的秒数";
             artHold.Box.Leave += delegate { ApplyArtRotate(); };
             artHold.Box.KeyDown += delegate(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; ApplyArtRotate(); } };
+            Caption("分钟", 28 + c + 114, 800, small, Faint);
+            Caption("秒", 208 + c + 114, 800, small, Faint);
             for (int i = first; i < Controls.Count; i++)
             {
                 Control control = Controls[i];
