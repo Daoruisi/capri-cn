@@ -56,6 +56,12 @@ export function apply(ctx) {
     status: 'idle',
     detail: '',
     summary: '',
+    think: '',
+    turnTokens: 0,
+    dayTokens: 0,
+    totalTokens: 0,
+    actions: 0,
+    approval: false,
     doneAt: 0,
     doneId: 0
   }
@@ -92,17 +98,36 @@ export function apply(ctx) {
         state.status = 'thinking'
         state.detail = ''
         state.summary = ''
+        state.think = ''
+        state.turnTokens = 0
+        state.actions = 0
+        state.approval = false
+        break
+      case 'approval/asked':
+        state.approval = true
+        state.status = 'waiting'
+        break
+      case 'approval/decided':
+        state.approval = false
         break
       case 'tool/call':
         state.status = 'working'
         state.detail = detailOf(data)
+        state.actions += 1
         break
       case 'tool/result':
         if (state.status === 'working') state.detail = state.detail || ''
         break
       case 'assistant/message': {
         const text = textOf(data.content ?? data.message ?? data.text).replace(/\s+/g, ' ').trim()
-        if (text) state.summary = text.slice(0, 160)
+        if (text) { state.summary = text.slice(0, 160); state.think = text.slice(0, 120) }
+        const usage = data.usage
+        if (usage && typeof usage === 'object') {
+          const n = (Number(usage.inputTokens) || 0) + (Number(usage.cacheReadTokens) || 0) + (Number(usage.outputTokens) || 0)
+          state.turnTokens += n
+          state.totalTokens += n
+          state.dayTokens += n
+        }
         break
       }
       case 'turn/end':
