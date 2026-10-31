@@ -1,4 +1,4 @@
-# Capri 简体中文分支（面向中文开发者）
+﻿# Capri 简体中文分支（面向中文开发者）
 
 > 非官方分支。原项目：[lachydotmcg/capri-desktop](https://github.com/lachydotmcg/capri-desktop)（PolyForm Noncommercial 1.0.0）。
 > 本分支只做**汉化**和几处**本地可用性**改动，不改她的性格、人设和安全规则。
@@ -146,3 +146,26 @@ Capri 每 1.5 秒读一次，`doneId` 变化时播报「「<会话标题>」搞�
 - 本分支的汉化文本、`localization/` 工具、`plugins/capri-bridge/` 同样按上述非商业条款提供。
 - Capri 是同人项目，与 CD PROJEKT RED、动画版权方及声优无隶属或背书关系。
 - 语音部分请遵守原项目对"克隆/模仿真人声音"的限制。
+
+---
+
+## 八、立绘桌宠 `sprite-pet/`（与本体的关系）
+
+`sprite-pet/` 是一个**只做立绘**的独立小程序（单文件 `Pet.cs`，约 480 行，编译出来 16 KB）：
+
+- 三套素材：`pets/capri-clear`、`pets/capri-pixel`、`pets/capri-anime`（各 8 列 × 9 行，192×208/帧）
+- 右键换装 / 调大小 / 总在最前；拖拽、双击挥手、自己溜达；托盘可「呼到这里」
+- 分层窗口 + 逐像素透明，能压在任何窗口上，不依赖 DSH
+- 编译：`sprite-pet\build.cmd`（用系统自带 csc，不需要 SDK），或
+  ```
+  csc /target:winexe /out:CapriPet.exe /reference:System.Windows.Forms.dll /reference:System.Drawing.dll Pet.cs
+  ```
+
+它和主程序 `Capri.exe` **互不依赖**：主程序管大脑/语音/工具，这个只管把立绘放到桌面上。
+两边可以同时跑，也可以只跑其中一个。
+
+### 素材授权（重要）
+
+`pets/` 下的图集来自 [X1a0heZzzz/capri-desktop-pet](https://github.com/X1a0heZzzz/capri-desktop-pet)，
+该项目的 `ASSET_RIGHTS.md` 明确：**MIT 只覆盖代码，不覆盖角色素材**，公开可下载不等于获得再分发授权。
+这里存放只为构建方便，**不在本仓库许可证范围内**；对外再分发前请自行确认权利，权利方可要求移除。
