@@ -8280,6 +8280,7 @@ namespace CapriDesktop
         private void RenderFrame()
         {
             if (!IsHandleCreated || hidden || IsDisposed) return;
+            TickArtRotate();
             double now = clock.Elapsed.TotalSeconds;
             int cell = Advance(now);
             if (arrivalDue)
