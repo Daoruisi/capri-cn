@@ -1383,33 +1383,6 @@ namespace CapriDesktop
                 artOpt.Checked = preferences.ArtPack == pick;
                 artItem.DropDownItems.Add(artOpt);
             }
-            ToolStripMenuItem rotate = new ToolStripMenuItem("随机切换立绘");
-            rotate.Checked = preferences.ArtRotate;
-            rotate.Click += delegate
-            {
-                preferences.ArtRotate = !preferences.ArtRotate;
-                artNextAt = DateTime.UtcNow.AddMinutes(Math.Max(1, preferences.ArtRotateEvery));
-                artRevertAt = default(DateTime);
-                if (!preferences.ArtRotate) SetArtPack(artBase == 0 && preferences.ArtPack != 0 ? preferences.ArtPack : artBase);
-                SavePreferences();
-            };
-            artItem.DropDownItems.Add(rotate);
-            foreach (int minutes in new[] { 5, 10, 30 })
-            {
-                int pick = minutes;
-                ToolStripMenuItem every = new ToolStripMenuItem("每 " + minutes + " 分钟换一次");
-                every.Checked = preferences.ArtRotateEvery == minutes;
-                every.Click += delegate { preferences.ArtRotateEvery = pick; artNextAt = DateTime.UtcNow.AddMinutes(pick); SavePreferences(); };
-                artItem.DropDownItems.Add(every);
-            }
-            foreach (int hold in new[] { 10, 30, 60 })
-            {
-                int pick = hold;
-                ToolStripMenuItem stay = new ToolStripMenuItem("每套停留 " + hold + " 秒");
-                stay.Checked = preferences.ArtRotateHold == hold;
-                stay.Click += delegate { preferences.ArtRotateHold = pick; SavePreferences(); };
-                artItem.DropDownItems.Add(stay);
-            }
             menu.Items.Add(artItem);
             AddSize(sizes, "Small", 170);
             AddSize(sizes, "Medium", 240);
@@ -8491,6 +8464,29 @@ namespace CapriDesktop
             if (pick == preferences.ArtPack) pick = 1 + (pick % count);
             SetArtPack(pick);
             artRevertAt = now.AddSeconds(Math.Max(3, preferences.ArtRotateHold));
+        }
+
+        internal bool ArtRotate { get { return preferences.ArtRotate; } }
+        internal int ArtRotateEvery { get { return Math.Max(1, preferences.ArtRotateEvery); } }
+        internal int ArtRotateHold { get { return Math.Max(3, preferences.ArtRotateHold); } }
+
+        internal void ToggleArtRotate()
+        {
+            preferences.ArtRotate = !preferences.ArtRotate;
+            artNextAt = DateTime.UtcNow.AddMinutes(ArtRotateEvery);
+            artRevertAt = default(DateTime);
+            if (!preferences.ArtRotate) SetArtPack(artBase);
+            SavePreferences();
+            mainframe.Sync();
+        }
+
+        internal void SetArtRotate(int every, int hold)
+        {
+            preferences.ArtRotateEvery = Math.Max(1, every);
+            preferences.ArtRotateHold = Math.Max(3, hold);
+            artNextAt = DateTime.UtcNow.AddMinutes(preferences.ArtRotateEvery);
+            SavePreferences();
+            mainframe.Sync();
         }
 
         internal void SetArtPack(int pick)
