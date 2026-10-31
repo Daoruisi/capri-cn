@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -1443,6 +1444,10 @@ namespace CapriDesktop
             Hands.Look = LookAt;
             Hands.Work = RunJob;
             Hands.CheckBalance = delegate { return brain.Balance(); };
+            dshTimer = new System.Windows.Forms.Timer();
+            dshTimer.Interval = 1500;
+            dshTimer.Tick += delegate { DshTick(); };
+            dshTimer.Start();
             brain.Act = DoTool;
             Hands.Resume = ResumeJob;
             Hands.Rename = CallThem;
@@ -2608,7 +2613,7 @@ namespace CapriDesktop
                 }
             }
             // Where the click happened, not where the mouse is by now.
-            else if (pendingClick && IsDoubleClick(pendingPoint, PointToScreen(e.Location), clock.ElapsedMilliseconds - pendingTime)) { pendingClick = false; clickDelay.Stop(); StartRide(); }
+            else if (pendingClick && IsDoubleClick(pendingPoint, PointToScreen(e.Location), clock.ElapsedMilliseconds - pendingTime)) { pendingClick = false; clickDelay.Stop(); ShowBalance(); }
             else { pendingClick = true; pendingPoint = PointToScreen(e.Location); pendingTime = clock.ElapsedMilliseconds; clickDelay.Stop(); clickDelay.Start(); }
             dragging = false;
         }
@@ -6803,6 +6808,45 @@ namespace CapriDesktop
 
         // Letting go of her pitch, speed, robot or glitch slider: she says a line in the voice she's using, so they hear it.
         // ElevenLabs makes the line once; after that its audio is restyled here, so dragging around spends no more credits.
+        // The DSH session's live state, written by the capri-bridge plugin: when a turn ends she says so.
+        private void DshTick()
+        {
+            if (testing) return;
+            string file = Path.Combine(Path.GetDirectoryName(settingsPath), "dsh-state.json");
+            if (!File.Exists(file)) return;
+            DshState now;
+            try { now = Voice.Read<DshState>(File.ReadAllBytes(file)); }
+            catch (Exception) { return; }
+            if (now == null || now.DoneId <= dshDone) return;
+            dshDone = now.DoneId;
+            if (!dshSeen) { dshSeen = true; return; }
+            string line = string.IsNullOrEmpty(now.Summary) ? "搞定了。" : "搞定了：" + now.Summary;
+            if (!string.IsNullOrEmpty(now.Title)) line = "「" + now.Title + "」" + line;
+            SayNow(line);
+        }
+
+        private System.Windows.Forms.Timer dshTimer;
+        private int dshDone;
+        private bool dshSeen;
+
+        // A double-click on her asks what's left on their key: her own balance tool, said out loud.
+        private void ShowBalance()
+        {
+            if (balancing) return;
+            balancing = true;
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                string said = null;
+                try { said = brain.Balance(); }
+                catch (Exception) { said = null; }
+                balancing = false;
+                if (string.IsNullOrEmpty(said)) said = "余额查不到，网络或者 Key 可能有点问题。";
+                Post(delegate { if (!IsDisposed) SayNow(said); });
+            });
+        }
+
+        private volatile bool balancing;
+
         internal void HearVoiceStyle()
         {
             bool paid = !preferences.Quiet && !voiceBroke && (Speak != null || voice.Ready);
@@ -6810,6 +6854,16 @@ namespace CapriDesktop
             string line = preferences.Silent ? StyleSilent : paid || free ? StyleLine : StyleMissing;
             if (line == StyleLine && SpeaksHd && WakeFor(line)) return;
             CheckVoice(line, false);
+        }
+
+        // Says a line of her own on the spot, with no "sys:" prefix in her bubble.
+        private void SayNow(string line)
+        {
+            if (hidden) SetHidden(false);
+            brain.Cancel();
+            heard = null;
+            box.Prompt = null;
+            Answer(++asking, line, TalkState.Talking, false);
         }
 
         private void CheckVoice(string line, bool quiet)
@@ -8014,9 +8068,54 @@ namespace CapriDesktop
             });
         }
 
+        private static readonly Regex Han = new Regex(@"[\u3400-\u9fff]");
+        private Dictionary<string, string> dubbed;
+
+        // The line the voice actually says. Her free voice only knows English, so a Chinese line goes through the
+        // brain first and is spoken in English; what's on screen stays Chinese.
+        private string Dubbed(string words)
+        {
+            if (string.IsNullOrEmpty(words) || !Han.IsMatch(words) || !EnglishOnlyVoice) return words;
+            if (dubbed != null && dubbed.ContainsKey(words)) return dubbed[words];
+            string said = null;
+            try { said = brain.Translate(words); }
+            catch (Exception) { said = null; }
+            if (!SaysEnglish(said)) return words;
+            if (dubbed == null) dubbed = new Dictionary<string, string>();
+            if (dubbed.Count >= 64) dubbed.Clear();
+            dubbed[words] = said;
+            return said;
+        }
+
+        // Whether the voice she's set to can only say English.
+        private bool EnglishOnlyVoice
+        {
+            get
+            {
+                if (preferences.HdVoice) return false;
+                if (preferences.ServerVoice)
+                {
+                    if (preferences.ServerApi != VoiceServer.Files) return false;
+                    string lang = (preferences.ServerModel ?? "").Trim().ToLowerInvariant();
+                    return !(lang.StartsWith("zh") || lang.Contains("chinese") || lang.Contains("cmn"));
+                }
+                return voice.Key == null;
+            }
+        }
+
+        // A reply that came back as more Chinese isn't a translation, so the line is said as it is.
+        private static bool SaysEnglish(string said)
+        {
+            if (string.IsNullOrWhiteSpace(said)) return false;
+            int han = 0;
+            foreach (char letter in said) if (letter >= '\u3400' && letter <= '\u9fff') han++;
+            return han * 5 <= said.Length;
+        }
+
         private byte[] Voiced(Func<string, byte[]> speak, Func<string, byte[]> free, string words, out string problem)
         {
             problem = null;
+            words = Dubbed(words);
             // Her free voices style their own audio; ElevenLabs hands back a finished WAV, so its pitch, speed and glitch go on here.
             try { return speak == free ? speak(words) : VoiceFx.Styled(speak(words), words); }
             catch (VoiceException error)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -259,6 +259,36 @@ namespace CapriDesktop
         internal Moment(string on, string line, string[] words) { On = on; Line = line; Words = words; }
     }
 
+    // What a translation reply looks like: OpenAI and DeepSeek put the line in choices[].message.content.
+    [DataContract]
+    internal sealed class DubAnswer
+    {
+        [DataMember(Name = "choices")] public DubChoice[] Choices;
+    }
+
+    [DataContract]
+    internal sealed class DubChoice
+    {
+        [DataMember(Name = "message")] public DubMessage Message;
+        [DataMember(Name = "text")] public string Text;
+    }
+
+    [DataContract]
+    internal sealed class DubMessage
+    {
+        [DataMember(Name = "content")] public string Content;
+    }
+    // What the capri-bridge DSH plugin writes: the session's live state.
+    [DataContract]
+    internal sealed class DshState
+    {
+        [DataMember(Name = "status")] public string Status;
+        [DataMember(Name = "title")] public string Title;
+        [DataMember(Name = "detail")] public string Detail;
+        [DataMember(Name = "summary")] public string Summary;
+        [DataMember(Name = "doneId")] public int DoneId;
+        [DataMember(Name = "doneAt")] public long DoneAt;
+    }
     // What DeepSeek's /user/balance answers with.
     [DataContract]
     internal sealed class BalanceReport
@@ -1300,6 +1330,51 @@ namespace CapriDesktop
             return raw;
         }
 
+        // A line for the voice to say in English. Her free voice only speaks English, so a Chinese line is
+        // translated before it's spoken; the words on screen stay as they are.
+        internal string Translate(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return null;
+            Cloud cloud = Remote;
+            if (cloud == null) return null;
+            string baseUrl = cloud.Kind == "anthropic" ? Anthropic : cloud.Kind == "deepseek" ? DeepSeek : OpenAi;
+            string model = Model ?? cloud.Model;
+            string body = "{\"model\":" + Voice.Quote(model) +
+                ",\"max_tokens\":1200,\"stream\":false,\"messages\":[{\"role\":\"system\",\"content\":" +
+                Voice.Quote("You dub lines for a text-to-speech voice. Turn the line you are given into English exactly as it should be spoken out loud: keep the meaning, the attitude and any slang, keep names and product names as they are, and answer with the English line only, with no quotes, no notes and no preamble.") +
+                "},{\"role\":\"user\",\"content\":" + Voice.Quote(text) + "}]}";
+            try
+            {
+                ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(baseUrl + (cloud.Kind == "anthropic" ? "/v1/messages" : "/chat/completions"));
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.UserAgent = "Capri-Desktop";
+                request.Timeout = 20000;
+                request.ReadWriteTimeout = 20000;
+                if (cloud.Kind == "anthropic")
+                {
+                    request.Headers["x-api-key"] = cloud.Key;
+                    request.Headers["anthropic-version"] = "2023-06-01";
+                }
+                else request.Headers["Authorization"] = "Bearer " + cloud.Key;
+                byte[] payload = Encoding.UTF8.GetBytes(body);
+                request.ContentLength = payload.Length;
+                using (Stream upload = request.GetRequestStream()) upload.Write(payload, 0, payload.Length);
+                using (WebResponse response = request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (MemoryStream copy = new MemoryStream())
+                {
+                    stream.CopyTo(copy);
+                    DubAnswer answer = Voice.Read<DubAnswer>(copy.ToArray());
+                    if (answer == null || answer.Choices == null || answer.Choices.Length == 0) return null;
+                    string said = (answer.Choices[0].Message == null ? null : answer.Choices[0].Message.Content) ?? (answer.Choices[0].Text);
+                    said = (said ?? "").Trim().Trim('"').Trim();
+                    return said.Length == 0 ? null : said;
+                }
+            }
+            catch (Exception) { return null; }
+        }
         // What's left on their key. DeepSeek is the one provider that answers; the others get a plain no.
         internal string Balance()
         {

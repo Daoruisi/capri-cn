@@ -1,0 +1,264 @@
+She closed while starting twice in a row, so her settings were reset. Your keys stayed. The old settings are in settings.crashed.json.	她连续两次启动时都崩了，所以设置被重置了。你的 Key 都还在，旧设置放在 settings.crashed.json。
+Checking for updates...	正在检查更新…
+. Use her tray menu.	。用她的托盘菜单。
+Couldn't check for updates. I'll try again in 3 hours.	检查更新失败了，3 小时后再试。
+Checking the update before restarting...	重启前先确认一下更新…
+The update needs a Yes in the Windows prompt. Try again.	更新需要在 Windows 的弹窗里点“是”，再试一次。
+Your antivirus blocked the update. Capri is still running.	杀毒软件挡住了这次更新，Capri 还在运行。
+). Capri is still running.	）。Capri 还在运行。
+Going to sleep. A click on me wakes me up.	去睡啦，点我一下就能叫醒我。
+ on my tray icon brings me back.	 在托盘图标上就能把我叫回来。
+Teleporting to your mouse.	传送到你鼠标这儿。
+There's no screen like that to go to.	没有那样的屏幕可以去。
+There's no other screen to go to.	没有别的屏幕可以去了。
+There's nowhere else to go right now.	现在没别的地方可去。
+Off somewhere else.	溜到别处去了。
+I'm not lying down.	我没躺着。
+Already sitting up.	已经坐起来了。
+Sitting right here.	就坐这儿。
+Hopped off your cursor.	从你鼠标上下来了。
+Hanging right here.	就挂这儿。
+Already riding your cursor.	已经在你鼠标上了。
+Couldn't get on your cursor just now.	刚才没爬上你的鼠标。
+I'm not riding your cursor.	我没在你鼠标上。
+Couldn't move like that.	没法那样动。
+Which window, choom?	哪个窗口，choom？
+My Mainframe isn't open. Open it and I'll sit on it.	我的主控台没开。打开它我就坐上去。
+There's no room for me on top of my Mainframe: something's covering it, or it's too close to the top of the screen.	主控台顶上没我的位置：被什么挡住了，或者贴屏幕顶太紧。
+ is minimized. Open it and I'll sit on it.	 最小化了。打开它我就坐上去。
+ fills the screen, so its top edge is off the top. Make it smaller and I'll sit on it.	 占满整屏，顶边跑到屏幕外面去了。缩小一点我就坐上去。
+ is too small to sit on.	 太小了，坐不下。
+Already lying down.	已经躺着了。
+There's no room to lie down here. Try "lie down on the taskbar".	这儿没地方躺。试试“躺在任务栏上”。
+There's nothing under me to lie on.	我底下没东西可躺。
+Going for a little walk.	去溜达一圈。
+There's no room to walk around here.	这儿没地方溜达。
+Wandering off somewhere.	到处晃晃去。
+There's no screen like that for the Mainframe.	没有那样的屏幕给主控台。
+There's no other screen for the Mainframe.	没有别的屏幕给主控台了。
+Brought the Mainframe over to your mouse.	把主控台搬到你鼠标这儿了。
+Dancing. Tell me to stop when you've had enough.	跳起来了。看够了就叫我停。
+Right-click her tray icon, then choose Move and Hop off.	右键她的托盘图标，选“移动”，再选“下鼠标”。
+Copied my error log. Paste it in the Discord so they can fix me, choom.	错误日志复制好了。丢到 Discord 里让他们修我，choom。
+ when you want me back.	 想让我回来时按这个。
+Windows wouldn't let Capri change her Run entry.	Windows 不让 Capri 改她的开机启动项。
+You pressed Esc, so I stopped.	你按了 Esc，我就停下了。
+Bigger brain models handle jobs like this better. Pick one under BRAIN in Capri Mainframe.	更大的大脑模型干这种活更稳。在主控台“大脑”里换一个。
+ and press Enter, scroll down through the results and look at a few, then click the video that fits best.	，按回车，往下翻几条看看，再点最合适的那个视频。
+Play their Liked Songs on Spotify: open Spotify, go to Your Library, open Liked Songs and press its play button.	在 Spotify 放他们的“我喜欢的歌曲”：打开 Spotify，进“你的音乐库”，打开“我喜欢的歌曲”，点播放。
+ and press Enter, then press play on the best match.	，按回车，然后点最匹配那个的播放。
+: open YouTube, click its search bar, type it and press Enter, then scroll down through the results.	：打开 YouTube，点搜索框，输进去按回车，再往下翻结果。
+Press a key, alone or with Ctrl, Alt, Shift or Win.	按一个键，或者配合 Ctrl、Alt、Shift、Win。
+ is taken by another app. Try another.	 被别的程序占了，换一个。
+Type a model name first.	先输入模型名。
+Custom models need Ollama or an API key.	自定义模型需要 Ollama 或 API Key。
+Find her a brain first.	先给她找个大脑。
+. If it doesn't answer, it isn't on your key.	。如果它不应答，说明你的 Key 上没有这个模型。
+ElevenLabs back on.	ElevenLabs 又开着了。
+ElevenLabs off. I'll type, no credits used.	ElevenLabs 关了，我改打字，不烧额度。
+ElevenLabs off. Free voice it is.	ElevenLabs 关了，那就用免费语音。
+Voice off. I'll type instead.	声音关了，我打字吧。
+Paste your ElevenLabs key, then press Connect.	粘贴你的 ElevenLabs Key，然后点连接。
+. You can pick another model.	。你可以换个模型。
+Slow? Press Free key for a free NVIDIA key.	嫌慢？点“免费 Key”领一个免费的 NVIDIA Key。
+Her brain runs on your PC, and open games share that power. For fast replies, click here, make a free NVIDIA key, then paste it in Capri Mainframe under BRAIN and press Connect.	她的大脑跑在你自己电脑上，开着的游戏会分走算力。想快就点这里，弄个免费 NVIDIA Key，粘到主控台“大脑”下面点连接。
+DeepSeek can't see. Use an NVIDIA key to watch.	DeepSeek 看不见，要看屏幕得换 NVIDIA Key。
+This brain can't see. Press Free key to fix.	这个大脑看不见，点“免费 Key”修一下。
+DeepSeek can't see your screen. In Capri Mainframe, press Free key and connect a free NVIDIA key instead.	DeepSeek 看不见你的屏幕。在主控台点“免费 Key”，换一个免费的 NVIDIA Key。
+You can't see their screen: your brain is offline.	你看不见他们的屏幕：你的大脑离线了。
+Your brain can't see. Tell them to press Free key in Capri Mainframe and connect a free NVIDIA key so you can.	你的大脑看不见。让他们在主控台点“免费 Key”，接个免费 NVIDIA Key，你就能看了。
+Your eyes are still downloading, so you can't see their screen yet.	你的眼睛还在下载，暂时还看不见他们的屏幕。
+The screen capture is black. Try borderless or windowed mode.	截出来是全黑的。试试无边框或窗口模式。
+You looked but couldn't make out their screen.	你看了，但没看清他们的屏幕。
+Couldn't capture the screen. I'll try again.	截图失败了，我再试一次。
+Okay, I left it alone.	好，我不动它了。
+On it. Esc stops me.	这就去。按 Esc 能让我停。
+On it. Escape stops me.	这就去。按 Escape 能让我停。
+That isn't an NVIDIA, OpenAI, Claude or DeepSeek key.	这不是 NVIDIA、OpenAI、Claude 或 DeepSeek 的 Key。
+Follow the guide I just opened. Make your ElevenLabs key with Restrict key turned off, paste it in the box under VOICE, press Connect and pick my voice in the Voice ID box. If you're stuck, just join the Discord, choom. It's under Help in my right-click menu.	照着我刚打开的指南做。做 ElevenLabs Key 时把“限制 Key”关掉，粘到“声音”下面的框里，点连接，再在“音色 ID”框里选我的声音。卡住了就来 Discord 找我，choom，右键菜单的“帮助”里有。
+Sign in on that page, press Generate API Key and copy it. Then paste it in the box under BRAIN and press Connect. It's free. If you're stuck, just join the Discord, choom. It's under Help in my right-click menu.	在那页登录，点 Generate API Key 复制下来，粘到“大脑”下面的框里点连接。这是免费的。卡住了就来 Discord 找我，choom，右键菜单的“帮助”里有。
+This may take some time. For a better sounding, faster voice, get an API key.	可能要花点时间。想要更好听、更快的嗓子，去弄个 API Key。
+, one time. Then she hears any mic, offline. Click to watch it download.	，只下一次。之后离线也能听任何麦克风。点开看下载进度。
+I can't hear anything from your mic. Pick the right one under VOICE, or let desktop apps use your mic in Windows Settings > Privacy & security > Microphone.	你的麦克风一点声音都没有。在“声音”里挑对麦克风，或者在 Windows 设置 > 隐私和安全性 > 麦克风 里允许桌面应用使用。
+, one time. She'll talk as soon as it's in. Click to watch it download.	，只下一次。装好她马上就能说话。点开看下载进度。
+I'm not listening for "Hey Capri" on your Bluetooth headset: while its mic is open, everything you hear drops to phone-call quality. Pick another mic under VOICE, or use my talk key.	我不会用你的蓝牙耳机听 “Hey Capri”：它麦克风一开，你听到的所有声音都会掉成通话音质。在“声音”里换个麦克风，或者用我的说话键。
+Listening for "Hey Capri". Nothing leaves your PC until you say it.	正在听 “Hey Capri”。你不说，什么都出不了这台电脑。
+Not listening for "Hey Capri".	不再听 “Hey Capri”了。
+Listening for "Hey Capri" needs 64-bit Windows.	听 “Hey Capri” 需要 64 位 Windows。
+, one time. It all stays on your PC.	，只下一次。全都留在你自己电脑上。
+Her HD voice needs a graphics card with 6 GB or more.	她的 HD 声音需要 6 GB 以上显存的显卡。
+), one time. Pick another free voice to stop.	），只下一次。想停就换一个免费声音。
+Her voice is OFF. Pick another row under VOICE to hear her.	她的声音是关的。在“声音”里换一行就能听见她。
+Get her free voice, or paste an ElevenLabs key.	先去拿她的免费声音，或者粘一个 ElevenLabs Key。
+Paste your Voice ID first.	先粘你的音色 ID。
+Voice link online. Miss me, choom?	语音线路接通了。想我了吧，choom？
+Get my free voice under VOICE to hear that, choom.	想听就先去“声音”里拿我的免费声音，choom。
+How do I sound now, choom?	我现在这嗓子怎么样，choom？
+My voice is OFF, choom. Pick PREBUILT LOCAL to hear that.	我的声音关着呢，choom。选“内置本地”就能听。
+One sec, waking my HD voice.	等一下，我把 HD 声音叫醒。
+Your voice uses her HD voice, and that needs a graphics card with 6 GB or more.	你的声音走的是她的 HD 声音，那需要 6 GB 以上显存的显卡。
+Reading your clip...	正在读你的录音…
+Got it. I'll talk like you now, choom.	收到，我以后用你的声音说话，choom。
+Needs your Voice ID.	需要你的音色 ID。
+), or pick CLOUD VOICE.	），或者选“云端声音”。
+Free voice, runs on your PC.	免费声音，跑在你自己电脑上。
+Free voice, runs on your PC. Your voice only works with HD.	免费声音，跑在你自己电脑上。你自己的声音只在 HD 下能用。
+HD voice on your graphics card. Games get her free voice.	HD 声音跑在你的显卡上，游戏里用她的免费声音。
+HD voice from your clip, on your graphics card. Games get her free voice.	用你的录音做的 HD 声音，跑在你的显卡上，游戏里用她的免费声音。
+ Her free voice fills in if it's down.	 它挂了就用她的免费声音顶上。
+ElevenLabs isn't picked, so voice chat is off. Pick it under CLOUD VOICE in the Mainframe to talk to me.	没选 ElevenLabs，所以语音聊天是关的。想跟我说话，在主控台“云端声音”里选它。
+Voice chat needs my Voice ID, choom. Right-click me, open Capri Mainframe and pick a voice in the Voice ID box under VOICE. Type to me for now.	语音聊天需要我的音色 ID，choom。右键我，打开主控台，在“声音”的音色 ID 框里选个声音。先打字跟我说吧。
+Voice chat needs an ElevenLabs key, choom. Make one with Restrict key turned off, then paste it under VOICE in Capri Mainframe. Type to me for now.	语音聊天需要 ElevenLabs Key，choom。做的时候把“限制 Key”关掉，再粘到主控台“声音”下面。先打字跟我说吧。
+One sec, opening my ears.	等一下，我打开耳朵。
+. The fix is under VOICE.	。解决办法在“声音”里。
+Free voice chat on. Talk and I'll type back.	免费语音聊天开着。你说，我打字回。
+Free voice chat is on; talk and I'll type back.	免费语音聊天开着，你说，我打字回。
+Free voice chat is ready; your mic is muted.	免费语音聊天就绪，你的麦克风静音了。
+, so type to me for now. I'll say when I can hear you.	，先打字跟我说。能听见你的时候我会说。
+Online speech recognition is off in Windows. Turn it on in Settings > Privacy & security > Speech.	Windows 的在线语音识别是关的。去 设置 > 隐私和安全性 > 语音 打开它。
+The reason is under VOICE in the Mainframe.	原因在主控台的“声音”里。
+Turn on Online speech recognition in Windows Settings > Privacy & security > Speech.	到 Windows 设置 > 隐私和安全性 > 语音 里打开“在线语音识别”。
+I couldn't make out any words. Try closer to the mic.	没听清任何词。靠近麦克风再试。
+I couldn't hear that. Try again, or check your mic under VOICE.	我没听见。再试一次，或者在“声音”里看看麦克风。
+I couldn't make out any words. Try again closer to the mic.	没听清任何词。靠近麦克风再试一次。
+Opening voice chat...	正在打开语音聊天…
+Voice chat on. Talk to her.	语音聊天开了。跟她说吧。
+Out of ElevenLabs credits, so voice chat is off. Type to me for now, choom.	ElevenLabs 额度用完了，语音聊天关了。先打字跟我说，choom。
+Can't open my voice link. Right-click me and open Capri Mainframe. The reason and the fix are under VOICE. If you're stuck, just join the Discord, choom. It's under Help in my right-click menu.	打不开我的语音线路。右键我打开主控台，“声音”里有原因和解决办法。卡住了就来 Discord，choom，右键菜单“帮助”里。
+Already doing that.	已经在做了。
+Free voice chat off. Click the wave to listen again.	免费语音聊天关了。点那个挥手图标可以再听。
+Mic muted. Voice chat is paused until you unmute.	麦克风静音了。取消静音之前语音聊天会暂停。
+Voice chat resting. Talk and she'll pick up.	语音聊天在打盹。你一说话她就接。
+Mic muted. Click the mic to unmute.	麦克风静音了。点麦克风取消静音。
+Mic on. Talk and she'll pick up.	麦克风开了。你说她就接。
+Mic muted. Voice chat pauses once she stops talking.	麦克风静音了。等她说完这句，语音聊天就暂停。
+Got it. Esc stops me.	收到。按 Esc 能让我停。
+My brain's offline. Right-click me, open Capri Mainframe and press Set up her brain, or press Free key there for a free NVIDIA key. If you're stuck, just join the Discord, choom. It's under Help in my right-click menu.	我的大脑离线了。右键我，打开主控台，点“给她装个脑子”，或者点“免费 Key”领个免费 NVIDIA Key。卡住了就来 Discord，choom，右键菜单“帮助”里。
+Out of ElevenLabs credits, so she's getting her free voice.	ElevenLabs 额度用完了，换她的免费声音。
+Out of ElevenLabs credits. Pick PREBUILT LOCAL in Capri Mainframe and get her free voice.	ElevenLabs 额度用完了。在主控台选“内置本地”，拿她的免费声音。
+Out of ElevenLabs credits, so she's using her free voice.	ElevenLabs 额度用完了，她改用免费声音。
+Still thinking. My brain runs on your PC, so this is slow.	还在想。我的大脑跑在你自己电脑上，所以慢。
+ of free graphics memory, so she's on her free voice. Close games or pick a smaller brain.	 的显存空不出来，所以她用免费声音。关掉游戏，或者换个小一点的大脑。
+Boo. Just checking on you.	吓你一跳。就是来看看你。
+Hi! Don't mind me.	嗨！别管我。
+Miss me? I missed you.	想我了吧？我可想你了。
+Hey, you. Having fun?	嘿，你。玩得开心吗？
+Surprise. I got bored without you.	惊喜。没你我都快发霉了。
+Psst. Remember me? Tiny, glitchy, very important.	喂。还记得我吗？小小只、会闪、特别重要。
+I'm bored. Entertain me.	我无聊了。逗我玩。
+Hey. Hey. Look at me.	喂。喂。看我。
+You've been ignoring me for ages. Rude.	你无视我很久了。过分。
+Pay attention to me or I start clicking things.	关注我，不然我开始乱点东西了。
+Knock knock. It's your favourite gremlin.	咚咚。你最爱的那个小怪物来了。
+Choom. I'm bored out of my many minds.	choom。我这一堆脑子都快闲出病了。
+Knew you couldn't resist me.	就知道你扛不住我。
+Fine. Ignore me. See if I care.	行。无视我。看我管不管。
+Wow. Ignored. Noted.	哇哦。被无视了。记下了。
+I'll just sit here. Alone. Bored.	我就坐这儿吧。一个人。无聊。
+Night City?! You're taking me home, choom.	夜之城？！你这是带我回家，choom。
+Ooh, Cyberpunk. Go wreck some corpos for me.	哦，赛博朋克。去替我砸几个公司狗。
+[SIGNAL CORRUPTED] ...wait. I know that skyline.	[信号损坏] ……等等。那片天际线我认识。
+Wait, that's Night City. Turn it up.	等等，那是夜之城。声音开大点。
+Ooh, my soundtrack. Preem taste.	哦，我的原声带。品味不错。
+Now that's music. You're learning.	这才叫音乐。你有长进。
+Your CPU's cooking, choom. Careful, I might go cyberpsycho.	你 CPU 都快烧了，choom。小心我赛博精神病发作。
+Everything's lagging. One more tab and I go full cyberpsycho.	全都卡成幻灯片了。再开一个标签页我就彻底赛博精神病。
+[SIGNAL CORRUPTED] ...this lag is making me cyberpsycho. Close something.	[信号损坏] ……卡得我都快赛博精神病了。关点什么吧。
+Heh. Okay, I'll allow it.	嘿。行吧，准了。
+Pets logged. Morale up twelve percent.	摸头已记录。士气上涨百分之十二。
+Careful, choom. I bite viruses.	小心点，choom。我可是会咬病毒的。
+Head pats? On my chrome? Bold.	摸头？摸在我的铬合金上？胆子不小。
+Okay, that's nice. Don't tell anyone.	好吧，还挺舒服。别告诉别人。
+System status: very patted.	系统状态：被摸得很到位。
+You're gonna wear a groove in my firmware, choom.	你再摸下去我固件都要磨出沟了，choom。
+Easy on the hair. It took three patches to get it like this.	头发轻点。这造型打了三个补丁才弄好。
+Affection detected. Sending some back. Hi.	检测到好感。回敬一点。嗨。
+Keep going. This beats defragging.	继续。这比磁盘整理有意思多了。
+Hehe. My cooling fans just kicked in.	嘿嘿。我的散热风扇刚转了。
+Ten out of ten pats. Would get patted again.	摸头十星好评。还愿意再被摸。
+Is this a bribe? Because it's working.	这是贿赂吗？因为挺管用。
+Mmm. If I start glitch-purring, that's on you.	嗯。我要是开始故障式打呼噜，责任在你。
+Right here, choom.	我在这儿，choom。
+Go on, I'm listening.	说吧，我听着。
+, like nvidia/nemotron-3.5-super-vl-120b-a12b.	，比如 nvidia/nemotron-3.5-super-vl-120b-a12b。
+Back to choom, then.	那就还叫 choom 吧。
+Isn't it late, choom?	不早了，choom？
+Good morning, choom.	早上好，choom。
+I can't keep notes on this computer yet.	这台电脑上我还记不了笔记。
+My notes are full. Clear some out in me.md first.	我的笔记满了。先去 me.md 里清点。
+Couldn't save that to my notes.	这个没能存进我的笔记。
+. She stayed quiet.	。她没吭声。
+You told them about it.	你已经跟他们说过了。
+That model isn't on your key. Pick another one.	你的 Key 上没有这个模型。换一个。
+Their servers failed. Pick another model or retry.	他们服务器挂了。换个模型或者重试。
+Too many requests. Wait a minute, or watch slower.	请求太多了。等一分钟，或者放慢一点。
+Couldn't read that tool call. Try again.	那个工具调用没读懂。再试一次。
+My brain sent gibberish. Pick another model in Capri Mainframe.	我的大脑回了一堆乱码。在主控台换一个模型。
+My brain sent an empty reply. Try again or pick another model in Capri Mainframe.	我的大脑回了个空。再试一次，或者在主控台换个模型。
+, choom. Check your internet, then try me again.	，choom。检查下网络，再叫我一次。
+[SIGNAL CORRUPTED] Something in my head just sparked. Try me again?	[信号损坏] 我脑子里刚刚冒了个火花。再叫我一次？
+Your storage is full. Free up space, then try again.	你的硬盘满了。清点空间再试。
+Not enough free RAM. Close some apps, then try again.	内存不够了。关几个程序再试。
+The reply took too long.	回复等太久了。
+Happy Halloween, choom!	万圣节快乐，choom！
+Happy Halloween, choom. Trick or treat?	万圣节快乐，choom。不给糖就捣蛋？
+Boo! Happy Halloween, choom.	嗷！万圣节快乐，choom。
+The engine download is missing llama-server.exe.	引擎下载里少了 llama-server.exe。
+ keeps stopping. Check your connection and try again.	 老是断。检查下网络再试。
+ came down the wrong size. Try again.	 大小不对。再试一次。
+ failed its checksum. Try again.	 校验失败。再试一次。
+Brain not downloaded. Press Set up her brain.	大脑还没下载。点“给她装个脑子”。
+Brain crashed loading. Close games, press Refresh.	大脑加载时崩了。关掉游戏，点刷新。
+Brain loaded too slowly. Close games, press Refresh.	大脑加载太慢。关掉游戏，点刷新。
+Can't reach ElevenLabs. Check your internet.	连不上 ElevenLabs。检查下网络。
+ElevenLabs rejected the key. Press Forget, paste a new one.	ElevenLabs 不认这个 Key。点 Forget，重新粘一个。
+ElevenLabs rejected that key. Copy it again from ElevenLabs and paste it.	ElevenLabs 不认这个 Key。回 ElevenLabs 重新复制一遍再粘。
+ElevenLabs has restricted your account, so her voice can't connect. Sign in at elevenlabs.io to see why, or pick PREBUILT LOCAL in the Mainframe.	ElevenLabs 限制了你账号，她的声音连不上。去 elevenlabs.io 登录看看原因，或者在主控台选“内置本地”。
+ElevenLabs sent a reply Capri couldn't read. Right-click her, Help, Copy error details, and send it in the Discord.	ElevenLabs 回了个 Capri 读不懂的东西。右键她，帮助，复制错误详情，发到 Discord 里。
+Can't reach Fish Audio. Check your internet connection.	连不上 Fish Audio。检查下网络。
+Paste your Fish Audio key first.	先粘你的 Fish Audio Key。
+Fish Audio sent a voice list Capri can't read.	Fish Audio 发的音色列表 Capri 读不懂。
+That clip isn't there anymore. Pick it again.	那段录音不在了。重新选一个。
+That clip is too big. Pick 10 to 30 seconds of talking.	这段录音太大。选 10 到 30 秒的说话录音。
+Fish Audio didn't say which voice it made. Look for it on fish.audio.	Fish Audio 没说做出来的是哪个音色。去 fish.audio 找找。
+ sent back no sound.	 返回了空音频。
+. Check your internet connection.	。检查下网络。
+ stopped answering.	 不应答了。
+Fish Audio can't find that voice (HTTP 404). Check its ID or link on fish.audio.	Fish Audio 找不到这个音色（HTTP 404）。去 fish.audio 核对它的 ID 或链接。
+ (HTTP 404). Check its address.	 （HTTP 404）。检查它的地址。
+ is busy (HTTP 429). Try again in a moment.	 忙不过来（HTTP 429）。稍等再试。
+ (HTTP 402). For its free tier, set Model to s2.1-pro-free.	 （HTTP 402）。用它免费档的话，把模型设成 s2.1-pro-free。
+Fish Audio's voices. Paste a key from fish.audio, then make your own voice with Fish Audio's Voice Design and paste its link or ID. Capri prohibits cloning or impersonating a living person's voice without explicit, informed consent or other valid authorization. s2.1-pro-free is its free tier.	Fish Audio 的音色。粘一个 fish.audio 的 Key，然后用 Fish Audio 的 Voice Design 做一个自己的声音，把链接或 ID 粘进来。Capri 禁止在未获明确、知情同意或其他有效授权的情况下克隆或模仿真人声音。s2.1-pro-free 是它的免费档。
+A Piper, Kokoro, Kitten or Pocket TTS model for sherpa-onnx, run with no server. Browse to its .tar.bz2 or .onnx. Pocket TTS copies a voice clip you pick.	给 sherpa-onnx 用的 Piper、Kokoro、Kitten 或 Pocket TTS 模型，不用服务器。选它的 .tar.bz2 或 .onnx。Pocket TTS 会照你选的录音复制声音。
+Fish Speech running on your PC with tools/api_server.py. Voice is a reference ID you added to it, or blank.	跑在你自己电脑上的 Fish Speech（tools/api_server.py）。音色填你加进去的参考 ID，或者留空。
+Kokoro-FastAPI running on your PC, with voices like af_heart, af_bella and am_adam.	跑在你自己电脑上的 Kokoro-FastAPI，音色有 af_heart、af_bella、am_adam 这些。
+OpenAI's voices with your OpenAI key: marin, cedar, coral, alloy and more.	用你的 OpenAI Key 调 OpenAI 的音色：marin、cedar、coral、alloy 等等。
+Any speech model you run whose server speaks OpenAI's speech API, like Qwen3-TTS through vLLM-Omni, AllTalk or LocalAI.	任何你自己的、接口兼容 OpenAI 语音 API 的语音模型，比如通过 vLLM-Omni、AllTalk 或 LocalAI 跑的 Qwen3-TTS。
+Can't open your mic. Pick another under VOICE.	打不开你的麦克风。在“声音”里换一个。
+ the default in Windows Settings > System > Sound > Input, or pick Mic: default here.	 在 Windows 设置 > 系统 > 声音 > 输入 里是默认设备，或者在这儿选“麦克风：默认”。
+Windows is blocking the mic. Turn on Let desktop apps access your microphone in Settings > Privacy & security > Microphone.	Windows 在拦麦克风。去 设置 > 隐私和安全性 > 麦克风 打开“允许桌面应用访问你的麦克风”。
+Windows can't find a mic. Plug one in, or pick one in Settings > System > Sound.	Windows 找不到麦克风。插一个，或者在 设置 > 系统 > 声音 里选一个。
+Here's my site, choom. That's where people download me.	这是我的网站，choom。大家就是在那儿下载我的。
+" on Google for you, choom.	” 这个我帮你在谷歌搜了，choom。
+ is installed on this PC.	 装在这台电脑上。
+The app list took too long.	应用列表读太久了。
+That isn't a website.	这不是个网址。
+Opened your own website, lachydotmcg.github.io/capri-desktop.	打开了我的网站，lachydotmcg.github.io/capri-desktop。
+Spotify is open but paused.	Spotify 开着，但是暂停的。
+Nothing's playing that I can see.	我这儿看不到有东西在播。
+Spotify is open, but I can't tell what's playing.	Spotify 开着，但我看不出在放什么。
+Spotify is playing again.	Spotify 又开始放了。
+Pressed play/pause.	按了播放/暂停。
+Opened Discord, but its window didn't show up in time. Ask again in a sec.	Discord 打开了，但窗口没及时出来。过一会儿再叫我。
+Couldn't bring Discord to the front to press its shortcut.	没能把 Discord 切到前台按快捷键。
+What should I play?	放点什么好？
+ in Spotify, but couldn't press play. Hit the green Play button.	 在 Spotify 里了，但按不到播放键。点那个绿色播放键。
+ to play, so Spotify is open on a search for it.	 放不了，所以 Spotify 已经打开并搜到它了。
+ to play, so YouTube is open on a search for it.	 放不了，所以 YouTube 已经打开并搜到它了。
+ to close, but it's still open. It might be asking you to save.	 关不掉，它还开着。可能在等你保存。
+You can't see their screen right now.	你现在看不见他们的屏幕。
+Using the mouse and keyboard isn't ready on this PC yet.	这台电脑上鼠标键盘控制还没准备好。
+Couldn't nap just now.	刚才没能去睡。
+Couldn't move just now.	刚才没能动。
+Couldn't do that just now.	刚才那事没做成。
+Discord didn't answer.	Discord 没应答。

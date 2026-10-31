@@ -1,0 +1,218 @@
+Capri Mainframe	Capri 主控台
+MAINFRAME	主控台
+Minimize	最小化
+Close	关闭
+Settings	设置
+BRAIN >	大脑 >
+Refresh	刷新
+Set up her brain	给她装个脑子
+Have Ollama? Open it, then press Refresh.	有 Ollama？先打开它，再点刷新。
+Pick one. Only one brain runs at a time.	选一个，同一时间只跑一个大脑。
+NORMAL	普通
+Free · local model	免费 · 本地模型
+HIGHER	更强
+Free · NVIDIA API	免费 · NVIDIA 接口
+MAX INTELLIGENCE	最高智能
+ChatGPT or Claude API	ChatGPT / Claude 接口
+Start with this!	从这档开始！
+Free key	免费 Key
+NVIDIA API key	NVIDIA Key
+Paste your free NVIDIA key	粘贴免费拿到的 NVIDIA Key
+Connect	连接
+VOICE >	声音 >
+Ctrl + Alt + V to talk	Ctrl + Alt + V 语音聊天
+OFF	关闭
+Silent · text only	静音 · 只打字
+PREBUILT LOCAL	内置本地
+Her voices · free	她的声音 · 免费
+CUSTOM LOCAL	自定义本地
+Your own model	你自己的模型
+CLOUD VOICE	云端声音
+Needs a key	需要 Key
+Set up	配置
+Set up your own voice model	配置你自己的语音模型
+Setup guide	配置指南
+Cloud voice service	云端语音服务
+ElevenLabs API key	ElevenLabs Key
+Voice ID	音色 ID
+Default model	默认模型
+Free voice: Her own	免费语音：她的原声
+Voice model	语音模型
+Your voice model	你的语音模型
+Get free voice	获取免费语音
+Mic: default	麦克风：默认
+Microphone	麦克风
+Test	试听
+Ctrl + Alt + N mutes mic	Ctrl + Alt + N 静音麦克风
+Hide Capri	隐藏 Capri
+Show Capri	显示 Capri
+Bring here	叫到这里
+Ride cursor	骑鼠标
+Check for updates	检查更新
+Help	帮助
+Quit Capri	退出 Capri
+YOU >	你 >
+Open her notes	打开她的笔记
+Language	语言
+Her language	她的语言
+What should she call you?	她该叫你什么？
+Get to know me	让她认识我
+Your name or a nickname	你的名字或昵称
+Save	保存
+Every voice, ElevenLabs too	所有声音，含 ElevenLabs
+Layers	叠音
+Volume	音量
+Pitch	音调
+Speed	语速
+Robot	机械感
+Glitch	故障感
+Sounds	音效
+Typing sound	打字音
+Free voice in games	游戏里用免费语音
+MOVES >	动作 >
+Mini player	迷你播放器
+Wander	随处走
+Sleep	睡眠
+Pop-ins	冒个泡
+Dance to music	跟着音乐动
+Glitch in at startup	启动时闪入
+KEYS >	按键 >
+Talk: Ctrl + Alt + V	说话：Ctrl + Alt + V
+Mute mic: Ctrl + Alt + N	麦克风静音：Ctrl + Alt + N
+Type: Ctrl + Alt + T	打字：Ctrl + Alt + T
+Hide/show: Ctrl + Alt + H	隐藏/显示：Ctrl + Alt + H
+Quiet: Ctrl + Alt + P	安静：Ctrl + Alt + P
+Confirm	确认
+Cancel	取消
+Size	大小
+Her size	她的大小
+Check in on me	偶尔来看看我
+Always on top	总在最前
+Mainframe size	主控台大小
+WATCH >	观察 >
+Watch my screen	看着我的屏幕
+Keep her caught up	让她跟上进度
+Every	每隔
+HER >	她 >
+HABITS >	习惯 >
+Open her memories	打开她的记忆
+Start with Windows	开机启动
+Show on Discord	在 Discord 显示
+Use her cursor	用她自己的鼠标
+Remember our chats	记住我们的聊天
+Perch	趴窗
+Never	从不
+Rarely	偶尔
+Sometimes	有时
+Often	经常
+Restless	很活跃
+Quick	简短
+Normal	标准
+Long	啰嗦
+Short	短
+Medium	中
+Small	小
+Small+	小+
+Medium+	中+
+Large	大
+Large+	大+
+Huge	特大
+Huge+	特大+
+Tiny	极小
+Giant	巨大
+Auto	自动
+Mute	静音
+Off	关
+1 min	1 分钟
+1.5 min	1.5 分钟
+2 min	2 分钟
+3 min	3 分钟
+5 min	5 分钟
+10 min	10 分钟
+30 min	30 分钟
+10 s	10 秒
+15 s	15 秒
+30 s	30 秒
+Move	移动
+Wander around	到处走走
+Dance	跳舞
+Sit on windows	坐在窗口上
+Sit here	坐在这
+Hang here	挂在这
+Lie down	躺下
+Go to sleep	去睡觉
+Bring to this screen	叫到这个屏幕
+Go to the next screen	去下一个屏幕
+Help page	帮助页面
+Join the Discord	加入 Discord
+Copy error details	复制错误详情
+Restart to update	重启以更新
+Open the player	打开播放器
+Hide for now	先隐藏
+Turn off mini player	关闭迷你播放器
+Open Capri Mainframe	打开 Capri 主控台
+Capri · Double-click to restore	Capri · 双击还原
+Capri started fresh	Capri 已重置启动
+Capri update ready	Capri 更新已就绪
+Capri is riding your cursor	Capri 骑在你的鼠标上了
+Capri is replying slowly	Capri 回复有点慢
+Getting Capri's ears	正在给 Capri 装耳朵
+Getting Capri's free voice	正在给 Capri 准备免费语音
+OK	确定
+OpenAI, Anthropic or DeepSeek API key	OpenAI / Anthropic / DeepSeek Key
+Most NVIDIA models can't see your screen.	多数 NVIDIA 模型看不到你的屏幕。
+Paste a ChatGPT or Claude key	粘贴 ChatGPT 或 Claude 的 Key
+Key saved, ends 	Key 已保存，到期 
+NVIDIA key saved, ends 	NVIDIA Key 已保存，到期 
+Free voice: 	免费语音：
+Your voice	你的声音
+Pick a voice model...	选一个语音模型…
+Voice model: 	语音模型：
+HD · graphics card, 	HD · 显卡，
+HD · needs a 6 GB graphics card	HD · 需要 6 GB 显存
+Your voice (HD)	你的声音（HD）
+Your voice (HD) · pick a clip of you...	你的声音（HD）· 选一段你的录音…
+Pick a new clip of you...	选一段新的录音…
+Paste API key	粘贴 API Key
+Saved, ends 	已保存，到期 
+Setup stopped	配置已停止
+No brain yet	还没装脑子
+Best fit for this PC: 	最适合这台电脑：
+Download 	下载 
+ with Ollama	 · 用 Ollama
+Wake her up	唤醒她
+Try again	再试一次
+Set up her brain	给她装个脑子
+Waking her up	正在唤醒她
+Setting up her brain	正在给她装脑子
+Starting...	启动中…
+Saved. 	已保存。
+ keeps her quiet, and lets her talk again.	 让她安静，再按一次就能说话。
+ hides or shows her.	 隐藏或显示她。
+ opens her typing box.	 打开她的输入框。
+ mutes your mic.	 静音你的麦克风。
+ starts voice chat.	 开始语音聊天。
+ It still does its own job in other apps too.	 它在别的程序里照旧起作用。
+ It won't type in other apps while she runs.	 她在运行时它不会在别的程序里打字。
+Confirm to keep 	确认保留 
+, or Cancel.	，或取消。
+ still does its own job in other apps too. Confirm to keep it.	 在别的程序里照旧起作用。确认保留？
+ won't type in other apps while she runs. Confirm to keep it.	 她在运行时不会在别的程序里打字。确认保留？
+Hop off	下鼠标
+Security: 	安全等级：
+Free voice, runs on your PC.	免费语音，跑在你自己电脑上。
+Free voice, runs on your PC. Your voice only works with HD.	免费语音，跑在你自己电脑上。你自己的声音只在 HD 下可用。
+Mic: 	麦克风：
+Mute mic: 	麦克风静音：
+Talk: 	说话：
+Mute mic: 	麦克风：
+Type: 	打字：
+Hide/show: 	隐藏/显示：
+Quiet: 	安静：
+ to talk	 语音聊天
+ mutes mic	 静音麦克风
+ is taken	 已被占用
+ (taken)	（已占用）
+Press new keys, then Confirm	按下新按键，然后确认
+Her own	她的原声
+default	默认
