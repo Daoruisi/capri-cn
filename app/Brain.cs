@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -286,6 +286,10 @@ namespace CapriDesktop
         [DataMember(Name = "title")] public string Title;
         [DataMember(Name = "detail")] public string Detail;
         [DataMember(Name = "summary")] public string Summary;
+        [DataMember(Name = "think")] public string Think;
+        [DataMember(Name = "turnTokens")] public int TurnTokens;
+        [DataMember(Name = "actions")] public int Actions;
+        [DataMember(Name = "approval")] public bool Approval;
         [DataMember(Name = "doneId")] public int DoneId;
         [DataMember(Name = "doneAt")] public long DoneAt;
     }

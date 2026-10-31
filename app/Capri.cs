@@ -6834,17 +6834,27 @@ namespace CapriDesktop
             DshState now;
             try { now = Voice.Read<DshState>(File.ReadAllBytes(file)); }
             catch (Exception) { return; }
-            if (now == null || now.DoneId <= dshDone) return;
+            // 等批准：一出现就喊她，只在整条变成 true 的那一次说
+            if (now.Approval && !dshApproval)
+            {
+                dshApproval = true;
+                SayNow(string.IsNullOrEmpty(now.Detail) ? "DSH 那边有活儿等你批准。" : "DSH 等你批准：" + now.Detail);
+                return;
+            }
+            if (!now.Approval) dshApproval = false;
+            if (now.DoneId <= dshDone) return;
             dshDone = now.DoneId;
             if (!dshSeen) { dshSeen = true; return; }
             string line = string.IsNullOrEmpty(now.Summary) ? "搞定了。" : "搞定了：" + now.Summary;
             if (!string.IsNullOrEmpty(now.Title)) line = "「" + now.Title + "」" + line;
+            if (now.TurnTokens > 0) line += "（本轮 " + (now.TurnTokens >= 1000 ? (now.TurnTokens / 1000) + "k" : now.TurnTokens.ToString()) + " token）";
             SayNow(line);
         }
 
         private System.Windows.Forms.Timer dshTimer;
         private int dshDone;
         private bool dshSeen;
+        private bool dshApproval;
 
         // A double-click on her asks what's left on their key: her own balance tool, said out loud.
         private void ShowBalance()
