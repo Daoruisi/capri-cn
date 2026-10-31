@@ -70,22 +70,22 @@ namespace CapriDesktop
     {
         internal const int Open = 0, Media = 1, Shortcuts = 2, Windows = 3, Power = 4, Mouse = 5, Sends = 6, Pays = 7, Unasked = 8, Secrets = 9, Wake = 10, Count = 11;
         internal const int Lockdown = 0, Guarded = 1, Trusted = 2, Blackwall = 3, Custom = 4;
-        internal static readonly string[] Names = { "Open apps, games and sites", "Music, media and volume", "Shortcuts (screenshots, Game Bar, captions, Discord mute)", "Close and switch apps and tabs", "Shut down, restart, sleep, lock and sign out", "Use your mouse and keyboard for jobs", "Send, post and delete what you asked for", "Pay, buy and book", "Things your request didn't mention", "Type passwords and card numbers", "Listen for \"Hey Capri\"" };
+        internal static readonly string[] Names = { "打开应用、游戏和网站", "音乐、媒体和音量", "快捷键（截图、Game Bar、字幕、Discord 静音）", "关闭和切换应用与标签页", "关机、重启、睡眠、锁屏和注销", "干活时用你的鼠标键盘", "发送、发布和删除你要她做的", "付款、购买和预订", "你没提到的事", "输入密码和卡号", "Listen for \"Hey Capri\"" };
         internal static readonly string[] Lines =
         {
-            "On: she opens them when you ask. Off: she asks first.",
-            "On: she plays music and sets the volume. Off: she asks first.",
-            "On: she presses them for you. Off: she asks first.",
-            "On: she switches and closes them. Off: she asks first.",
-            "On: she does it as soon as you ask. Off: she asks first.",
-            "On: she clicks and types in your apps. Off: she asks first.",
-            "On: she sends it without checking again. Off: she asks first.",
-            "On: she pays and books without checking. Off: she asks first.",
-            "On: she does the extra steps a job needs. Off: she asks first.",
-            "On: she types the ones your job gives her. Off: you type them.",
-            "On: she listens on this PC for her name. Off: she doesn't."
+            "开：你说她就开。关：先问你。",
+            "开：她放音乐、调音量。关：先问你。",
+            "开：她替你按。关：先问你。",
+            "开：她切换和关闭。关：先问你。",
+            "开：你一说她就做。关：先问你。",
+            "开：她在你的应用里点按打字。关：先问你。",
+            "开：她不再确认直接发。关：先问你。",
+            "开：她不再确认直接付款预订。关：先问你。",
+            "开：她补上干活需要的额外步骤。关：先问你。",
+            "开：她输入你任务里给的。关：你自己输入。",
+            "开：在这台电脑上听她名字。关：不听。"
         };
-        internal static readonly string[] Presets = { "Lockdown", "Guarded", "Trusted", "Blackwall", "Custom" };
+        internal static readonly string[] Presets = { "封锁", "戒备", "信任", "黑墙", "自定义" };
         private static readonly string[] Told =
         {
             "Everything is off: she asks first before she does anything on your PC.",
@@ -95,7 +95,7 @@ namespace CapriDesktop
             "Your own mix. Pick a preset to start again from it."
         };
         // The Settings line under her SECURITY button, short enough for its row.
-        private static readonly string[] Shorts = { "She asks first before everything.", "Apps, music and shortcuts. She asks for the rest.", "She asks before paying or what you didn't say.", "She never asks, and listens for Hey Capri.", "Your own mix of toggles." };
+        private static readonly string[] Shorts = { "凡事都先问你。", "应用、音乐和快捷键；其余先问。", "付款和你没说的，她会先问。", "从不问，还听“嘿 Capri”。", "你自己配的一套。" };
         // Lockdown has them all off, Guarded the first three on, Trusted the first seven and Blackwall all eleven.
         private static readonly int[] Masks = { 0, 0x7, 0x7F, 0x7FF };
         private static int mask = 0x7F;

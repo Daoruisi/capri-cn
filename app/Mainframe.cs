@@ -40,7 +40,7 @@ namespace CapriDesktop
         private static readonly FontFamily Heavy = Family("Bahnschrift SemiBold SemiConden");
         private static readonly FontFamily Narrow = Family("Bahnschrift SemiBold Condensed");
         private const int Wide = 380;
-        private const int Tall = 642;
+        private const int Tall = 726;
         private static readonly int[] Gaps = { 10, 15, 30, 60, 90, 120, 180, 300, 600 };
         private static readonly string[] GapNames = { "10 s", "15 s", "30 s", "1 min", "1.5 min", "2 min", "3 min", "5 min", "10 min" };
         private const int SetupHeight = 118;
@@ -3206,28 +3206,28 @@ namespace CapriDesktop
                 KeyPreview = true;
                 ClientSize = new Size(Z(Wide), Z(Tall));
                 Font small = Look.Mono(8.5f * zoom, FontStyle.Regular, GraphicsUnit.Point);
-                Heading(this, "SECURITY >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
+                Heading(this, "安全 >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
                 Key shut = new Key();
                 shut.Bounds = Box(Wide - 54, 20, 26, 22);
                 shut.Glyph = 2;
                 shut.AccessibleName = "Close";
                 shut.Click += delegate { Close(); };
                 Controls.Add(shut);
-                Caption("What she does on your PC without asking. With a toggle off she asks first, and does it when you say yes.", 28, 52, small, Faint);
-                Caption("Preset", 28, 82, Type(9.5f * zoom), Rose);
+                Caption("她在你电脑上不用问就做的事。关掉某一行，她会先问，你答应了才做。", 28, 52, small, Faint);
+                Caption("预设", 28, 82, Type(9.5f * zoom), Rose);
                 presets = new Slider(new[] { Security.Presets[0], Security.Presets[1], Security.Presets[2], Security.Presets[3] });
                 presets.Font = Type(9.5f * zoom);
                 presets.Bounds = Box(120, 79, 260, 22);
-                presets.AccessibleName = "Security preset: Lockdown, Guarded, Trusted or Blackwall";
+                presets.AccessibleName = "安全预设：封锁、戒备、信任、黑墙";
                 presets.Changed += delegate { if (!syncing) Security.Pick(presets.Value); };
                 presets.MouseUp += delegate { if (!syncing && Security.Preset == Security.Custom) Security.Pick(presets.Value); };
                 Controls.Add(presets);
                 presetName = new Readout(presets);
                 presetLine = Caption("", 28, 110, small, Faint);
                 Font head = Type(10f * zoom, true);
-                Heading(this, "HER HANDS >", new Point(Z(28), Z(144)), head, White, Column + 14);
-                Heading(this, "HER JOBS >", new Point(Z(52 + Column), Z(144)), head, White, Column + 14);
-                Heading(this, "LISTENING >", new Point(Z(52 + Column), Z(362)), head, White, Column + 14);
+                Heading(this, "她的手 >", new Point(Z(28), Z(144)), head, White, Column + 14);
+                Heading(this, "她的活儿 >", new Point(Z(52 + Column), Z(144)), head, White, Column + 14);
+                Heading(this, "听声 >", new Point(Z(52 + Column), Z(362)), head, White, Column + 14);
                 for (int i = 0; i < Security.Count; i++)
                 {
                     int x = i <= Security.Mouse ? 28 : 52 + Column;
