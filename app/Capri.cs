@@ -1559,6 +1559,7 @@ namespace CapriDesktop
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+            if (!testing && !preferences.NoIntro) { Rectangle wa = Screen.PrimaryScreen.WorkingArea; Splash.Play(new Point(wa.Right - 250, wa.Bottom - 210)); }
             bool spawn = !instant && preferences.Motion && !preferences.NoIntro && !preferences.NoSitting;
             if (spawn) SpawnInMiddle();
             Play(instant || !preferences.Motion || preferences.NoIntro ? grin : arrive);

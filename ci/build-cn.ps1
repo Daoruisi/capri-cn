@@ -40,7 +40,7 @@ foreach ($pack in 'capri-clear','capri-pixel','capri-anime') {
     $resources += '/resource:' + (Join-Path $root ("pets\packs\" + $pack + "\spritesheet.png")) + ',Capri.Pack.' + $pack + '.png'
 }
 $resources += Get-ChildItem -LiteralPath (Join-Path $root 'assets\voice') -Filter *.wav | ForEach-Object { '/resource:' + $_.FullName + ',Capri.Voice.' + $_.Name }
-$sources = @('Capri', 'Brain', 'Talk', 'Mainframe', 'Neon', 'Notice', 'Engine', 'Ledges', 'Voice', 'Ears', 'Dictation', 'Agent', 'Hands', 'Computer', 'VoicePack', 'Startup', 'Presence', 'Player', 'AssemblyInfo') | ForEach-Object { Join-Path $root ('app\' + $_ + '.cs') }
+$sources = @('Capri', 'Brain', 'Talk', 'Mainframe', 'Neon', 'Notice', 'Engine', 'Ledges', 'Voice', 'Ears', 'Dictation', 'Agent', 'Hands', 'Computer', 'VoicePack', 'Startup', 'Presence', 'Player', 'Splash', 'AssemblyInfo') | ForEach-Object { Join-Path $root ('app\' + $_ + '.cs') }
 & $compiler ($shared + $references + $resources + @('/out:' + $app) + $sources)
 if ($LASTEXITCODE -ne 0) { throw 'Capri compilation failed.' }
 Write-Output "Built $app"
