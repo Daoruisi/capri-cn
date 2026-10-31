@@ -238,6 +238,10 @@ namespace CapriDesktop
         [DataMember] public string VoiceStyle;
         // 立绘皮肤：0 原版，1 清晰，2 像素，3 动漫（素材来自 X1a0heZzzz/capri-desktop-pet）
         [DataMember] public int ArtPack;
+        // 随机换装：开关、间隔（分钟）、每次停留（秒）
+        [DataMember] public bool ArtRotate;
+        [DataMember] public int ArtRotateEvery = 10;
+        [DataMember] public int ArtRotateHold = 30;
         [DataMember] public bool StartupSet;
         [DataMember] public bool QuickHands;
         [DataMember] public bool Bypass;
@@ -918,6 +922,9 @@ namespace CapriDesktop
         private long packAt;
         private Bitmap packCache;
         private string packCacheId;
+        private DateTime artNextAt;
+        private DateTime artRevertAt;
+        private int artBase;
         private Preferences preferences;
         private Bitmap frame;
         private Point anchor;
@@ -1375,6 +1382,33 @@ namespace CapriDesktop
                 ToolStripMenuItem artOpt = new ToolStripMenuItem(artNames[a], null, delegate { SetArtPack(pick); });
                 artOpt.Checked = preferences.ArtPack == pick;
                 artItem.DropDownItems.Add(artOpt);
+            }
+            ToolStripMenuItem rotate = new ToolStripMenuItem("随机切换立绘");
+            rotate.Checked = preferences.ArtRotate;
+            rotate.Click += delegate
+            {
+                preferences.ArtRotate = !preferences.ArtRotate;
+                artNextAt = DateTime.UtcNow.AddMinutes(Math.Max(1, preferences.ArtRotateEvery));
+                artRevertAt = default(DateTime);
+                if (!preferences.ArtRotate) SetArtPack(artBase == 0 && preferences.ArtPack != 0 ? preferences.ArtPack : artBase);
+                SavePreferences();
+            };
+            artItem.DropDownItems.Add(rotate);
+            foreach (int minutes in new[] { 5, 10, 30 })
+            {
+                int pick = minutes;
+                ToolStripMenuItem every = new ToolStripMenuItem("每 " + minutes + " 分钟换一次");
+                every.Checked = preferences.ArtRotateEvery == minutes;
+                every.Click += delegate { preferences.ArtRotateEvery = pick; artNextAt = DateTime.UtcNow.AddMinutes(pick); SavePreferences(); };
+                artItem.DropDownItems.Add(every);
+            }
+            foreach (int hold in new[] { 10, 30, 60 })
+            {
+                int pick = hold;
+                ToolStripMenuItem stay = new ToolStripMenuItem("每套停留 " + hold + " 秒");
+                stay.Checked = preferences.ArtRotateHold == hold;
+                stay.Click += delegate { preferences.ArtRotateHold = pick; SavePreferences(); };
+                artItem.DropDownItems.Add(stay);
             }
             menu.Items.Add(artItem);
             AddSize(sizes, "Small", 170);
@@ -8437,8 +8471,30 @@ namespace CapriDesktop
             return 0;
         }
 
+        // 随机换装：到点换一套，停留时间到了回到用户手动选的那套
+        private void TickArtRotate()
+        {
+            if (!preferences.ArtRotate) return;
+            DateTime now = DateTime.UtcNow;
+            if (artRevertAt != default(DateTime) && now >= artRevertAt)
+            {
+                artRevertAt = default(DateTime);
+                SetArtPack(artBase);
+                return;
+            }
+            if (artNextAt == default(DateTime)) { artNextAt = now.AddMinutes(Math.Max(1, preferences.ArtRotateEvery)); return; }
+            if (now < artNextAt) return;
+            artNextAt = now.AddMinutes(Math.Max(1, preferences.ArtRotateEvery));
+            int count = ArtPackIds.Length;
+            int pick = 1 + random.Next(count);
+            if (pick == preferences.ArtPack) pick = 1 + (pick % count);
+            SetArtPack(pick);
+            artRevertAt = now.AddSeconds(Math.Max(3, preferences.ArtRotateHold));
+        }
+
         internal void SetArtPack(int pick)
         {
+            if (preferences.ArtPack != pick && artRevertAt == default(DateTime)) artBase = preferences.ArtPack;
             preferences.ArtPack = pick;
             packCell = 0;
             packAt = 0;
