@@ -867,6 +867,11 @@ namespace CapriDesktop
         [DataMember] public bool NoIntro;
         // 汉化分支：中文台词先翻成英文再交给只会英语的免费音色（NoDub 开着就不翻）。
         [DataMember] public bool NoDub;
+        // 立绘皮肤：0 原版，1 清晰，2 像素，3 动漫；以及随机换装（汉化分支加的）。
+        [DataMember] public int ArtPack;
+        [DataMember] public bool ArtRotate;
+        [DataMember] public int ArtRotateEvery = 10;
+        [DataMember] public int ArtRotateHold = 30;
         [DataMember] public bool NoDiscord;
         [DataMember] public int Typing;
         [DataMember] public int BubbleTime = 1;
@@ -2466,6 +2471,16 @@ namespace CapriDesktop
             AddSize(sizes, "Huge", 440);
             AddSize(sizes, "Giant", 560);
             menu.Items.Add(sizes);
+            ToolStripMenuItem artItem = new ToolStripMenuItem("立绘");
+            string[] artNames = { "原版", "清晰", "像素", "动漫" };
+            for (int a = 0; a <= 3; a++)
+            {
+                int pick = a;
+                ToolStripMenuItem artOpt = new ToolStripMenuItem(artNames[a], null, delegate { SetArtPack(pick); });
+                artOpt.Checked = preferences.ArtPack == pick;
+                artItem.DropDownItems.Add(artOpt);
+            }
+            menu.Items.Add(artItem);
             ToolStripMenuItem moves = new ToolStripMenuItem("Move");
             wanderItem = new ToolStripMenuItem("到处走走", null, delegate { ToggleWander(); });
             wanderItem.Checked = preferences.Wander;
@@ -13972,9 +13987,110 @@ namespace CapriDesktop
             RenderFrame();
         }
 
+        // ---- 立绘皮肤（汉化分支加的）----
+        // 三套 8×9 图集（192×208/帧），状态只做最小映射；动作/口型/趴窗逻辑不变，画面上换成皮肤对应的帧。
+        internal static readonly string[] ArtPackIds = { "capri-clear", "capri-pixel", "capri-anime" };
+        private static readonly int[] PackCounts = { 6, 8, 8, 4, 5, 8, 6, 6, 6 };
+        private int packCell;
+        private long packAt;
+        private Bitmap packCache;
+        private string packCacheId;
+        private DateTime artNextAt;
+        private DateTime artRevertAt;
+        private int artBase;
+
+        internal bool ArtRotate { get { return preferences.ArtRotate; } }
+        internal int ArtRotateEvery { get { return Math.Max(1, preferences.ArtRotateEvery); } }
+        internal int ArtRotateHold { get { return Math.Max(3, preferences.ArtRotateHold); } }
+
+        private Bitmap PackArt(string id)
+        {
+            if (packCacheId == id && packCache != null) return packCache;
+            if (packCache != null) packCache.Dispose();
+            packCache = LoadArt("Capri.Pack." + id + ".png");
+            packCacheId = id;
+            return packCache;
+        }
+
+        private void DrawPack(Graphics graphics)
+        {
+            long now = Environment.TickCount;
+            if (packAt == 0) packAt = now;
+            if (now - packAt >= 110) { packCell++; packAt = now; }
+            int row = PackRow();
+            int count = PackCounts[row];
+            int cell = count <= 0 ? 0 : packCell % count;
+            Bitmap atlas = PackArt(ArtPackIds[preferences.ArtPack - 1]);
+            if (atlas == null) return;
+            float h = preferences.Size * 1.11f;
+            float w = h * 192f / 208f;
+            graphics.DrawImage(atlas, new RectangleF(-w / 2f, -h / 2f, w, h), new RectangleF(cell * 192f, row * 208f, 192f, 208f), GraphicsUnit.Pixel);
+        }
+
+        private int PackRow()
+        {
+            if (clip == walk || walking) return facingLeft ? 2 : 1;
+            if (Asleep || clip == perchSleep) return 5;
+            if (clip == arrive || clip == leave || clip == glitch) return 4;
+            if (clip == wake || clip == dance || clip == perchDance) return 3;
+            if (clip == dangle) return 8;
+            return 0;
+        }
+
+        private void TickArtRotate()
+        {
+            if (!preferences.ArtRotate) return;
+            DateTime now = DateTime.UtcNow;
+            if (artRevertAt != default(DateTime) && now >= artRevertAt)
+            {
+                artRevertAt = default(DateTime);
+                SetArtPack(artBase);
+                return;
+            }
+            if (artNextAt == default(DateTime)) { artNextAt = now.AddMinutes(ArtRotateEvery); return; }
+            if (now < artNextAt) return;
+            artNextAt = now.AddMinutes(ArtRotateEvery);
+            int count = ArtPackIds.Length;
+            int pick = 1 + random.Next(count);
+            if (pick == preferences.ArtPack) pick = 1 + (pick % count);
+            SetArtPack(pick);
+            artRevertAt = now.AddSeconds(ArtRotateHold);
+        }
+
+        internal void SetArtPack(int pick)
+        {
+            if (preferences.ArtPack != pick && artRevertAt == default(DateTime)) artBase = preferences.ArtPack;
+            preferences.ArtPack = pick;
+            packCell = 0;
+            packAt = 0;
+            if (packCache != null) { packCache.Dispose(); packCache = null; packCacheId = null; }
+            SavePreferences();
+            UpdateAnimation();
+        }
+
+        internal void ToggleArtRotate()
+        {
+            preferences.ArtRotate = !preferences.ArtRotate;
+            artNextAt = DateTime.UtcNow.AddMinutes(ArtRotateEvery);
+            artRevertAt = default(DateTime);
+            if (!preferences.ArtRotate) SetArtPack(artBase);
+            SavePreferences();
+            mainframe.Sync();
+        }
+
+        internal void SetArtRotate(int every, int hold)
+        {
+            preferences.ArtRotateEvery = Math.Max(1, every);
+            preferences.ArtRotateHold = Math.Max(3, hold);
+            artNextAt = DateTime.UtcNow.AddMinutes(preferences.ArtRotateEvery);
+            SavePreferences();
+            mainframe.Sync();
+        }
+
         private void RenderFrame()
         {
             if (!IsHandleCreated || hidden || docked || IsDisposed) return;
+            TickArtRotate();
             double now = clock.Elapsed.TotalSeconds;
             int cell = Advance(now);
             if (arrivalDue)
@@ -14213,6 +14329,7 @@ namespace CapriDesktop
             graphics.TranslateTransform(Width / 2f, Height / 2f + breathe + HuskDip(now));
             graphics.RotateTransform(tilt + (float)leanAngle + Turn() + HuskTurn(now));
             if (facingLeft) graphics.ScaleTransform(-1, 1);
+            if (preferences.ArtPack > 0) { DrawPack(graphics); return; }
             Bitmap art = Art(shown), strip = tween ?? art;
             int width = art.Width / shown.Count;
             if (tween != null) cell = 0;

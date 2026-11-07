@@ -380,6 +380,12 @@ namespace CapriDesktop
         private const int ValueAt = 184;
         private const int ValueWide = 172;
         private readonly Label perchNote;
+        // 随机换装立绘（汉化分支加的）
+        private readonly Toggle artRotate;
+        private readonly Entry artEvery;
+        private readonly Entry artHold;
+        private readonly Label artEveryUnit;
+        private readonly Label artHoldUnit;
 
         internal Mainframe(Companion owner, Icon icon, string version)
         {
@@ -934,6 +940,21 @@ namespace CapriDesktop
             exploreAfter = Setting("Explore after", AwayNames, c, 1000, "How long you are away before she scrolls a browser or reader");
             exploreAfterName = new Readout(exploreAfter);
             exploreAfter.Changed += delegate { if (!syncing) capri.SetExploreAfter(AwayTimes[exploreAfter.Value]); };
+            // 立绘：随机换装（汉化分支加的）。间隔和停留都是手填的数字。
+            artRotate = Switch("随机换装立绘", c, 1028, delegate { if (!syncing) capri.ToggleArtRotate(); });
+            artRotate.AccessibleName = "随机换装立绘。开着时每隔一段时间随机换一套，停留一会儿再回到你选的那套";
+            artEvery = Input(28 + c, 1056, 96, 22);
+            artEvery.Cue = "10";
+            artEvery.Box.AccessibleName = "随机换装的间隔，分钟";
+            artEvery.Box.Leave += delegate { ApplyArtRotate(); };
+            artEvery.Box.KeyDown += delegate(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; ApplyArtRotate(); } };
+            artEveryUnit = Caption("分钟", 130 + c, 1059, small, Faint);
+            artHold = Input(190 + c, 1056, 96, 22);
+            artHold.Cue = "30";
+            artHold.Box.AccessibleName = "每套立绘停留的秒数";
+            artHold.Box.Leave += delegate { ApplyArtRotate(); };
+            artHold.Box.KeyDown += delegate(object sender, KeyEventArgs e) { if (e.KeyCode == Keys.Enter) { e.SuppressKeyPress = true; ApplyArtRotate(); } };
+            artHoldUnit = Caption("秒", 292 + c, 1059, small, Faint);
             // Power saver's row moves the rest of HABITS down one.
             for (int belowSaver = afterSaver; belowSaver < Controls.Count; belowSaver++)
                 if (Controls[belowSaver].Left >= c) Controls[belowSaver].Top += Row;
@@ -1271,6 +1292,17 @@ namespace CapriDesktop
         internal string NicknameShown { get { return nickname.Box.Text; } }
 
         internal void TypeNickname(string typed) { nickname.Box.Text = typed; UseNickname(); }
+
+        private void ApplyArtRotate()
+        {
+            if (syncing) return;
+            int every, hold;
+            if (!int.TryParse(artEvery.Box.Text.Trim(), out every) || every < 1) every = capri.ArtRotateEvery;
+            if (!int.TryParse(artHold.Box.Text.Trim(), out hold) || hold < 3) hold = capri.ArtRotateHold;
+            artEvery.Box.Text = every.ToString();
+            artHold.Box.Text = hold.ToString();
+            capri.SetArtRotate(every, hold);
+        }
 
         private void UseCustom()
         {
@@ -2876,6 +2908,9 @@ namespace CapriDesktop
             if (!localAddress.Box.Focused) localAddress.Box.Text = capri.LocalAddress;
             perchFps.Value = Math.Max(0, Array.IndexOf(Companion.PerchRates, capri.PerchFps));
             ShowPerch();
+            artRotate.Checked = capri.ArtRotate;
+            if (!artEvery.Box.Focused) artEvery.Box.Text = capri.ArtRotateEvery.ToString();
+            if (!artHold.Box.Focused) artHold.Box.Text = capri.ArtRotateHold.ToString();
             powerSaver.Value = Math.Max(0, Math.Min(SaverNames.Length - 1, capri.PowerSaver));
             powerSaverName.Text = SaverNames[powerSaver.Value];
             syncing = false;
