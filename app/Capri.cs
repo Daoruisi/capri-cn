@@ -2775,6 +2775,7 @@ namespace CapriDesktop
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
+            if (!testing && !preferences.NoIntro) { Rectangle wa = Screen.PrimaryScreen.WorkingArea; Splash.Play(new Point(wa.Right - 250, wa.Bottom - 210)); }
             Ledges.Enabled = !testing;
             if (!testing) Native.WatchScreen(Handle);
             bool spawn = !instant && preferences.Motion && !preferences.NoIntro && !preferences.NoSitting;
