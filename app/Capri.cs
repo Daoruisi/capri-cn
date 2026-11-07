@@ -14026,7 +14026,7 @@ namespace CapriDesktop
         // 双击/菜单里问她 Key 上还剩多少钱（汉化分支加的）。
         private bool balancing;
 
-        private void ShowBalance()
+        internal void ShowBalance()
         {
             if (balancing) return;
             balancing = true;

@@ -615,12 +615,13 @@ namespace CapriDesktop
             showHide = Lower(Make("隐藏 Capri", 28, 206 + v, 104, 28, delegate { capri.ToggleHidden(); }));
             Lower(Make("叫到这里", 140, 206 + v, 104, 28, delegate { capri.BringHere(); }));
             perch = Lower(Make("骑鼠标", 252, 206 + v, 104, 28, delegate { capri.TogglePerch(); }));
-            Lower(Make("检查更新", 28, 250 + v, 150, 28, delegate { capri.CheckUpdates(); }));
-            Key help = Lower(Make("Help", 186, 250 + v, 62, 28, delegate { capri.OpenHelp(); }));
+            Lower(Make("查余额", 28, 250 + v, 150, 28, delegate { capri.ShowBalance(); }));
+            Lower(Make("检查更新", 186, 250 + v, 170, 28, delegate { capri.CheckUpdates(); }));
+            Key help = Lower(Make("Help", 28, 288 + v, 150, 28, delegate { capri.OpenHelp(); }));
             help.AccessibleName = "Help: ask Capri on the website";
-            Key quit = Lower(Make("退出 Capri", 256, 250 + v, 100, 28, delegate { capri.Quit(); }));
+            Key quit = Lower(Make("退出 Capri", 186, 288 + v, 170, 28, delegate { capri.Quit(); }));
             quit.Accent = Hot;
-            updateNote = Lower(Caption("", 28, 288 + v, small, Faint));
+            updateNote = Lower(Caption("", 28, 326 + v, small, Faint));
             for (int i = header; i < Controls.Count; i++) mainLeft.Add(new KeyValuePair<Control, int>(Controls[i], Controls[i].Left));
             int first = Controls.Count;
             // Settings: a setting to a row, its name on the left in red and its value in a box on the right, as on Cyberpunk
