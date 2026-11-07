@@ -21,7 +21,7 @@ namespace CapriDesktop
         internal const string PackHash = "b950e39f01af1d04ea623c8f6d8eb9b6ea5c477c637295fabf20631c85116bfb";
         // VB-CABLE's page, where people can donate. Settings' credit opens it.
         internal const string Page = "https://vb-audio.com/Cable/";
-        internal const string Credit = "VB-CABLE is donationware from vb-cable.com.";
+        internal const string Credit = "VB-CABLE 是 vb-cable.com 的捐赠软件。";
         internal const string Better = "VB-CABLE usually sounds better than Steam's.";
         internal const string Running = "In VB-Audio's setup, click Install Driver.";
         internal const string Finish = "If it installed, restart your PC.";

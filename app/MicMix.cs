@@ -138,7 +138,7 @@ namespace CapriDesktop
 
     internal sealed class MicMix : IDisposable
     {
-        internal const string Missing = "Needs VB-CABLE (free).";
+        internal const string Missing = "需要 VB-CABLE（免费）。";
         internal const string Unopened = "The virtual mic won't open. Trying again.";
         // What they pick in Discord or Roblox for each cable.
         internal const string CableEnd = "CABLE Output", SteamEnd = "Steam Streaming Microphone";

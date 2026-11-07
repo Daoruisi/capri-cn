@@ -43449,7 +43449,7 @@ namespace CapriDesktop
                             CloseTalk();
                             preferences.VoiceKey = sealedKey;
                             ForgetVoice();
-                            string keylessNote = kokoro.Installed ? "Free voice, runs on your PC." : "Get her free voice (" + Engine.Amount(LocalVoice.PackSize) + "), or pick CLOUD VOICE.";
+                            string keylessNote = kokoro.Installed ? "免费语音，跑在你自己的电脑上。" : "Get her free voice (" + Engine.Amount(LocalVoice.PackSize) + "), or pick CLOUD VOICE.";
                             if (voice.Key != null || voices != null || preferences.VoiceKey != null || mainframe.VoiceStatus != keylessNote + " |  | Default model | Connect") throw new Exception("Forget did not clear the key: " + mainframe.VoiceStatus);
                             if (mainframe.VoiceTierStatus != "PREBUILT LOCAL | - | free voice | fold 36") throw new Exception("Forget left the VOICE rows laid out for a key: " + mainframe.VoiceTierStatus);
                             snap("mainframe-voice-empty.png");

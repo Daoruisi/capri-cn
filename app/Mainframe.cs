@@ -998,7 +998,7 @@ namespace CapriDesktop
             clipPath.Bounds = new Rectangle(28, 1266, 328, 20);
             clipsFolder = Make("打开剪辑文件夹", 28, 1294, 328, 22, delegate { capri.OpenClips(); });
             clipsFolder.AccessibleName = "打开你选好的剪辑文件夹";
-            clipLength = Setting("Default length", new[] { "15 秒", "30 秒", "45 秒", "1 分钟", "1.5 分钟", "2 分钟" }, 0, 1322, "Default duration for clip that and automatic clips");
+            clipLength = Setting("默认时长", new[] { "15 秒", "30 秒", "45 秒", "1 分钟", "1.5 分钟", "2 分钟" }, 0, 1322, "Default duration for clip that and automatic clips");
             clipRate = Setting("帧率", new[] { "最高 15 fps", "最高 24 fps", "最高 30 fps", "最高 60 fps" }, 0, 1350, "目标采集帧率；负载高或内存不够时可能降");
             clipSize = Setting("分辨率", new[] { "自动", "最高 480p", "最高 720p", "最高 1080p" }, 0, 1378, "剪辑最高分辨率，保持游戏画面比例、不放大");
             clipBits = Setting("视频码率", new[] { "自动", "2 Mbps", "4 Mbps", "8 Mbps", "12 Mbps", "20 Mbps" }, 0, 1406, "H.264 视频码率目标；越高文件越大");

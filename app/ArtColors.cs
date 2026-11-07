@@ -12,7 +12,7 @@ namespace CapriDesktop
     internal static class ArtColors
     {
         internal const int Hair = 0, Accent = 1, Eyes = 2, Edges = 3, Body = 4, Slots = 5;
-        internal static readonly string[] Names = { "Hair", "Accents", "Eyes", "Edges", "Body" };
+        internal static readonly string[] Names = { "头发", "点缀", "眼睛", "描边", "身体" };
         internal static readonly string[] Usual = { "#FF0046", "#00E86E", "#1870F0", "#7854F0", "#05030A" };
         private static readonly double[] Hues = { 348, 145, 215, 262 };
         private static volatile int[] table;
