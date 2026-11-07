@@ -807,7 +807,7 @@ namespace CapriDesktop
 
         internal static int EdgeWidth(float s) { return Math.Max(1, (int)Math.Round(1.5 * s)); }
 
-        internal static string Label(int part, bool chatting, bool muted, bool listenForName = false) { return part == 1 ? "TYPE" : chatting && muted ? "MUTED" : chatting && listenForName ? "CAPRI" : "TALK"; }
+        internal static string Label(int part, bool chatting, bool muted, bool listenForName = false) { return part == 1 ? "打字" : chatting && muted ? "静音" : chatting && listenForName ? "CAPRI" : "说话"; }
 
         // How many of a bar's segments the mic level lights, for a level from 0 to 6.
         internal static int Lit(int bar, int level)
@@ -883,10 +883,10 @@ namespace CapriDesktop
                 using (Brush pink = new SolidBrush(Color.FromArgb(220, Look.Pink))) graphics.FillRectangle(pink, body.Left + (int)Math.Round(12 * s), body.Bottom + (int)Math.Round(2 * s) - sliver, (int)Math.Round(11 * s), sliver);
                 Color wash = Mix(Fill, Look.Cyan, WashAlpha);
                 string talk = Label(2, chatting, muted, listenForName);
-                Rectangle[] pencil = Layout(s, 1, Ink(font, "TYPE"));
+                Rectangle[] pencil = Layout(s, 1, Ink(font, "打字"));
                 Rectangle[] wave = Layout(s, 2, Ink(font, talk));
                 DrawPencil(graphics, new PointF(pencil[0].X + pencil[0].Width / 2f, pencil[0].Y + pencil[0].Height / 2f), 0.9f * s, hover == 1 ? Look.Cyan : Look.Ink, hover == 1 ? wash : Fill);
-                DrawLabel(graphics, "TYPE", font, pencil[1], hover == 1 ? Look.Cyan : Caption);
+                DrawLabel(graphics, "打字", font, pencil[1], hover == 1 ? Look.Cyan : Caption);
                 DrawMeter(graphics, wave[0], s, chatting, muted, level, hover == 2 || chatting ? Look.Cyan : Look.Ink);
                 DrawLabel(graphics, talk, font, wave[1], chatting && muted ? Look.Red : hover == 2 || chatting ? Look.Cyan : Caption);
                 if (chatting)
@@ -1106,7 +1106,7 @@ namespace CapriDesktop
                     if (Brightest(idle.GetPixel(body.Left + cut + 2, body.Top + edge - 1)) < 150 || Brightest(idle.GetPixel(body.Left + cut + 2, body.Top + edge)) > 60 || Brightest(idle.GetPixel(body.Left + edge - 1, body.Top + body.Height / 2)) < 150 || Brightest(idle.GetPixel(body.Left + edge, body.Top + body.Height / 2)) > 60)
                         return "Its neon edge isn't crisp" + at;
                     if (!Red(hushed.GetPixel(mic.Left, mic.Top + cut + 1)) || Red(live0.GetPixel(mic.Left, mic.Top + cut + 1))) return "The mic button's edge didn't go red only while muted" + at;
-                    Rectangle[] pencil = Layout(s, 1, "TYPE"), wave = Layout(s, 2, "TALK"), hush = Layout(s, 2, "MUTED");
+                    Rectangle[] pencil = Layout(s, 1, "打字"), wave = Layout(s, 2, "说话"), hush = Layout(s, 2, "静音");
                     int letters = (int)(6 * s * s);
                     if (Count(idle, pencil[1], Grey) < letters || Count(idle, wave[1], Grey) < letters) return "Its TYPE and TALK labels are missing" + at;
                     if (Count(typing, pencil[1], Cyan) < letters || Count(typing, wave[1], Cyan) > 0 || Count(talking, wave[1], Cyan) < letters || Count(talking, pencil[1], Cyan) > 0) return "Hovering didn't light just its part cyan" + at;

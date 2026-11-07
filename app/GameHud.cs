@@ -1921,7 +1921,7 @@ namespace CapriDesktop
 
         private void Header(Graphics graphics, HudScene scene, float x, float y, RectangleF panel)
         {
-            string title = scene.Box == HudBox.Listening ? "LISTENING" : scene.Box == HudBox.Thinking ? "THINKING" : scene.Box == HudBox.Job ? "ON A JOB" : "CAPRI";
+            string title = scene.Box == HudBox.Listening ? "在听" : scene.Box == HudBox.Thinking ? "思考中" : scene.Box == HudBox.Job ? "干活中" : "CAPRI";
             Color colour = scene.Box == HudBox.Listening || scene.Box == HudBox.Job ? CityLook.Cyan : CityLook.Rose;
             if (scene.Box == HudBox.Listening) { Disc(graphics, Look.Red, new PointF(x + 4 * s, y + 8 * s), 4 * s); x += Px(14); }
             using (Brush ink = new SolidBrush(colour)) graphics.DrawString(title, labelFont, ink, x, y, StringFormat.GenericTypographic);
