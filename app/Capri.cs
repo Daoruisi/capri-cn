@@ -865,6 +865,8 @@ namespace CapriDesktop
         [DataMember] public int Sounds = 60;
         [DataMember] public int SleepAfter = 120;
         [DataMember] public bool NoIntro;
+        // 汉化分支：中文台词先翻成英文再交给只会英语的免费音色（NoDub 开着就不翻）。
+        [DataMember] public bool NoDub;
         [DataMember] public bool NoDiscord;
         [DataMember] public int Typing;
         [DataMember] public int BubbleTime = 1;
@@ -13713,6 +13715,8 @@ namespace CapriDesktop
             // Her Fish Audio voice says her reply's emotion cues (F54). Her bubble and every other voice never see them.
             bool cued = FishCues(speak, free);
             string words = Voice.Spoken((cued ? Brain.Cued(said ?? "") : said ?? "").Replace(Computer.Dots, "the password"), cued);
+            // 免费音色只会英语：中文台词翻成英文再读，屏幕上的中文不动（汉化分支加的）。
+            if (speak != null && speak == free) words = Dubbed(words);
             if (speak == null || words.Length == 0 || state == TalkState.Dormant) { Begin(ticket, said, state, null); return; }
             answerVoice = ticket;
             reply = null;
@@ -13754,6 +13758,24 @@ namespace CapriDesktop
                     else if (audible && FollowDelivery(ticket) && talkState != TalkState.Off && box.Leaving < 0 && reply == said && (speak == free || !preferences.Quiet)) PlayReply(said, wav);
                 });
             });
+        }
+
+        // 汉化分支：中文台词交给只会英语的免费音色之前，先让大脑翻成英文。屏幕上还是中文。
+        private static readonly Regex HanLine = new Regex(@"[\u4e00-\u9fff]");
+        private readonly Dictionary<string, string> dubs = new Dictionary<string, string>();
+
+        private string Dubbed(string words)
+        {
+            if (string.IsNullOrEmpty(words) || preferences.NoDub || !HanLine.IsMatch(words)) return words;
+            lock (dubs) { string known; if (dubs.TryGetValue(words, out known)) return known; }
+            string english = brain.Translate(words);
+            if (string.IsNullOrEmpty(english)) return words;
+            lock (dubs)
+            {
+                if (dubs.Count > 64) dubs.Clear();
+                dubs[words] = english;
+            }
+            return english;
         }
 
         private bool FishCues(Func<string, byte[]> speak, Func<string, byte[]> free) { return speak != null && speak == free && preferences.ServerVoice && server.Api == VoiceServer.Fish; }

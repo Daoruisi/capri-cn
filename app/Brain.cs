@@ -424,6 +424,43 @@ namespace CapriDesktop
         internal Moment(string on, string line, string[] words) { On = on; Line = line; Words = words; }
     }
 
+    // 免费英语音色读不了中文时，先让大脑把台词翻成英文再读（汉化分支加的）。
+    [DataContract]
+    internal sealed class DubAnswer
+    {
+        [DataMember(Name = "choices")] public DubChoice[] Choices;
+    }
+
+    [DataContract]
+    internal sealed class DubChoice
+    {
+        [DataMember(Name = "message")] public DubMessage Message;
+        [DataMember(Name = "text")] public string Text;
+    }
+
+    [DataContract]
+    internal sealed class DubMessage
+    {
+        [DataMember(Name = "content")] public string Content;
+    }
+
+    // DeepSeek 的 /user/balance 回的东西。
+    [DataContract]
+    internal sealed class BalanceReport
+    {
+        [DataMember(Name = "is_available")] public bool Available;
+        [DataMember(Name = "balance_infos")] public BalanceEntry[] Entries;
+    }
+
+    [DataContract]
+    internal sealed class BalanceEntry
+    {
+        [DataMember(Name = "currency")] public string Currency;
+        [DataMember(Name = "total_balance")] public string Total;
+        [DataMember(Name = "granted_balance")] public string Granted;
+        [DataMember(Name = "topped_up_balance")] public string Topped;
+    }
+
     internal sealed class Brain
     {
         internal static string Ollama = "http://127.0.0.1:11434";
@@ -1604,10 +1641,93 @@ namespace CapriDesktop
 
         internal bool Sighted(Cloud remote)
         {
+            // DeepSeek 的 V4/Flash 接口能收图，上游按文本模型处理，这里放开（汉化分支改动）。
+            if (remote.Kind == "deepseek") return true;
             if (Unsighted == remote.Sight) return false;
             if (remote.Kind == "openrouter") return Images(Listed(remote.Kind, remote.Model));
             bool sees;
             lock (serverEyes) return remote.Kind != "local" || !serverEyes.TryGetValue(remote.Source, out sees) || sees;
+        }
+
+        // 一句要念出来的话，翻成英文。她的免费音色只会英语，所以中文台词先翻再读，屏幕上还是原话（汉化分支加的）。
+        internal string Translate(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text)) return null;
+            Cloud cloud = Remote;
+            if (cloud == null) return null;
+            string baseUrl = cloud.Kind == "anthropic" ? Anthropic : cloud.Kind == "deepseek" ? DeepSeek : OpenAi;
+            string model = Model ?? cloud.Model;
+            string body = "{\"model\":" + Voice.Quote(model) +
+                ",\"max_tokens\":1200,\"stream\":false,\"messages\":[{\"role\":\"system\",\"content\":" +
+                Voice.Quote("You dub lines for a text-to-speech voice. Turn the line you are given into English exactly as it should be spoken out loud: keep the meaning, the attitude and any slang, keep names and product names as they are, and answer with the English line only, with no quotes, no notes and no preamble.") +
+                "},{\"role\":\"user\",\"content\":" + Voice.Quote(text) + "}]}";
+            try
+            {
+                ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(baseUrl + (cloud.Kind == "anthropic" ? "/v1/messages" : "/chat/completions"));
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.UserAgent = "Capri-Desktop";
+                request.Timeout = 20000;
+                request.ReadWriteTimeout = 20000;
+                if (cloud.Kind == "anthropic")
+                {
+                    request.Headers["x-api-key"] = cloud.Key;
+                    request.Headers["anthropic-version"] = "2023-06-01";
+                }
+                else request.Headers["Authorization"] = "Bearer " + cloud.Key;
+                byte[] payload = Encoding.UTF8.GetBytes(body);
+                request.ContentLength = payload.Length;
+                using (Stream upload = request.GetRequestStream()) upload.Write(payload, 0, payload.Length);
+                using (WebResponse response = request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (MemoryStream copy = new MemoryStream())
+                {
+                    stream.CopyTo(copy);
+                    DubAnswer answer = Voice.Read<DubAnswer>(copy.ToArray());
+                    if (answer == null || answer.Choices == null || answer.Choices.Length == 0) return null;
+                    string said = (answer.Choices[0].Message == null ? null : answer.Choices[0].Message.Content) ?? (answer.Choices[0].Text);
+                    said = (said ?? "").Trim().Trim('"').Trim();
+                    return said.Length == 0 ? null : said;
+                }
+            }
+            catch (Exception) { return null; }
+        }
+
+        // Key 上还剩多少钱。只有 DeepSeek 有查询接口（汉化分支加的）。
+        internal string Balance()
+        {
+            Cloud remote = Remote;
+            if (remote == null) return "我这儿没接 API Key，查不了余额。";
+            if (remote.Kind != "deepseek") return remote.Name + " 没有余额查询接口，只有 DeepSeek 能查。";
+            try
+            {
+                ServicePointManager.SecurityProtocol |= (SecurityProtocolType)3072;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(DeepSeek + "/user/balance");
+                request.Method = "GET";
+                request.UserAgent = "Capri-Desktop";
+                request.Headers["Authorization"] = "Bearer " + remote.Key;
+                request.Timeout = 15000;
+                using (WebResponse response = request.GetResponse())
+                using (Stream stream = response.GetResponseStream())
+                using (MemoryStream copy = new MemoryStream())
+                {
+                    stream.CopyTo(copy);
+                    BalanceReport report = Voice.Read<BalanceReport>(copy.ToArray());
+                    if (report == null || report.Entries == null || report.Entries.Length == 0) return "余额查不到，DeepSeek 没回数。";
+                    StringBuilder said = new StringBuilder();
+                    foreach (BalanceEntry entry in report.Entries)
+                    {
+                        string sign = entry.Currency == "CNY" ? "¥" : entry.Currency == "USD" ? "$" : entry.Currency + " ";
+                        if (said.Length > 0) said.Append("，");
+                        said.Append(sign).Append(entry.Total);
+                        if (!string.IsNullOrEmpty(entry.Topped) || !string.IsNullOrEmpty(entry.Granted))
+                            said.Append("（充值 ").Append(sign).Append(entry.Topped).Append("，赠送 ").Append(sign).Append(entry.Granted).Append("）");
+                    }
+                    return "DeepSeek 余额 " + said + "。" + (report.Available ? "" : " 账户现在不可用。");
+                }
+            }
+            catch (Exception error) { return "查余额失败了：" + error.Message; }
         }
 
         // A brain that can't take pictures: a cloud model that can't see, or her built-in brain with no eyes. Her tools then leave
@@ -1617,6 +1737,7 @@ namespace CapriDesktop
             get
             {
                 Cloud remote = Remote;
+                if (remote != null && remote.Kind == "deepseek") return false;
                 if (remote != null) return !Sighted(remote);
                 Pick pick = LocalPick;
                 return Local != null && pick != null && pick.EyesFile == null;
