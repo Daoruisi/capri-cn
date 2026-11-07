@@ -55,7 +55,7 @@ namespace CapriDesktop
         internal bool Running { get { return ticks.Enabled; } }
         // When its five seconds started on her clock, so her smoke test can step it from there however long its first frame took.
         internal double Started { get { return born; } }
-        internal string Said { get { return "CAPRI // CHAOS\nFAKE CRASH\n" + (Revealed ? ":)" : ":(") + "\n" + string.Join(" ", Message) + "\n" + (Revealed ? Punchline : Percent + "% complete") + "\nFor more information about this issue and possible fixes, visit https://www.windows.com/stopcode\nIf you call a support person, give them this info:\nStop code: " + StopCode + "\nWhat failed: " + Failed + "\nclick anywhere or press esc"; } }
+        internal string Said { get { return "CAPRI // CHAOS\nFAKE CRASH\n" + (Revealed ? ":)" : ":(") + "\n" + string.Join(" ", Message) + "\n" + (Revealed ? Punchline : Percent + "% 完成") + "\nFor more information about this issue and possible fixes, visit https://www.windows.com/stopcode\nIf you call a support person, give them this info:\nStop code: " + StopCode + "\nWhat failed: " + Failed + "\nclick anywhere or press esc"; } }
 
         internal bool Open()
         {
@@ -129,7 +129,7 @@ namespace CapriDesktop
                     else graphics.DrawString(":(", face, white, 181, 123, exact);
                     for (int line = 0; line < Message.Length; line++) graphics.DrawString(Message[line], text, white, 208, 388 + 64 * line, exact);
                     if (Revealed) Split(graphics, Punchline, text, white, pink, green, 208, 606, 3);
-                    else graphics.DrawString(Percent + "% complete", text, white, 208, 606, exact);
+                    else graphics.DrawString(Percent + "% 完成", text, white, 208, 606, exact);
                     graphics.FillRectangle(white, 208, 700, 108, 108);
                     Code(graphics, ink, 208, 700, 4);
                     graphics.DrawString("For more information about this issue and possible fixes, visit https://www.windows.com/stopcode", small, white, 343, 692, exact);

@@ -50,7 +50,7 @@ namespace CapriDesktop
             if (end != null)
             {
                 Last = end;
-                End(end == "Checkmate" ? yours ? 1 : 2 : 3);
+                End(end == "将死" ? yours ? 1 : 2 : 3);
                 Moment = Result == 1 ? "lost" : Result == 2 ? "won" : "draw";
             }
             else if (Math.Abs(undo.Captured) == 5) Moment = yours ? "her_queen" : "your_queen";
@@ -98,7 +98,7 @@ namespace CapriDesktop
             get
             {
                 if (Result != 0) return Last + (Result == 1 ? " You win." : Result == 2 ? " Capri wins." : " Draw.");
-                return (Board.Check ? "Check. " : "") + (Board.Turn == You ? "Your turn." : "Capri is thinking.");
+                return (Board.Check ? "将军。" : "") + (Board.Turn == You ? "轮到你了。" : "Capri 在想。");
             }
         }
 
@@ -406,7 +406,7 @@ namespace CapriDesktop
                 CityLook.Frame(paint, new Size(Wide, Tall), 1, 20, 5, 55, 20);
                 Words(paint, "CHESS", title, CityLook.Rose, new RectangleF(24, 22, 300, 32), false);
                 Words(paint, "X", body, CityLook.Rose, Button(128), true);
-                Words(paint, "SESSION  /  " + game.Score.Text, small, CityLook.Cyan, new RectangleF(24, 65, 430, 24), false);
+                Words(paint, "对局  /  " + game.Score.Text, small, CityLook.Cyan, new RectangleF(24, 65, 430, 24), false);
                 Words(paint, "YOU  /  " + (game.You == 1 ? "WHITE" : "BLACK"), small, CityLook.White, new RectangleF(24, 101, 180, 24), false);
                 for (int level = 0; level < 3; level++)
                 {
@@ -443,7 +443,7 @@ namespace CapriDesktop
                     Words(paint, (game.You == 1 ? 8 - coordinate : coordinate + 1).ToString(), small, CityLook.Faint, new RectangleF(9, 132 + coordinate * 52, 20, 52), true);
                 }
                 Words(paint, string.IsNullOrEmpty(note) ? game.Status : note, body, game.Result == 2 ? CityLook.Rose : CityLook.White, new RectangleF(24, 563, 434, 24), false);
-                string[] buttons = { "UNDO", "NEW GAME", "HINT", "RESIGN" };
+                string[] buttons = { "悔棋", "新局", "提示", "认输" };
                 for (int action = 0; action < buttons.Length; action++)
                 {
                     Panel(paint, Button(129 + action), false);

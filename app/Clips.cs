@@ -426,7 +426,7 @@ namespace CapriDesktop
                         repeated = true;
                         return recent;
                     }
-                    if (pending != null && !pending.Settings.Same(chosen)) return Task.FromResult(new ClipResult { Problem = "Couldn't save that clip: one with the previous recording settings is still queued. Try again once it finishes." });
+                    if (pending != null && !pending.Settings.Same(chosen)) return Task.FromResult(new ClipResult { Problem = "存不了这段剪辑：上一段录像设置的任务还在排队。等它完成再试。" });
                     if (pending != null && pending.Session != capturedSession) return Task.FromResult(new ClipResult { Problem = "Couldn't save that clip: one from the previous game is still queued. Try again once it finishes." });
                     end = Math.Max(through, pictures.Last.Value.At + 1);
                     long cutoff = end - seconds * 10000000L;
@@ -512,7 +512,7 @@ namespace CapriDesktop
         internal string Clip(int seconds, out bool saved)
         {
             saved = false;
-            if (!Enabled) return "Turn on Clip my games in Settings > CLIPS, then I can clip that.";
+            if (!Enabled) return "先在 设置 > 剪辑 里打开「剪辑我的游戏」，然后我就能剪下来。";
             ClipSettings recording = Settings;
             if (seconds <= 0) seconds = recording.Seconds;
             string open = Computer.GameOpen();

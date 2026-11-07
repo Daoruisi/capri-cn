@@ -70,7 +70,7 @@ namespace CapriDesktop
                 Key shut = new Key();
                 shut.Bounds = Box(wide - 54, 20, 26, 22);
                 shut.Glyph = 2;
-                shut.AccessibleName = "Close";
+                shut.AccessibleName = "关闭";
                 shut.Click += delegate { Close(); };
                 Controls.Add(shut);
             }
@@ -202,7 +202,7 @@ namespace CapriDesktop
                     graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                     graphics.DrawImage(image, (Width - wide) / 2, (Height - tall) / 2, wide, tall);
                 }
-                else TextRenderer.DrawText(graphics, "NO PREVIEW", Font, ClientRectangle, Faint, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+                else TextRenderer.DrawText(graphics, "无预览", Font, ClientRectangle, Faint, TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
                 using (Pen rim = new Pen(WellEdge)) graphics.DrawRectangle(rim, 0, 0, Width - 1, Height - 1);
             }
         }
@@ -320,11 +320,11 @@ namespace CapriDesktop
 
             internal ModsSheet(Mainframe owner, float zoom) : base(owner, zoom, "Mods directory", "MODS DIRECTORY >", Wide, Tall)
             {
-                Words("The directory checks mods for malware first. Code mods still ask before they run.", 28, 52, 688, 16, Small(), Faint);
+                Words("模组目录会先查恶意软件。代码模组运行前仍会问你。", 28, 52, 688, 16, Small(), Faint);
                 search = new Entry();
                 search.Bounds = Box(28, 74, 270, 26);
-                search.Cue = "Search name, author or description";
-                search.Box.AccessibleName = "Search the mods directory";
+                search.Cue = "搜索名称、作者或描述";
+                search.Box.AccessibleName = "搜索模组目录";
                 search.Box.AccessibleDescription = "Search mods";
                 search.Box.TextChanged += delegate { first = 0; Fill(); };
                 Controls.Add(search);
@@ -332,7 +332,7 @@ namespace CapriDesktop
                 {
                     int kind = i;
                     filters[i] = Make(ModDirectory.Kinds[i], 306 + i * 82, 76, 76, 22, delegate { first = 0; filter = kind; Fill(); });
-                    filters[i].AccessibleName = "Show " + ModDirectory.Kinds[i].ToLowerInvariant() + " in the mods directory";
+                    filters[i].AccessibleName = "显示 " + ModDirectory.Kinds[i].ToLowerInvariant() + "（在模组目录里）";
                     filters[i].AccessibleDescription = "Mod filter";
                 }
                 for (int i = 0; i < Cards; i++)
@@ -353,15 +353,15 @@ namespace CapriDesktop
                     stars[i].Picked += delegate(int picked) { Rate(card, picked); };
                     Controls.Add(stars[i]);
                     stats[i] = Words("", x + 84, y + 228, CardWide - 84, 16, Small(), Faint);
-                    installs[i] = Make("Install", x, y + 248, 108, 24, delegate { Install(card); });
+                    installs[i] = Make("安装", x, y + 248, 108, 24, delegate { Install(card); });
                     installs[i].AccessibleDescription = "Install mod";
-                    views[i] = Make("View", x + 114, y + 248, 108, 24, delegate { View(card); });
+                    views[i] = Make("查看", x + 114, y + 248, 108, 24, delegate { View(card); });
                     views[i].AccessibleDescription = "View mod";
                 }
-                back = Make("Back", 28, 680, 60, 22, delegate { first -= Cards; Fill(); });
+                back = Make("返回", 28, 680, 60, 22, delegate { first -= Cards; Fill(); });
                 page = Words("", 272, 682, 200, 18, Font, Faint);
                 page.TextAlign = ContentAlignment.MiddleCenter;
-                next = Make("Next", 656, 680, 60, 22, delegate { first += Cards; Fill(); });
+                next = Make("下一页", 656, 680, 60, 22, delegate { first += Cards; Fill(); });
                 empty = Words("", 28, 250, 688, 24, Font, Faint);
                 empty.TextAlign = ContentAlignment.MiddleCenter;
                 status = Words("", 28, 708, 688, 36, Font, Faint);
@@ -454,7 +454,7 @@ namespace CapriDesktop
                 shown = ModDirectory.Filter(listings, search.Box.Text, filter);
                 first = Math.Max(0, Math.Min(first, (Math.Max(0, shown.Count - 1) / Cards) * Cards));
                 empty.Visible = shown.Count == 0;
-                empty.Text = listings.Count == 0 ? "Nothing to show from the mods directory." : "No mods match that.";
+                empty.Text = listings.Count == 0 ? "模组目录里没有可显示的内容。" : "没有匹配的模组。";
                 for (int i = 0; i < filters.Length; i++)
                 {
                     filters[i].Accent = i == filter ? Cyan : Faint;
@@ -473,29 +473,29 @@ namespace CapriDesktop
                     AskForPicture(listing);
                     Image picture;
                     previews[i].Image = listing.PreviewSha != null && pictures.TryGetValue(listing.PreviewSha, out picture) ? picture : null;
-                    previews[i].AccessibleName = listing.Title + " preview";
+                    previews[i].AccessibleName = listing.Title + "预览";
                     titles[i].Text = listing.Title;
-                    authors[i].Text = listing.Author.Length > 0 ? "by " + listing.Author : "";
+                    authors[i].Text = listing.Author.Length > 0 ? "作者：" + listing.Author : "";
                     abouts[i].Text = listing.About;
                     titles[i].AccessibleDescription = listing.About;
                     details.SetToolTip(previews[i], listing.Title + (listing.Author.Length > 0 ? "\nby " + listing.Author : "") + (listing.About.Length > 0 ? "\n" + listing.About : ""));
                     metas[i].Text = listing.Kind + " " + Math.Max(1, listing.Size / 1024) + " KB." + (have ? " Installed." : "");
                     stars[i].Value = listing.Rating;
                     stars[i].CanRate = statsLive && have;
-                    stars[i].AccessibleName = "Rate " + listing.Title + ", " + (listing.Votes == 0 ? "no ratings yet" : listing.Rating.ToString("0.0") + " stars") + (have ? ". Press 1 to 5." : "");
+                    stars[i].AccessibleName = "评分 " + listing.Title + ", " + (listing.Votes == 0 ? "暂无评分" : listing.Rating.ToString("0.0") + " 颗星") + (have ? "。按 1 到 5。" : "");
                     stats[i].Text = ModDirectory.RatingLine(listing);
                     counts[i].Text = ModDirectory.DownloadLine(listing);
-                    installs[i].Text = have ? "Reinstall" : "Install";
+                    installs[i].Text = have ? "重新安装" : "安装";
                     installs[i].Enabled = !installing;
                     installs[i].AccessibleName = (have ? "Reinstall " : "Install ") + listing.Title;
                     installs[i].Invalidate();
-                    views[i].AccessibleName = "View " + listing.Title + " on GitHub";
+                    views[i].AccessibleName = "View " + listing.Title + "（GitHub）";
                 }
                 bool pages = shown.Count > Cards;
                 back.Visible = next.Visible = page.Visible = pages;
                 back.Enabled = first > 0;
                 next.Enabled = first + Cards < shown.Count;
-                page.Text = "Page " + (first / Cards + 1) + " of " + (Math.Max(0, shown.Count - 1) / Cards + 1);
+                page.Text = "第 " + (first / Cards + 1) + " / " + (Math.Max(0, shown.Count - 1) / Cards + 1);
             }
 
             private void Install(int card)
@@ -622,7 +622,7 @@ namespace CapriDesktop
                 Key fork = Make("Fork capri-mods", 28, 298, 150, 26, delegate { Open(ModDirectory.Page + "/fork", null); });
                 fork.Accent = Cyan;
                 fork.Loud = true;
-                Make("Show my mod file", 186, 298, 150, 26, delegate { Open("explorer.exe", "/select,\"" + mod.Path + "\""); });
+                Make("显示我的模组文件", 186, 298, 150, 26, delegate { Open("explorer.exe", "/select,\"" + mod.Path + "\""); });
                 status = Words("", 28, 330, 464, 26, Small(), Rose);
                 Frame.Fit(this);
             }
@@ -633,7 +633,7 @@ namespace CapriDesktop
                 catch (Exception error)
                 {
                     if (!(error is IOException || error is UnauthorizedAccessException || error is System.ComponentModel.Win32Exception)) throw;
-                    status.Text = "Couldn't open that: " + error.Message;
+                    status.Text = "打不开：" + error.Message;
                 }
             }
 

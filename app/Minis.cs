@@ -12,7 +12,7 @@ namespace CapriDesktop
     internal sealed class MiniScore
     {
         internal int You, Her, Draws;
-        internal string Text { get { return "YOU " + You + "   CAPRI " + Her + "   DRAWS " + Draws; } }
+        internal string Text { get { return "你 " + You + "   CAPRI " + Her + "   平局 " + Draws; } }
     }
 
     internal sealed class MiniGame
@@ -523,8 +523,8 @@ namespace CapriDesktop
                 CityLook.Frame(paint, new Size(Wide, Tall), 1, 20, 5, 55, 20);
                 Words(paint, game.Title, title, CityLook.Rose, new RectangleF(24, 22, 298, 32), false);
                 Words(paint, "X", body, CityLook.Rose, Part(game.Kind, 9), true);
-                Words(paint, "SESSION  /  " + game.Score.Text, small, CityLook.Cyan, new RectangleF(24, 72, 324, 22), false);
-                string keys = game.Kind == "tic_tac_toe" ? "1-9 or arrows + Enter  /  say top left, middle..." : game.Kind == "connect_four" ? "1-7 or arrows + Enter  /  say column 3..." : "R / P / S or arrows + Enter  /  first to 3";
+                Words(paint, "对局  /  " + game.Score.Text, small, CityLook.Cyan, new RectangleF(24, 72, 324, 22), false);
+                string keys = game.Kind == "tic_tac_toe" ? "1-9 或方向键 + 回车  /  说 左上、中间…" : game.Kind == "connect_four" ? "1-7 或方向键 + 回车  /  说 第 3 列…" : "R / P / S 或方向键 + 回车  /  先赢 3 局";
                 Words(paint, keys, small, CityLook.Faint, new RectangleF(24, 108, 324, 22), false);
                 int count = game.Kind == "tic_tac_toe" ? 9 : game.Kind == "connect_four" ? 7 : 3;
                 for (int pick = 0; pick < count; pick++)

@@ -21,8 +21,8 @@ namespace CapriDesktop
         internal string Caption { get { return Name.ToUpperInvariant(); } }
         internal string Label { get { return Name == "Discord" ? Name : Caption; } }
         // How a line names it, like "She hears you and your browser.": "Browser" alone reads oddly there.
-        internal string Said { get { return Name == "Browser" ? "your browser" : Name; } }
-        internal string NotOpen { get { return (Name == "Browser" ? "Your browser" : Name) + " isn't open."; } }
+        internal string Said { get { return Name == "Browser" ? "你的浏览器" : Name; } }
+        internal string NotOpen { get { return (Name == "Browser" ? "Your browser" : Name) + " 没打开。"; } }
         // Any other app in Windows' volume mixer, picked by its exe, like RobloxPlayerBeta.exe (Lachy, 5 Nov: "being able to
         // select an app for audio to come from, like Roblox or something, would be good for call mode").
         internal bool Other { get { return Choice.EndsWith(".exe", StringComparison.OrdinalIgnoreCase); } }
@@ -80,7 +80,7 @@ namespace CapriDesktop
 
         internal static string Choice { get { return choice; } }
         internal static CallApp Current { get { return current; } }
-        internal const string Note = "Browser captures sound from all tabs.";
+        internal const string Note = "浏览器会捕获所有标签页的声音。";
 
         private static string[] MakeChoices()
         {

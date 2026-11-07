@@ -27,50 +27,50 @@ namespace CapriDesktop
         {
             ModAsk = AskToRun;
             int first = Controls.Count;
-            Section("MODS >", 0, 58);
-            Caption("Code mods can reach your whole PC. Only trusted ones.", 28, 80, Look.Mono(8.5f, FontStyle.Italic, GraphicsUnit.Point), Faint);
-            Key import = Make("Import mod", 28, 104, 100, 28, delegate { ImportMod(); });
+            Section("模组 >", 0, 58);
+            Caption("代码模组能碰到你整台电脑，只装信得过的。", 28, 80, Look.Mono(8.5f, FontStyle.Italic, GraphicsUnit.Point), Faint);
+            Key import = Make("导入模组", 28, 104, 100, 28, delegate { ImportMod(); });
             import.Accent = Cyan;
             import.Loud = true;
-            modBrowse = Make("Browse mods", 134, 104, 100, 28, delegate { BrowseMods(); });
-            Key folder = Make("Mods folder", 240, 104, 116, 28, delegate { OpenModsFolder(); });
-            Explain(import, "Import mod", "MainframeMods.cs");
-            Explain(modBrowse, "Browse mods", "MainframeMods.cs");
+            modBrowse = Make("浏览模组", 134, 104, 100, 28, delegate { BrowseMods(); });
+            Key folder = Make("模组文件夹", 240, 104, 116, 28, delegate { OpenModsFolder(); });
+            Explain(import, "导入模组", "MainframeMods.cs");
+            Explain(modBrowse, "浏览模组", "MainframeMods.cs");
             Explain(folder, "Open mods folder", "MainframeMods.cs");
             modStatus = ModLabel("", 28, 138, 328, 36, Font, Faint);
             // A long import error, like a compiler's, is cut to two lines here, and hovering it shows the whole thing.
             ((Note)modStatus).Hovers = true;
-            modListHead = Section("INSTALLED >", 0, 180);
-            modEmpty = ModLabel("No mods yet. Import a " + Mods.Extension + " file.", 28, ModRowTop, 328, 20, Font, Faint);
+            modListHead = Section("已安装 >", 0, 180);
+            modEmpty = ModLabel("还没有模组。导入一个 " + Mods.Extension + " file.", 28, ModRowTop, 328, 20, Font, Faint);
             for (int i = 0; i < ModRows; i++)
             {
                 int row = i, top = ModRowTop + ModRowHeight * i;
                 modNames[i] = ModLabel("", 28, top + 3, 196, 20, Type(10f, true), White);
-                modSwitches[i] = Make("On", 230, top, 54, 22, delegate { SwitchMod(row); });
-                modRemoves[i] = Make("Remove", 290, top, 66, 22, delegate { RemoveMod(row); });
+                modSwitches[i] = Make("开", 230, top, 54, 22, delegate { SwitchMod(row); });
+                modRemoves[i] = Make("移除", 290, top, 66, 22, delegate { RemoveMod(row); });
                 modAbouts[i] = ModLabel("", 28, top + 26, 256, 30, Look.Mono(8.5f, FontStyle.Regular, GraphicsUnit.Point), Faint);
                 Explain(modSwitches[i], "Mod switch", "MainframeMods.cs", null, "On / Off");
-                Explain(modRemoves[i], "Remove", "MainframeMods.cs");
-                modPublishes[i] = Make("Publish", 290, top + 28, 66, 22, delegate { PublishMod(row); });
+                Explain(modRemoves[i], "移除", "MainframeMods.cs");
+                modPublishes[i] = Make("发布", 290, top + 28, 66, 22, delegate { PublishMod(row); });
                 Explain(modPublishes[i], "Publish mod", "MainframeMods.cs");
             }
-            modBack = Make("Back", 28, ModRowTop + ModRowHeight * ModRows, 60, 22, delegate { modFirst -= ModRows; FillMods(); });
+            modBack = Make("返回", 28, ModRowTop + ModRowHeight * ModRows, 60, 22, delegate { modFirst -= ModRows; FillMods(); });
             modPage = ModLabel("", 96, ModRowTop + ModRowHeight * ModRows + 3, 192, 18, Font, Faint);
             modPage.TextAlign = ContentAlignment.MiddleCenter;
             Explain(modBack, "Mod pages", "MainframeMods.cs");
-            modNext = Make("Next", 296, ModRowTop + ModRowHeight * ModRows, 60, 22, delegate { modFirst += ModRows; FillMods(); });
+            modNext = Make("下一页", 296, ModRowTop + ModRowHeight * ModRows, 60, 22, delegate { modFirst += ModRows; FillMods(); });
             Explain(modNext, "Mod pages", "MainframeMods.cs");
-            Section("COLORS >", 0, ModRowTop + ModRowHeight * ModRows + 30);
+            Section("配色 >", 0, ModRowTop + ModRowHeight * ModRows + 30);
             int colourRow = ModRowTop + ModRowHeight * ModRows + 54;
             for (int i = 0; i < ArtColors.Slots; i++)
             {
                 int slot = i;
                 colourKeys[i] = Make(ArtColors.Names[i], 28 + i * 66, colourRow, 62, 26, delegate { PickColour(slot); });
-                colourKeys[i].AccessibleName = "Change her " + ArtColors.Names[i].ToLowerInvariant() + " color";
+                colourKeys[i].AccessibleName = "改她的 " + ArtColors.Names[i].ToLowerInvariant() + "颜色";
                 Explain(colourKeys[i], "Her colors", "MainframeMods.cs", null, "Her colors");
             }
-            Key colourReset = Make("Reset colors", 28, colourRow + 32, 160, 24, delegate { ResetColours(); });
-            Explain(colourReset, "Reset colors", "MainframeMods.cs");
+            Key colourReset = Make("恢复配色", 28, colourRow + 32, 160, 24, delegate { ResetColours(); });
+            Explain(colourReset, "恢复配色", "MainframeMods.cs");
             for (int i = first; i < Controls.Count; i++)
             {
                 Control control = Controls[i];
@@ -93,7 +93,7 @@ namespace CapriDesktop
 
         private void CheckModsKey()
         {
-            if (more.Left != Scaled(146) || more.Text != "Settings" || modsKey.Top != more.Top || modsKey.Left < more.Right || modsKey.Right > minimize.Left) throw new Exception("Settings or Mods is in the wrong place.");
+            if (more.Left != Scaled(146) || more.Text != "设置" || modsKey.Top != more.Top || modsKey.Left < more.Right || modsKey.Right > minimize.Left) throw new Exception("Settings or Mods is in the wrong place.");
             try
             {
                 foreach (bool fallback in new[] { false, true })
@@ -106,9 +106,9 @@ namespace CapriDesktop
                         if (crowded != null) throw new Exception("The Mods page or key overlaps" + (fallback ? " on the fallback font: " : ": ") + crowded);
                     }
                     ShowSettings(false);
-                    if (more.Text != "Back") throw new Exception("Settings lost Back while Mods was open.");
+                    if (more.Text != "返回") throw new Exception("Settings lost Back while Mods was open.");
                     more.PerformClick();
-                    if (modded || paged || more.Text != "Settings") throw new Exception("Back did not leave Mods.");
+                    if (modded || paged || more.Text != "设置") throw new Exception("Back did not leave Mods.");
                 }
             }
             finally { LayoutScale(0, 0); ShowMods(false); }
@@ -119,7 +119,7 @@ namespace CapriDesktop
             DismissHint();
             if (on && paged) ShowSettings(false);
             modded = on;
-            more.Text = on ? "Back" : "Settings";
+            more.Text = on ? "返回" : "设置";
             more.Invalidate();
             Place();
             foreach (KeyValuePair<Control, int> entry in mainLeft) Reachable(entry.Key, !on);
@@ -142,20 +142,20 @@ namespace CapriDesktop
                 if (mod == null) continue;
                 modNames[i].Text = mod.File.Name + (string.IsNullOrEmpty(mod.File.Version) ? "" : " v" + mod.File.Version);
                 modNames[i].ForeColor = mod.On ? White : Faint;
-                modAbouts[i].Text = ((mod.Changed ? "CHANGED, approve it again. " : mod.Code ? "RUNS CODE. " : mod.Skin ? "SKIN. " : mod.Skill ? "SKILL. " : "") + (string.IsNullOrEmpty(mod.File.Author) ? "" : "by " + mod.File.Author + ". ") + (mod.File.Description ?? "") + (mod.Code || mod.File.WakeNames.Length == 0 ? "" : " Names: " + string.Join(", ", mod.File.WakeNames)) + (mod.Skill ? " For " + mod.File.Games[0] + "." : "")).Trim();
+                modAbouts[i].Text = ((mod.Changed ? "已改动，需重新批准。" : mod.Code ? "运行代码。" : mod.Skin ? "皮肤。" : mod.Skill ? "技能。" : "") + (string.IsNullOrEmpty(mod.File.Author) ? "" : "作者：" + mod.File.Author + ". ") + (mod.File.Description ?? "") + (mod.Code || mod.File.WakeNames.Length == 0 ? "" : " 名字：" + string.Join(", ", mod.File.WakeNames)) + (mod.Skill ? " For " + mod.File.Games[0] + "." : "")).Trim();
                 modAbouts[i].ForeColor = mod.Changed ? Rose : Faint;
-                modSwitches[i].Text = mod.On ? "On" : "Off";
+                modSwitches[i].Text = mod.On ? "开" : "关";
                 modSwitches[i].Accent = mod.On ? Cyan : Rose;
-                modSwitches[i].AccessibleName = (mod.On ? "Turn off " : "Turn on ") + mod.File.Name;
+                modSwitches[i].AccessibleName = (mod.On ? "关掉 " : "打开 ") + mod.File.Name;
                 modRemoves[i].AccessibleName = "Remove " + mod.File.Name;
-                modPublishes[i].AccessibleName = "Publish " + mod.File.Name + " to the mods directory";
+                modPublishes[i].AccessibleName = "发布 " + mod.File.Name + " 到模组目录";
                 modSwitches[i].Invalidate();
             }
             bool pages = total > pageSize;
             modBack.Visible = modNext.Visible = modPage.Visible = pages;
             modBack.Enabled = modFirst > 0;
             modNext.Enabled = modFirst + pageSize < total;
-            modPage.Text = "Page " + (modFirst / pageSize + 1) + " of " + ((total - 1) / pageSize + 1);
+            modPage.Text = "第 " + (modFirst / pageSize + 1) + " / " + ((total - 1) / pageSize + 1);
             string[] colours = capri.ModList.ColoursNow;
             for (int i = 0; i < ArtColors.Slots; i++)
             {
@@ -268,9 +268,9 @@ namespace CapriDesktop
         private bool AskToRun(ModFile mod, string hash)
         {
             string message = mod.Name + (string.IsNullOrEmpty(mod.Version) ? "" : " v" + mod.Version) + (string.IsNullOrEmpty(mod.Author) ? "" : ", which says it's by " + mod.Author) + ", is a code mod.\n\n"
-                + "Code mods run as part of Capri with full access to your PC: your files, your accounts and the API keys she has saved. Nothing limits what it can do, and Capri doesn't check whether it's safe.\n\n"
+                + "代码模组作为 Capri 的一部分运行，能完全访问你的电脑：你的文件、账号以及她保存的 API Key。对它没有任何限制，Capri 也不会检查它是否安全。\n\n"
                 + "Only run it if you wrote it, or you've read it and trust who did.\n\nFile fingerprint (SHA-256):\n" + hash + "\n\nRun this code?";
-            return MessageBox.Show(this, message, "Run this code mod?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
+            return MessageBox.Show(this, message, "要运行这个代码模组吗？", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) == DialogResult.Yes;
         }
 
         private void RemoveMod(int row)
@@ -315,7 +315,7 @@ namespace CapriDesktop
             foreach (Mod old in mods.All.ToArray()) mods.Remove(old);
             if (Hands.HeardName("Nova, what time is it?") || !Hands.HeardName("Capri, what time is it?")) throw new Exception("Her names were wrong before any mod.");
             ShowMods(true);
-            if (!modded || more.Text != "Back" || modStatus.Left >= Far || modsKey.Left >= Far) throw new Exception("The Mods page did not open.");
+            if (!modded || more.Text != "返回" || modStatus.Left >= Far || modsKey.Left >= Far) throw new Exception("The Mods page did not open.");
             if (!ImportMod(good)) throw new Exception("A good mod was refused: " + modStatus.Text);
             if (mods.All.Count != 1 || !File.Exists(Path.Combine(mods.Folder, "custom-names" + Mods.Extension))) throw new Exception("An imported mod was not saved.");
             if (!Hands.HeardName("hey nova, what time is it") || !Hands.HeardName("BIG Z open notepad") || !Hands.HeardName("big   z") || !Hands.HeardName("ask capricorn") || !Hands.HeardName("Capri, hello"))

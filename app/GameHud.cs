@@ -903,8 +903,8 @@ namespace CapriDesktop
             if (line.EndsWith(Borderless, StringComparison.Ordinal)) Say(line);
         }
 
-        private string Borderless { get { return Hud() ? BorderlessHud : "That game's in exclusive full screen, so I can't show over it. Switch it to borderless and you'll see me."; } }
-        private const string BorderlessHud = "That game's in exclusive full screen, so I can't show over it. Switch it to borderless and I'll dock top-left.";
+        private string Borderless { get { return Hud() ? BorderlessHud : "那个游戏是全屏独占，我没法显示在上面。切成无边框就能看到我。"; } }
+        private const string BorderlessHud = "那个游戏是全屏独占，我没法显示在上面。切成无边框我就停靠到左上角。";
 
         // True the first time this game is seen in exclusive full screen.
         private bool Warn(GameSeen game) { return Exclusive(game) && warned.Add(game.Name.ToLowerInvariant()); }
@@ -1109,7 +1109,7 @@ namespace CapriDesktop
             manualHidden = dockHid;
             fullScreenHidden = preferences.HideFullScreen && !GamingOn && FullScreen();
             hidden = manualHidden || fullScreenHidden;
-            visibilityItem.Text = hidden ? "Show Capri" : "Hide Capri";
+            visibilityItem.Text = hidden ? "显示 Capri" : "隐藏 Capri";
             if (!hidden)
             {
                 if (seat == null && !hanging) anchor = KeepOnScreen(anchor);

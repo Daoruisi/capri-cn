@@ -266,7 +266,7 @@ namespace CapriDesktop
 
         internal string Ending()
         {
-            if (Legal().Count == 0) return Check ? "Checkmate" : "Stalemate";
+            if (Legal().Count == 0) return Check ? "将死" : "逼和";
             return Draw;
         }
 

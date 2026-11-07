@@ -40,7 +40,7 @@ namespace CapriDesktop
             get
             {
                 string extension = Path.GetExtension(FileName);
-                return string.Equals(extension, Mods.CodeExtension, StringComparison.OrdinalIgnoreCase) ? "RUNS CODE." : string.Equals(extension, Mods.SkinExtension, StringComparison.OrdinalIgnoreCase) ? "SKIN." : string.Equals(extension, Mods.SkillExtension, StringComparison.OrdinalIgnoreCase) ? "SKILL." : Colours ? "COLOURS." : "SETTINGS.";
+                return string.Equals(extension, Mods.CodeExtension, StringComparison.OrdinalIgnoreCase) ? "运行代码。" : string.Equals(extension, Mods.SkinExtension, StringComparison.OrdinalIgnoreCase) ? "皮肤。" : string.Equals(extension, Mods.SkillExtension, StringComparison.OrdinalIgnoreCase) ? "技能。" : Colours ? "配色。" : "设置。";
             }
         }
         internal string Id { get { return Path.GetFileNameWithoutExtension(FileName); } }
@@ -63,7 +63,7 @@ namespace CapriDesktop
     internal static class ModDirectory
     {
         internal const string Page = "https://github.com/lachydotmcg/capri-mods";
-        internal static readonly string[] Kinds = { "All", "Settings", "Code", "Skins", "Skills" };
+        internal static readonly string[] Kinds = { "全部", "设置", "代码", "皮肤", "技能" };
         private const string Api = "https://api.github.com/repos/lachydotmcg/capri-mods/git/";
         private const long Largest = 96L * 1024 * 1024;
         private const long LargestList = 16L * 1024 * 1024;
