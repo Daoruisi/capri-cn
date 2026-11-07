@@ -43,7 +43,7 @@ namespace CapriDesktop
         private const int Wide = 380;
         private const int Tall = 734;
         private static readonly int[] Gaps = { 10, 15, 30, 60, 90, 120, 180, 300, 600 };
-        private static readonly string[] GapNames = { "10 秒", "15 秒", "30 秒", "1 分钟", "1.5 min", "2 分钟", "3 分钟", "5 分钟", "10 分钟" };
+        private static readonly string[] GapNames = { "10 秒", "15 秒", "30 秒", "1 分钟", "1.5 分钟", "2 分钟", "3 分钟", "5 分钟", "10 分钟" };
         private const int SetupHeight = 118;
         // The left column is the taller one, and CLIPS' note at its foot sets this, with Free voice in games showing.
         private const int PageTall = 1812;
@@ -144,7 +144,7 @@ namespace CapriDesktop
         private readonly Slider watchMemory;
         private readonly Readout watchMemoryName;
         private static readonly int[] WatchLines = { 8, 16, 24, 48, 96 };
-        private static readonly string[] WatchLineNames = { "8 lines", "16 lines", "24 lines", "48 lines", "96 lines" };
+        private static readonly string[] WatchLineNames = { "8 行", "16 行", "24 行", "48 行", "96 行" };
         private readonly Toggle stayOnModel;
         private readonly Toggle remembering;
         private readonly Toggle keepAwake, hideFullScreen, playerFullScreen, exploreAway;
@@ -158,6 +158,7 @@ namespace CapriDesktop
         private static readonly int[] AwayTimes = { 60, 120, 300, 600, 900, 1800 };
         private static readonly string[] AwayNames = { "1 分钟", "2 分钟", "5 分钟", "10 分钟", "15 分钟", "30 分钟" };
         private readonly Toggle[] careToggles = new Toggle[7];
+        private static readonly string[] CareShownNames = { "喝水", "伸懒腰", "看远处", "睡前提醒", "吃饭", "游戏休息", "无聊" };
         private readonly Key[] careTimes = new Key[7];
         private readonly Key careEdit;
         private readonly ContextMenuStrip careMenu;
@@ -426,7 +427,7 @@ namespace CapriDesktop
             brainName.AutoEllipsis = true;
             brainName.Size = new Size(244, 20);
             provider = Make("接口", 280, 79, 76, 20, delegate { OpenProvider(); });
-            provider.AccessibleName = "OpenAI-compatible provider address and key";
+            provider.AccessibleName = "兼容 OpenAI 的接口地址和 Key";
             brainNote = Caption("", 28, 101, Font, Faint);
             modelMenu = Dropdown();
             models = Make("", 28, 134, 244, 28, delegate { modelMenu.Show(models, new Point(0, models.Height)); });
@@ -469,7 +470,7 @@ namespace CapriDesktop
             freeKeyMenu.Items.Add(routerKey);
             freeKey = Make("免费 Key", 266, 209, 90, 22, delegate { ShowFreeKeys(); });
             freeKey.Chevron = true;
-            freeKey.AccessibleName = "Free key: NVIDIA, Google AI Studio (Gemini) or OpenRouter";
+            freeKey.AccessibleName = "免费 Key：NVIDIA、Google AI Studio (Gemini) 或 OpenRouter";
             // Their own Claude or ChatGPT plan in place of a key, through Claude Code or Codex on this PC (Lachy, 6 Nov).
             planMenu = Dropdown();
             planMenu.AccessibleName = "你的订阅";
@@ -796,7 +797,7 @@ namespace CapriDesktop
             foreach (Control mixRow in MixControls) underVoice.Add(new KeyValuePair<Control, int>(mixRow, mixRow.Top));
             underVoice.Add(new KeyValuePair<Control, int>(callMode, callMode.Top));
             Section("卡普里 >", c, 58);
-            sizeSlider = Setting("Size", SizeNames, c, 82, "她的大小");
+            sizeSlider = Setting("大小", SizeNames, c, 82, "她的大小");
             sizeName = new Readout(sizeSlider);
             sizeSlider.Changed += delegate { if (syncing) return; sizeName.Text = SizeNames[sizeSlider.Value]; capri.SetCharacterSize(SizeSteps[sizeSlider.Value]); };
             checkIns = Switch("偶尔来看看我", c, 110, delegate { if (!syncing) capri.ToggleCheckIns(); });
@@ -805,9 +806,10 @@ namespace CapriDesktop
             {
                 CareKind careKind = (CareKind)careRow;
                 Toggle careToggle = Switch(Care.Names[careRow], c, 138 + careRow * Row, delegate { if (!syncing) capri.ToggleCare(careKind); });
+                careToggle.Text = CareShownNames[careRow];
                 careToggle.Width = 224;
                 careToggle.Switch = 68;
-                careToggle.AccessibleName = "Check in on me: " + Care.Names[careRow] + " check-in" + (careKind == CareKind.Eyes ? ", look away for 20 seconds" : careKind == CareKind.Meal ? ", mealtimes from noon, if you've been here since before lunch" : "");
+                careToggle.AccessibleName = "偶尔来看看我：" + CareShownNames[careRow] + (careKind == CareKind.Eyes ? "，看远处 20 秒" : careKind == CareKind.Meal ? "，中午起按饭点，前提是午饭前你就在" : "");
                 careToggles[careRow] = careToggle;
                 Key careTime = Make("", 260 + c, 141 + careRow * Row, 96, 22, delegate { ChooseCareTime(careKind); });
                 careTime.Chevron = true;
@@ -996,7 +998,7 @@ namespace CapriDesktop
             clipPath.Bounds = new Rectangle(28, 1266, 328, 20);
             clipsFolder = Make("打开剪辑文件夹", 28, 1294, 328, 22, delegate { capri.OpenClips(); });
             clipsFolder.AccessibleName = "打开你选好的剪辑文件夹";
-            clipLength = Setting("Default length", new[] { "15 秒", "30 秒", "45 s", "1 分钟", "1.5 分钟", "2 分钟" }, 0, 1322, "Default duration for clip that and automatic clips");
+            clipLength = Setting("Default length", new[] { "15 秒", "30 秒", "45 秒", "1 分钟", "1.5 分钟", "2 分钟" }, 0, 1322, "Default duration for clip that and automatic clips");
             clipRate = Setting("帧率", new[] { "最高 15 fps", "最高 24 fps", "最高 30 fps", "最高 60 fps" }, 0, 1350, "目标采集帧率；负载高或内存不够时可能降");
             clipSize = Setting("分辨率", new[] { "自动", "最高 480p", "最高 720p", "最高 1080p" }, 0, 1378, "剪辑最高分辨率，保持游戏画面比例、不放大");
             clipBits = Setting("视频码率", new[] { "自动", "2 Mbps", "4 Mbps", "8 Mbps", "12 Mbps", "20 Mbps" }, 0, 1406, "H.264 视频码率目标；越高文件越大");
@@ -1101,7 +1103,7 @@ namespace CapriDesktop
         {
             ContextMenuStrip games = Dropdown();
             string[] names = { "chess", "connect_four", "tic_tac_toe", "rock_paper_scissors" };
-            string[] titles = { "Chess", "Connect four", "Tic-tac-toe", "Rock, paper, scissors" };
+            string[] titles = { "国际象棋", "四子棋", "井字棋", "石头剪刀布" };
             for (int i = 0; i < names.Length; i++)
             {
                 string name = names[i];
@@ -1127,7 +1129,7 @@ namespace CapriDesktop
         {
             using (FolderBrowserDialog picker = new FolderBrowserDialog())
             {
-                picker.Description = "Choose where future Capri clips are saved";
+                picker.Description = "选择以后 Capri 剪辑保存的位置";
                 picker.SelectedPath = capri.ClipOptions.Folder;
                 picker.ShowNewFolderButton = true;
                 if (picker.ShowDialog(this) != DialogResult.OK) return;
@@ -1259,8 +1261,8 @@ namespace CapriDesktop
 
         private static string CareTimeName(CareKind kind, int time)
         {
-            if (kind == CareKind.Late) return (time % 12 == 0 ? 12 : time % 12) + (time < 12 ? " am" : " pm");
-            return time % 60 == 0 ? time / 60 + " h" : time + " min";
+            if (kind == CareKind.Late) return (time % 12 == 0 ? 12 : time % 12) + (time < 12 ? " 上午" : " 下午");
+            return time % 60 == 0 ? time / 60 + " 小时" : time + " 分钟";
         }
 
         private void ChooseCareTime(CareKind kind)
@@ -1570,8 +1572,8 @@ namespace CapriDesktop
             cableOffered = !vb && !capri.CableSetupOpen;
             cableKey.Visible = cableOffered;
             FitMixInput();
-            Retext(mixInput, "Input: " + (capri.MixInputName ?? "no mic found"));
-            Retext(mixOutput, "Output: " + (cable ? MicMix.EndOf(capri.MixOutput) : "none yet"));
+            Retext(mixInput, "输入：" + (capri.MixInputName ?? "no mic found"));
+            Retext(mixOutput, "输出：" + (cable ? MicMix.EndOf(capri.MixOutput) : "还没有"));
             voiceInMic.Invalidate();
             voiceInMicNote.Invalidate();
             voiceInMicState.Invalidate();
@@ -1600,7 +1602,7 @@ namespace CapriDesktop
 
         // Her mix's Input and Output menus open at once and look in the background too, like VOICE's Mic menu (#100).
         private bool mixInputsWaiting, mixOutputsWaiting;
-        internal const string CheckingCables = "Still checking your virtual mics...";
+        internal const string CheckingCables = "还在检查你的虚拟麦克风…";
 
         // Her mix's Input: the mic her ears use, or one of its own. Never a cable's far end, which carries her voice.
         private void ShowMixInputs(Control under)
@@ -1616,7 +1618,7 @@ namespace CapriDesktop
             List<Mic> found = all == null ? null : all.FindAll(delegate(Mic mic) { return !MicMix.IsCableOut(mic.Name); });
             mixInputsWaiting = found == null;
             mixInputMenu.Items.Clear();
-            mixInputMenu.Items.Add(Choice("Same as her ears (VOICE > Mic)", found == null ? string.IsNullOrEmpty(chosen) : Ears.Find(chosen, found) == null, delegate { mixInputsWaiting = false; capri.ChooseMixInput(null); }));
+            mixInputMenu.Items.Add(Choice("和她的耳朵一样（声音 > 麦克风）", found == null ? string.IsNullOrEmpty(chosen) : Ears.Find(chosen, found) == null, delegate { mixInputsWaiting = false; capri.ChooseMixInput(null); }));
             if (found == null) { mixInputMenu.Items.Add(new ToolStripSeparator()); mixInputMenu.Items.Add(Checking(CheckingMics)); return; }
             if (found.Count > 0) mixInputMenu.Items.Add(new ToolStripSeparator());
             foreach (Mic mic in found)
@@ -1643,7 +1645,7 @@ namespace CapriDesktop
             bool vb = false;
             mixOutputsWaiting = cables == null;
             mixOutputMenu.Items.Clear();
-            mixOutputMenu.Items.Add(Choice("Automatic: VB-CABLE, else Steam's", cables == null ? string.IsNullOrEmpty(chosen) : cables.Find(delegate(Companion.MixChoice each) { return each.Cable.Id == chosen; }) == null, delegate { mixOutputsWaiting = false; capri.ChooseMixOutput(null); }));
+            mixOutputMenu.Items.Add(Choice("自动：VB-CABLE，否则用 Steam 的", cables == null ? string.IsNullOrEmpty(chosen) : cables.Find(delegate(Companion.MixChoice each) { return each.Cable.Id == chosen; }) == null, delegate { mixOutputsWaiting = false; capri.ChooseMixOutput(null); }));
             if (cables == null) { mixOutputMenu.Items.Add(new ToolStripSeparator()); mixOutputMenu.Items.Add(Checking(CheckingCables)); return; }
             if (cables.Count > 0) mixOutputMenu.Items.Add(new ToolStripSeparator());
             foreach (Companion.MixChoice cable in cables)
@@ -1655,7 +1657,7 @@ namespace CapriDesktop
             if (!vb)
             {
                 mixOutputMenu.Items.Add(new ToolStripSeparator());
-                mixOutputMenu.Items.Add(Choice("Get VB-CABLE (free)...", false, delegate { mixOutputsWaiting = false; capri.SetUpCable(); }));
+                mixOutputMenu.Items.Add(Choice("获取 VB-CABLE（免费）…", false, delegate { mixOutputsWaiting = false; capri.SetUpCable(); }));
             }
         }
 
@@ -1766,9 +1768,9 @@ namespace CapriDesktop
             paged = on;
             simple = !capri.AdvancedSettings;
             advancedKey.Text = simple ? "高级设置" : "Simple Settings";
-            advancedKey.AccessibleName = simple ? "Advanced Settings: show every setting" : "Simple Settings: show only the main settings";
+            advancedKey.AccessibleName = simple ? "高级设置：显示所有设置" : "简单设置：只显示主要设置";
             advancedKey.Invalidate();
-            more.Text = on || modded ? "Back" : "Settings";
+            more.Text = on || modded ? "返回" : "设置";
             more.Invalidate();
             Place();
             foreach (KeyValuePair<Control, int> entry in mainLeft) Reachable(entry.Key, !on);
@@ -2800,10 +2802,10 @@ namespace CapriDesktop
             for (int i = 0; i < huskMenu.Items.Count; i++) ((ToolStripMenuItem)huskMenu.Items[i]).Checked = i == capri.HuskMode;
             huskMode.Invalidate();
             hearingChoice.Text = HearingStatus.Choices[capri.HearingChoice];
-            hearingChoice.AccessibleName = "Hearing: " + hearingChoice.Text;
+            hearingChoice.AccessibleName = "听音：" + hearingChoice.Text;
             for (int i = 0; i < hearingMenu.Items.Count; i++) ((ToolStripMenuItem)hearingMenu.Items[i]).Checked = i == capri.HearingChoice;
-            showHide.Text = capri.IsHidden ? "Show Capri" : "Hide Capri";
-            perch.Text = capri.Riding ? "Hop off" : "Ride cursor";
+            showHide.Text = capri.IsHidden ? "显示 Capri" : "隐藏 Capri";
+            perch.Text = capri.Riding ? "下鼠标" : "骑鼠标";
             int near = 0;
             for (int i = 0; i < SizeSteps.Length; i++) if (Math.Abs(SizeSteps[i] - capri.CharacterSize) < Math.Abs(SizeSteps[near] - capri.CharacterSize)) near = i;
             sizeSlider.Value = near;
@@ -2839,7 +2841,7 @@ namespace CapriDesktop
                 careToggles[careSync].Dimmed = !capri.CheckIns;
                 careTimes[careSync].Text = CareTimeName(careSetting, capri.CareTime(careSetting));
                 careTimes[careSync].Dimmed = !capri.CheckIns;
-                careTimes[careSync].AccessibleName = "Check in on me: " + Care.Names[careSync] + (careSetting == CareKind.Late ? " after " : " every ") + careTimes[careSync].Text;
+                careTimes[careSync].AccessibleName = "偶尔来看看我：" + CareShownNames[careSync] + (careSetting == CareKind.Late ? " 之后 " : " 每隔 ") + careTimes[careSync].Text;
             }
             careEdit.Dimmed = !capri.CheckIns;
             ShowPersonality();
@@ -2852,7 +2854,7 @@ namespace CapriDesktop
             clipSize.Value = Array.IndexOf(ClipSettings.Sizes, recording.Resolution);
             clipBits.Value = Array.IndexOf(ClipSettings.Bitrates, recording.Mbps);
             clipPath.Text = recording.Folder;
-            clipPath.AccessibleName = "Clips saved in " + recording.Folder;
+            clipPath.AccessibleName = "剪辑保存在 " + recording.Folder;
             fastHands.Checked = capri.FastHandsOn;
             gameMute.Checked = capri.Shushed;
             frameSize.Value = Math.Max(0, Array.IndexOf(FrameSizes, capri.MainframeSize));
@@ -2882,7 +2884,7 @@ namespace CapriDesktop
             wander.Value = capri.WanderLevel;
             wanderName.Text = WanderNames[wander.Value];
             pops.Value = Math.Max(0, Math.Min(PopNames.Length - 1, capri.PopPace));
-            popsName.Text = capri.PopRange ? capri.PopMin + " to " + capri.PopMax + " min" : PopNames[pops.Value];
+            popsName.Text = capri.PopRange ? capri.PopMin + " ～ " + capri.PopMax + " 分钟" : PopNames[pops.Value];
             dance.Checked = capri.Dancing;
             headPats.Checked = capri.HeadPats;
             upsetChaos.Checked = capri.UpsetChaos;
@@ -2921,7 +2923,7 @@ namespace CapriDesktop
         private void ShowPerch()
         {
             perchFpsName.Text = PerchNames[perchFps.Value];
-            perchNote.Text = Companion.PerchRates[perchFps.Value] > 30 ? "Perch over 30 fps uses more CPU" : "";
+            perchNote.Text = Companion.PerchRates[perchFps.Value] > 30 ? "趴窗超过 30 fps 会更耗 CPU" : "";
         }
 
         internal string PerchStatus { get { return perchFpsName.Text + " | " + (perchNote.Text.Length > 0 ? perchNote.Text : "-"); } }
@@ -3006,12 +3008,12 @@ namespace CapriDesktop
                 Key time = careTimes[row];
                 if (Hidden(toggle) != simple || Hidden(time) != simple || toggle.TabStop == simple || time.TabStop == simple) return "a care row has the wrong Settings view";
                 if (!toggle.Enabled || !time.Enabled || toggle.Dimmed != !capri.CheckIns || time.Dimmed != !capri.CheckIns) return "a care row is locked or has the wrong dimming";
-                if (!(toggle.AccessibleName ?? "").StartsWith("Check in on me: ", StringComparison.Ordinal) || !(time.AccessibleName ?? "").StartsWith("Check in on me: ", StringComparison.Ordinal)) return "a care row has lost its parent name";
+                if (!(toggle.AccessibleName ?? "").StartsWith("偶尔来看看我：", StringComparison.Ordinal) || !(time.AccessibleName ?? "").StartsWith("偶尔来看看我：", StringComparison.Ordinal)) return "a care row has lost its parent name";
                 if (!simple && (Math.Abs(toggle.Top - above.Top - Scaled(Row)) > 1 || Math.Abs(toggle.Top - time.Top) > 1 || toggle.Left != checkIns.Left || toggle.Right > time.Left)) return "a care row is out of place";
                 above = toggle;
             }
             if (Hidden(careEdit) != simple || careEdit.TabStop == simple || !careEdit.Enabled || careEdit.Dimmed != !capri.CheckIns) return "Edit check-in lines has the wrong view or dimming";
-            if (!(careEdit.AccessibleName ?? "").StartsWith("Check in on me: ", StringComparison.Ordinal)) return "Edit check-in lines has lost its parent name";
+            if (!(careEdit.AccessibleName ?? "").StartsWith("偶尔来看看我：", StringComparison.Ordinal)) return "Edit check-in lines has lost its parent name";
             if (!simple && (careEdit.Top < above.Bottom || careEdit.Bottom > onTop.Top || careEdit.Left != checkIns.Left)) return "Edit check-in lines is out of place";
             if (simple && Math.Abs(onTop.Top - checkIns.Top - Scaled(Row)) > 1) return "Simple Settings left a gap under Check in on me";
             string tip = checkIns.AccessibleDescription ?? "";
@@ -3357,7 +3359,7 @@ namespace CapriDesktop
 
         internal void Searching()
         {
-            brainName.Text = "Looking for a brain...";
+            brainName.Text = "正在找大脑…";
             brainNote.Text = "";
             modelMenu.Items.Clear();
             menuRemote = null;
@@ -3370,7 +3372,7 @@ namespace CapriDesktop
         internal void ShowOllama(string[] installed, string chosen)
         {
             brainName.Text = "Ollama · " + chosen;
-            brainNote.Text = "Running on this PC";
+            brainNote.Text = "跑在这台电脑上";
             models.Text = chosen;
             models.Visible = true;
             hint.Visible = false;
@@ -3397,7 +3399,7 @@ namespace CapriDesktop
                 item.Checked = remote == null && name == chosen;
                 modelMenu.Items.Add(item);
             }
-            if (lastLocal != null) modelMenu.Items.Add(Choice("Built-in · " + lastLocal.Name, remote == null && chosen == lastLocal.Name, delegate { capri.ChooseLocalBrain(null, lastLocal.Name, lastLocal); ShowLocal(lastLocal); }));
+            if (lastLocal != null) modelMenu.Items.Add(Choice("内置 · " + lastLocal.Name, remote == null && chosen == lastLocal.Name, delegate { capri.ChooseLocalBrain(null, lastLocal.Name, lastLocal); ShowLocal(lastLocal); }));
             List<Cloud> listed = new List<Cloud>(lastServers);
             if (remote != null && !listed.Exists(candidate => candidate.Source == remote.Source)) listed.Add(remote);
             foreach (Cloud server in listed)
@@ -3411,8 +3413,8 @@ namespace CapriDesktop
 
         internal void ShowProvider(string address, bool keyed, string model, string[] found)
         {
-            brainName.Text = "My provider" + (model == null ? "" : " · " + model);
-            brainNote.Text = keyed ? "Using your provider with a key" : "Using your server with no key";
+            brainName.Text = "我的接口" + (model == null ? "" : " · " + model);
+            brainNote.Text = keyed ? "用你的接口和 Key" : "用你的服务器，无需 Key";
             models.Text = model;
             models.Visible = model != null;
             hint.Visible = false;
@@ -3466,7 +3468,7 @@ namespace CapriDesktop
             {
                 drawn.Fill();
                 drawn.Show(this);
-                foreach (string status in new[] { "Provider forgotten.", "That address doesn't work. Try https://... or http://localhost:1234.", "Use https:// for a provider elsewhere. A key over plain http isn't safe.", "Stopped using it. Couldn't remove the saved provider." })
+                foreach (string status in new[] { "接口已清除。", "这个地址不通。试试 https://... 或 http://localhost:1234。", "外部接口请用 https://。明文 http 传 Key 不安全。", "已停用，但没能删掉保存的接口。" })
                 {
                     drawn.Say(status);
                     string problem = drawn.Crowded();
@@ -3524,7 +3526,7 @@ namespace CapriDesktop
         {
             brainName.Text = remote.Name + (remote.Model == null ? "" : " · " + remote.Model);
             brainNote.Text = remote.Code ? remote.CodeNote : remote.Kind == "local" ? "Running on this PC · :" + remote.Port : remote.Kind == "nvidia" ? NvidiaNote
-                : remote.Plan ? "Using your " + Plans.Plan(remote.Kind) + " · " + remote.Name + " on this PC" : "Using your " + remote.Company + " key";
+                : remote.Plan ? "使用你的 " + Plans.Plan(remote.Kind) + " · " + remote.Name + " on this PC" : "使用你的 " + remote.Company + " key";
             models.Text = remote.Code ? "Claude Haiku 5.5" : remote.Plan ? Plans.Shown(remote.Kind, remote.Model) : remote.Model;
             models.Visible = remote.Model != null;
             hint.Visible = false;
@@ -3581,10 +3583,10 @@ namespace CapriDesktop
             syncing = false;
             string tail = tier == 1 ? nvidiaTail : tier == 2 ? paidTail : null;
             textSaved = tail != null;
-            textEntry.Box.AccessibleName = tier == 1 ? "NVIDIA、Google AI Studio (Gemini) 或 OpenRouter API Key" : "Google AI, OpenRouter, NVIDIA, OpenAI, Anthropic or DeepSeek API key";
+            textEntry.Box.AccessibleName = tier == 1 ? "NVIDIA、Google AI Studio (Gemini) 或 OpenRouter API Key" : "Google AI、OpenRouter、NVIDIA、OpenAI、Anthropic 或 DeepSeek 的 API Key";
             textEntry.AccessibleName = textEntry.Box.AccessibleName;
-            tierNote.Text = tier == 1 ? mediumKind == "nvidia" ? "Most NVIDIA models can't see your screen." : "NVIDIA, Gemini, OpenRouter" : tier == 2 ? "Gemini, OpenRouter, ChatGPT, Claude, DeepSeek" : "Pick one. Only one brain runs at a time.";
-            textEntry.Cue = textSaved ? (tier == 2 && paidPlan ? "Using your " + tail : "Key 已保存，到期 " + tail) : tier == 1 ? "NVIDIA / Google AI Studio / OpenRouter" : "Paste a brain API key";
+            tierNote.Text = tier == 1 ? mediumKind == "nvidia" ? "多数 NVIDIA 模型看不到你的屏幕。" : "NVIDIA、Gemini、OpenRouter" : tier == 2 ? "Gemini、OpenRouter、ChatGPT、Claude、DeepSeek" : "选一个，同一时间只跑一个大脑。";
+            textEntry.Cue = textSaved ? (tier == 2 && paidPlan ? "使用你的 " + tail : "Key 已保存，到期 " + tail) : tier == 1 ? "NVIDIA / Google AI Studio / OpenRouter" : "粘贴大脑 API Key";
             RelabelText();
             Arrange(expanded);
         }
@@ -3643,7 +3645,7 @@ namespace CapriDesktop
             if (tier == 1 && kind != null && !Cloud.MediumKind(kind)) OfferPaidText(typed);
             else ClearPaidText();
             bool forget = textSaved && textEntry.Box.Text.Trim().Length == 0;
-            textConnect.Text = forget ? "Forget" : "Connect";
+            textConnect.Text = forget ? "清除" : "Connect";
             textConnect.Accent = forget ? Hot : Rose;
             textConnect.Invalidate();
         }
@@ -3672,8 +3674,8 @@ namespace CapriDesktop
 
         internal void ShowLocal(Pick pick)
         {
-            brainName.Text = "Built-in · " + pick.Name;
-            brainNote.Text = "Running on this PC";
+            brainName.Text = "内置 · " + pick.Name;
+            brainNote.Text = "跑在这台电脑上";
             models.Text = pick.Name;
             models.Visible = lastServers.Count > 0 || (lastInstalled != null && lastInstalled.Length > 0);
             LocalMenu(pick.Name, null);
@@ -3683,14 +3685,14 @@ namespace CapriDesktop
 
         internal void ShowSetup(Machine machine, Pick pick, bool viaOllama, string problem)
         {
-            brainName.Text = problem == null ? "No brain yet" : "Setup stopped";
-            brainNote.Text = problem ?? "Best fit for this PC: " + pick.Name;
+            brainName.Text = problem == null ? "还没装脑子" : "配置已停止";
+            brainNote.Text = problem ?? "最适合这台电脑：" + pick.Name;
             models.Visible = false;
             Step(0, "✓", machine.Describe(), White);
-            Step(1, "2", "Download " + pick.Name + " (" + pick.Download + ")" + (viaOllama ? " with Ollama" : ""), Faint);
-            Step(2, "3", "Wake her up", Faint);
+            Step(1, "2", "下载 " + pick.Name + " (" + pick.Download + ")" + (viaOllama ? " · 用 Ollama" : ""), Faint);
+            Step(2, "3", "唤醒她", Faint);
             filled = 0;
-            setup.Text = problem == null ? "Set up her brain" : "Try again";
+            setup.Text = problem == null ? "给她装个脑子" : "再试一次";
             setup.Enabled = true;
             hint.Visible = !viaOllama;
             Arrange(true);
@@ -3700,10 +3702,10 @@ namespace CapriDesktop
         {
             Step(1, step > 1 ? "✓" : "2", stepText[1], step == 1 ? Cyan : White);
             Step(2, "3", stepText[2], step == 2 ? Cyan : Faint);
-            brainName.Text = step == 1 ? "Setting up her brain" : "Waking her up";
+            brainName.Text = step == 1 ? "正在给她装脑子" : "正在唤醒她";
             brainNote.Text = total > 0 ? text + " · " + Engine.Amount(done) + " of " + Engine.Amount(total) : text;
             filled = total > 0 ? Math.Min(1f, done / (float)total) : step == 2 ? 1f : 0f;
-            setup.Text = step == 1 ? "Cancel" : "Starting...";
+            setup.Text = step == 1 ? "取消" : "启动中…";
             setup.Enabled = step == 1;
             hint.Visible = false;
             if (!expanded) Arrange(true);
@@ -3755,7 +3757,7 @@ namespace CapriDesktop
             keyEntry.Visible = elevenLabs;
             connect.Visible = elevenLabs;
             cloudVoice.Visible = cloud && !elevenLabs;
-            cloudVoice.Text = inCloud ? "Voice, key and model..." : "Set up " + cloudName + "...";
+            cloudVoice.Text = inCloud ? "语音、Key 和模型…" : "配置 " + cloudName + "...";
             voiceEntry.Visible = elevenLabs && keySaved;
             speechModels.Visible = elevenLabs && keySaved;
             freeVoices.Visible = voiceRow == 1;
@@ -3831,7 +3833,7 @@ namespace CapriDesktop
             return near;
         }
 
-        private string AmountName(int step) { return AmountNames[step] + (capri.SpeaksHd ? " · HD" : capri.SpeaksServer ? " · server" : ""); }
+        private string AmountName(int step) { return AmountNames[step] + (capri.SpeaksHd ? " · HD" : capri.SpeaksServer ? " · 服务器" : ""); }
 
         internal void PickVoice(bool paid)
         {
@@ -3858,8 +3860,8 @@ namespace CapriDesktop
             voiceMenu.Items.Clear();
             voiceEntry.Chevron = listing != null && listing.Voices.Count > 0;
             speechModelMenu.Items.Clear();
-            speechModelMenu.Items.Add(Choice("Default model", string.IsNullOrEmpty(model), delegate { capri.ChooseVoiceModel(null); }));
-            speechModels.Text = string.IsNullOrEmpty(model) ? "Default model" : model;
+            speechModelMenu.Items.Add(Choice("默认模型", string.IsNullOrEmpty(model), delegate { capri.ChooseVoiceModel(null); }));
+            speechModels.Text = string.IsNullOrEmpty(model) ? "默认模型" : model;
             if (listing != null)
             {
                 foreach (VoiceEntry entry in listing.Voices)
@@ -3887,8 +3889,8 @@ namespace CapriDesktop
             freeReady = ready;
             yoursShown = hd && yours;
             freeVoices.Text = "免费语音：" + (yoursShown ? "你的声音" : served ?? chosen);
-            customVoice.Text = served != null ? "Voice model: " + served : "Pick a voice model...";
-            freeSetup.Text = busy ? "Cancel" : "Get free voice";
+            customVoice.Text = served != null ? "语音模型：" + served : "选一个语音模型…";
+            freeSetup.Text = busy ? "取消" : "获取免费语音";
             freeSetup.Visible = (voiceRow == 1 || voiceRow == 2) && !ready;
             freeVoices.Width = Scaled(ready && !yoursShown ? 328 : 196);
             customVoice.Width = Scaled(ready ? 328 : 196);
@@ -3908,10 +3910,10 @@ namespace CapriDesktop
             // Only her HD voice clones from a clip; her other styles are set voices.
             if (yours || kept)
             {
-                ToolStripMenuItem theirs = Choice("Your voice (HD)", yoursShown, delegate { if (yours) capri.ChooseVoiceStyle(QwenVoice.Style); else capri.UseKeptVoice(); });
+                ToolStripMenuItem theirs = Choice("你的声音（HD）", yoursShown, delegate { if (yours) capri.ChooseVoiceStyle(QwenVoice.Style); else capri.UseKeptVoice(); });
                 freeMenu.Items.Add(theirs);
             }
-            ToolStripMenuItem pick = Choice(yours || kept ? "Pick a new clip of you..." : "Your voice (HD) · pick a clip of you...", false, delegate { PickYourVoice(); });
+            ToolStripMenuItem pick = Choice(yours || kept ? "选一段新的录音…" : "你的声音（HD）· 选一段你的录音…", false, delegate { PickYourVoice(); });
             freeMenu.Items.Add(pick);
             freeMenu.Items.Add(Choice(QwenVoice.CpuChoice, capri.HdCpu, delegate { capri.ToggleHdCpu(); }));
             freeVoices.Invalidate();
@@ -4270,7 +4272,7 @@ namespace CapriDesktop
                     pendingMods = 0;
                     pendingVk = key == Keys.ControlKey || key == Keys.LControlKey || key == Keys.RControlKey ? 0x11 : key == Keys.Menu || key == Keys.LMenu || key == Keys.RMenu ? 0x12 : 0x10;
                     KeyLabels();
-                    KeysNote("Confirm to keep " + Companion.KeyName(pendingMods, pendingVk) + ". It still does its own job in games and apps.", false);
+                    KeysNote("确认保留 " + Companion.KeyName(pendingMods, pendingVk) + "。它在游戏和应用里照旧起作用。", false);
                     return;
                 }
                 // A modifier on its own only shows until a key joins it, and never counts as her key.
@@ -4282,9 +4284,9 @@ namespace CapriDesktop
             pendingVk = (int)key;
             KeyLabels();
             string name = Companion.KeyName(pendingMods, pendingVk);
-            if (capturing == Companion.PushSlot + 1) { KeysNote("Confirm to keep " + name + ". It still does its own job in games and apps.", false); return; }
-            KeysNote(Companion.Swallows(pendingMods, pendingVk) ? name + " won't type in other apps while she runs. Confirm to keep it."
-                : Companion.ByMouse(pendingVk) ? name + " still does its own job in other apps too. Confirm to keep it." : "Confirm to keep " + name + ", or Cancel.", false);
+            if (capturing == Companion.PushSlot + 1) { KeysNote("确认保留 " + name + "。它在游戏和应用里照旧起作用。", false); return; }
+            KeysNote(Companion.Swallows(pendingMods, pendingVk) ? name + " 她在运行时不会在别的程序里打字。确认保留？"
+                : Companion.ByMouse(pendingVk) ? name + " 在别的程序里照旧起作用。确认保留？" : "确认保留 " + name + "，或取消。", false);
         }
 
         internal void ConfirmKeys()
@@ -4297,8 +4299,8 @@ namespace CapriDesktop
             capturing = 0;
             pendingMods = -1;
             KeyLabels();
-            if (slot == Companion.PushSlot) { KeysNote("Saved. Hold " + pushName + " to talk to her, with a game in front too.", false); return; }
-            KeysNote("Saved. " + (slot == 0 ? talkName + " starts voice chat." : slot == 1 ? muteName + " mutes your mic." : slot == 2 ? typeName + " opens her typing box." : slot == 3 ? hideName + " hides or shows her." : slot == 5 ? gameName + " turns Gaming Mode on and off." : quietName + " keeps her quiet, and lets her talk again.") + (Companion.Swallows(mods, vk) ? " It won't type in other apps while she runs." : Companion.ByMouse(vk) ? " It still does its own job in other apps too." : ""), false);
+            if (slot == Companion.PushSlot) { KeysNote("已保存。按住 " + pushName + " 就能跟她说话，游戏在前台也行。", false); return; }
+            KeysNote("已保存。" + (slot == 0 ? talkName + " 开始语音聊天。" : slot == 1 ? muteName + " 静音你的麦克风。" : slot == 2 ? typeName + " 打开她的输入框。" : slot == 3 ? hideName + " 隐藏或显示她。" : slot == 5 ? gameName + " 开关游戏模式。" : quietName + " 让她安静，再按一次就能说话。") + (Companion.Swallows(mods, vk) ? " 她在运行时不会在别的程序里打字。" : Companion.ByMouse(vk) ? " 它在别的程序里照旧起作用。" : ""), false);
         }
 
         // Push to talk is the one key she can do without.
@@ -4309,7 +4311,7 @@ namespace CapriDesktop
             capturing = 0;
             pendingMods = -1;
             KeyLabels();
-            KeysNote("Push to talk is off.", false);
+            KeysNote("按住说话已关闭。", false);
         }
 
         internal void CancelKeys()
@@ -4380,16 +4382,16 @@ namespace CapriDesktop
 
         private void KeyLabels()
         {
-            shortcut.Text = capturing == 1 ? Waiting : talkName + (shortcutReady ? " to talk" : " is taken");
-            muteShortcut.Text = capturing == 2 ? Waiting : muteName + (muteReady ? " mutes mic" : " is taken");
+            shortcut.Text = capturing == 1 ? Waiting : talkName + (shortcutReady ? " 语音聊天" : " 已被占用");
+            muteShortcut.Text = capturing == 2 ? Waiting : muteName + (muteReady ? " 静音麦克风" : " 已被占用");
             if (cancelKeys == null) return;
-            talkKeys.Text = capturing == 1 ? PickingText("Talk: ") : "Talk: " + talkName + (shortcutReady ? "" : " (taken)");
-            muteKeys.Text = capturing == 2 ? PickingText("Mute mic: ") : "Mute mic: " + muteName + (muteReady ? "" : " (taken)");
-            typeKeys.Text = capturing == 3 ? PickingText("Type: ") : "Type: " + typeName + (typeReady ? "" : " (taken)");
-            hideKeys.Text = capturing == 4 ? PickingText("Hide/show: ") : "Hide/show: " + hideName + (hideReady ? "" : " (taken)");
-            quietKeys.Text = capturing == 5 ? PickingText("Quiet: ") : "Quiet: " + quietName + (quietReady ? "" : " (taken)");
-            gameKeys.Text = capturing == 6 ? PickingText("Gaming Mode: ") : "Gaming Mode: " + gameName + (gameReady ? "" : " (taken)");
-            pushKeys.Text = capturing == 7 ? PickingText("Push to talk: ") : "Push to talk: " + pushName;
+            talkKeys.Text = capturing == 1 ? PickingText("说话：") : "说话：" + talkName + (shortcutReady ? "" : "（已占用）");
+            muteKeys.Text = capturing == 2 ? PickingText("静音麦克风：") : "静音麦克风：" + muteName + (muteReady ? "" : "（已占用）");
+            typeKeys.Text = capturing == 3 ? PickingText("打字：") : "打字：" + typeName + (typeReady ? "" : "（已占用）");
+            hideKeys.Text = capturing == 4 ? PickingText("隐藏/显示：") : "隐藏/显示：" + hideName + (hideReady ? "" : "（已占用）");
+            quietKeys.Text = capturing == 5 ? PickingText("安静：") : "安静：" + quietName + (quietReady ? "" : "（已占用）");
+            gameKeys.Text = capturing == 6 ? PickingText("游戏模式：") : "游戏模式：" + gameName + (gameReady ? "" : "（已占用）");
+            pushKeys.Text = capturing == 7 ? PickingText("按住说话：") : "按住说话：" + pushName;
             confirmKeys.Visible = cancelKeys.Visible = capturing != 0;
             clearKeys.Visible = OffShown;
             confirmKeys.Enabled = pendingMods >= 0;
@@ -4415,7 +4417,7 @@ namespace CapriDesktop
 
         internal void ShowMic(string name)
         {
-            mics.Text = "Mic: " + (name ?? "默认");
+            mics.Text = "麦克风：" + (name ?? "默认");
             mics.Invalidate();
             // Her look at your mics is back, so a menu that's still checking fills in.
             if (micsWaiting) MicChoices(capri.HearingMics);
@@ -4433,7 +4435,7 @@ namespace CapriDesktop
         // VOICE's Mic and Her speaker menus open at once and look up your devices in the background (#100). Until that look is
         // back, a menu says she's still checking, and picking from it or closing it stops the wait.
         private bool micsWaiting, speakersWaiting;
-        internal const string CheckingSpeakers = "Still checking your speakers...", CheckingMics = "Still checking your mics...";
+        internal const string CheckingSpeakers = "还在检查你的扬声器…", CheckingMics = "还在检查你的麦克风…";
 
         private static ToolStripMenuItem Checking(string text) { return new ToolStripMenuItem(text) { Enabled = false }; }
 
@@ -4464,7 +4466,7 @@ namespace CapriDesktop
         internal void ShowWatchScreen(string name)
         {
             screens.Text = name ?? "全部屏幕";
-            screens.AccessibleName = "Screens to watch: " + screens.Text;
+            screens.AccessibleName = "观察的屏幕：" + screens.Text;
             screens.Invalidate();
         }
 
@@ -4568,7 +4570,7 @@ namespace CapriDesktop
             string chosen = capri.MicId;
             micsWaiting = found == null;
             micMenu.Items.Clear();
-            micMenu.Items.Add(Choice("Windows default", found == null ? string.IsNullOrEmpty(chosen) : Ears.Find(chosen, found) == null, delegate { micsWaiting = false; capri.ChooseMic(null); }));
+            micMenu.Items.Add(Choice("Windows 默认", found == null ? string.IsNullOrEmpty(chosen) : Ears.Find(chosen, found) == null, delegate { micsWaiting = false; capri.ChooseMic(null); }));
             if (found == null) { micMenu.Items.Add(new ToolStripSeparator()); micMenu.Items.Add(Checking(CheckingMics)); return; }
             if (found.Count > 0) micMenu.Items.Add(new ToolStripSeparator());
             foreach (Mic mic in found)
@@ -4656,7 +4658,7 @@ namespace CapriDesktop
         private void Relabel()
         {
             bool forget = keySaved && keyEntry.Box.Text.Trim().Length == 0;
-            connect.Text = forget ? "Forget" : "Connect";
+            connect.Text = forget ? "清除" : "Connect";
             connect.Accent = forget ? Hot : Rose;
             connect.Invalidate();
         }
@@ -4674,8 +4676,8 @@ namespace CapriDesktop
         private void ShowPersonalityMenu()
         {
             personalityMenu.Items.Clear();
-            personalityMenu.Items.Add(Choice("Edit personality.md", false, delegate { capri.OpenPersonality(); }));
-            ToolStripMenuItem reset = Choice("Reset to her default", false, delegate { capri.ResetPersonality(); });
+            personalityMenu.Items.Add(Choice("编辑 personality.md", false, delegate { capri.OpenPersonality(); }));
+            ToolStripMenuItem reset = Choice("恢复她的默认性格", false, delegate { capri.ResetPersonality(); });
             reset.Enabled = Brain.PersonalityPath != null && System.IO.File.Exists(Brain.PersonalityPath);
             personalityMenu.Items.Add(reset);
             string note = Brain.PersonalityNote;
@@ -5114,21 +5116,21 @@ namespace CapriDesktop
                 Font = Look.Mono(10f, FontStyle.Regular, GraphicsUnit.Point);
                 ClientSize = new Size(580, 460);
                 MinimumSize = new Size(380, 300);
-                Label path = new Label { Text = note.Path, Bounds = new Rectangle(16, 14, 548, 24), AutoEllipsis = true, ForeColor = Faint, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, AccessibleName = "Note file" };
+                Label path = new Label { Text = note.Path, Bounds = new Rectangle(16, 14, 548, 24), AutoEllipsis = true, ForeColor = Faint, Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right, AccessibleName = "笔记文件" };
                 draft = new TextBox { Text = note.Text, Multiline = true, AcceptsReturn = true, AcceptsTab = true, WordWrap = true, ScrollBars = ScrollBars.Vertical, MaxLength = int.MaxValue, Bounds = new Rectangle(16, 44, 548, 324), BorderStyle = BorderStyle.FixedSingle, BackColor = Field, ForeColor = White, Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right, AccessibleName = title };
                 status = new Label { Bounds = new Rectangle(16, 376, 548, 34), ForeColor = Cyan, Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right };
                 Button save = DialogButton("保存", 16, 414, 100, Cyan);
-                reload = DialogButton("Reload", 124, 414, 164, Edge);
+                reload = DialogButton("重新加载", 124, 414, 164, Edge);
                 close = DialogButton("关闭", 464, 414, 100, Edge);
                 save.Anchor = reload.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
                 close.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
                 save.Click += delegate { SaveDraft(); };
                 reload.Click += delegate { ReloadNote(true); };
                 close.Click += delegate { discard = true; Close(); };
-                draft.TextChanged += delegate { close.Text = Dirty ? "Discard" : "关闭"; reload.Text = Dirty ? "Discard + reload" : "Reload"; status.Text = Dirty ? "Unsaved changes." : ""; };
+                draft.TextChanged += delegate { close.Text = Dirty ? "丢弃" : "关闭"; reload.Text = Dirty ? "丢弃并重新加载" : "重新加载"; status.Text = Dirty ? "有未保存的改动。" : ""; };
                 FormClosing += delegate(object sender, FormClosingEventArgs e)
                 {
-                    if (!discard && Dirty && e.CloseReason == CloseReason.UserClosing) { e.Cancel = true; status.Text = "Save your changes, or press Discard."; }
+                    if (!discard && Dirty && e.CloseReason == CloseReason.UserClosing) { e.Cancel = true; status.Text = "先保存改动，或点「丢弃」。"; }
                 };
                 Controls.AddRange(new Control[] { path, draft, status, save, reload, close });
             }
@@ -5140,19 +5142,19 @@ namespace CapriDesktop
             internal bool SaveDraft()
             {
                 string problem = note.Save(draft.Text);
-                status.Text = problem ?? "Saved.";
+                status.Text = problem ?? "已保存。";
                 status.ForeColor = problem == null ? Cyan : Hot;
-                close.Text = Dirty ? "Discard" : "关闭";
-                reload.Text = Dirty ? "Discard + reload" : "Reload";
+                close.Text = Dirty ? "丢弃" : "关闭";
+                reload.Text = Dirty ? "丢弃并重新加载" : "重新加载";
                 return problem == null;
             }
 
             internal void ReloadNote(bool discard = false)
             {
-                if (Dirty && !discard) { status.Text = "Save your changes, or press Discard + reload."; return; }
-                try { note.Reload(); draft.Text = note.Text; status.Text = "Reloaded."; }
-                catch (System.IO.IOException) { status.Text = "Couldn't reload this note. Your changes are still here."; }
-                catch (UnauthorizedAccessException) { status.Text = "Couldn't reload this note. Your changes are still here."; }
+                if (Dirty && !discard) { status.Text = "先保存改动，或点「丢弃并重新加载」。"; return; }
+                try { note.Reload(); draft.Text = note.Text; status.Text = "已重新加载。"; }
+                catch (System.IO.IOException) { status.Text = "重新加载失败，你的改动还在。"; }
+                catch (UnauthorizedAccessException) { status.Text = "重新加载失败，你的改动还在。"; }
             }
         }
 
@@ -5175,13 +5177,13 @@ namespace CapriDesktop
                 ForeColor = White;
                 Font = Look.Mono(10f, FontStyle.Regular, GraphicsUnit.Point);
                 ClientSize = new Size(440, 214);
-                Label shortest = new Label { Text = "Shortest wait (minutes)", Bounds = new Rectangle(16, 18, 272, 24) };
-                Label longest = new Label { Text = "Longest wait (minutes)", Bounds = new Rectangle(16, 56, 272, 24) };
-                low = new NumericUpDown { Minimum = 1, Maximum = int.MaxValue, Value = capri.PopMin, Bounds = new Rectangle(296, 16, 128, 26), BackColor = Field, ForeColor = White, AccessibleName = "Shortest pop-in wait in minutes" };
-                high = new NumericUpDown { Minimum = 1, Maximum = int.MaxValue, Value = capri.PopMax, Bounds = new Rectangle(296, 54, 128, 26), BackColor = Field, ForeColor = White, AccessibleName = "Longest pop-in wait in minutes" };
-                status = new Label { Text = "Check in on me still decides whether she visits.", Bounds = new Rectangle(16, 94, 408, 64), ForeColor = Faint };
+                Label shortest = new Label { Text = "最短等待（分钟）", Bounds = new Rectangle(16, 18, 272, 24) };
+                Label longest = new Label { Text = "最长等待（分钟）", Bounds = new Rectangle(16, 56, 272, 24) };
+                low = new NumericUpDown { Minimum = 1, Maximum = int.MaxValue, Value = capri.PopMin, Bounds = new Rectangle(296, 16, 128, 26), BackColor = Field, ForeColor = White, AccessibleName = "最短冒泡等待分钟数" };
+                high = new NumericUpDown { Minimum = 1, Maximum = int.MaxValue, Value = capri.PopMax, Bounds = new Rectangle(296, 54, 128, 26), BackColor = Field, ForeColor = White, AccessibleName = "最长冒泡等待分钟数" };
+                status = new Label { Text = "「偶尔来看看我」仍决定她来不来。", Bounds = new Rectangle(16, 94, 408, 64), ForeColor = Faint };
                 Button save = DialogButton("保存", 16, 168, 96, Cyan);
-                Button preset = DialogButton("Use preset", 120, 168, 128, Edge);
+                Button preset = DialogButton("用预设", 120, 168, 128, Edge);
                 Button close = DialogButton("关闭", 328, 168, 96, Edge);
                 save.Click += delegate { if (Apply()) Close(); };
                 preset.Click += delegate { capri.SetPopPace(capri.PopPace); Close(); };
@@ -5196,7 +5198,7 @@ namespace CapriDesktop
             internal bool Apply()
             {
                 if (capri.SetPopRange(Low, High)) return true;
-                status.Text = "The longest wait must be at least the shortest wait.";
+                status.Text = "最长等待不能小于最短等待。";
                 status.ForeColor = Hot;
                 return false;
             }
@@ -5572,7 +5574,7 @@ namespace CapriDesktop
                 SuspendLayout();
                 this.owner = owner;
                 Zoom = zoom;
-                Text = "Brain provider";
+                Text = "大脑接口";
                 Icon = owner.Icon;
                 ShowInTaskbar = false;
                 FormBorderStyle = FormBorderStyle.None;
@@ -5583,26 +5585,26 @@ namespace CapriDesktop
                 ForeColor = White;
                 DoubleBuffered = true;
                 ClientSize = new Size(Wide, 356);
-                Heading(this, "BRAIN PROVIDER >", new Point(24, 15), Display(14f), Rose, 0);
+                Heading(this, "大脑接口 >", new Point(24, 15), Display(14f), Rose, 0);
                 Key close = Make("", 330, 20, 26, delegate { Close(); });
                 close.Height = 22;
                 close.Glyph = 2;
                 close.AccessibleName = "关闭";
                 CancelButton = close;
-                Caption("OpenAI-compatible server or provider.", 52, 20, Faint);
-                Caption("Address", 80, 18, Rose);
+                Caption("兼容 OpenAI 的服务器或接口。", 52, 20, Faint);
+                Caption("地址", 80, 18, Rose);
                 address = Input(100, "http://localhost:1234/v1", "Provider base URL");
                 Caption("Key", 136, 18, Rose);
-                key = Input(156, "Optional. Blank means no key.", "Provider API key, optional");
+                key = Input(156, "可选。留空表示不用 Key。", "接口 API Key（可选）");
                 key.Box.UseSystemPasswordChar = true;
                 address.Box.TextChanged += delegate { key.Box.Clear(); Kept(); };
                 key.Box.TextChanged += delegate { Kept(); };
-                Caption("Keys go only to this address.\nThey stay encrypted on this computer.", 196, 36, Faint);
+                Caption("Key 只发到这个地址。\n在这台电脑上加密保存。", 196, 36, Faint);
                 Key connect = Make("连接", 28, 240, 104, delegate { Connect(); });
                 connect.Accent = Cyan;
                 connect.Loud = true;
-                saved = Make("Use saved", 140, 240, 104, delegate { key.Box.Clear(); owner.capri.UseSavedProvider(); });
-                Key forget = Make("Forget", 252, 240, 104, delegate { key.Box.Clear(); address.Box.Clear(); owner.capri.ForgetProvider(); });
+                saved = Make("用已存的", 140, 240, 104, delegate { key.Box.Clear(); owner.capri.UseSavedProvider(); });
+                Key forget = Make("清除", 252, 240, 104, delegate { key.Box.Clear(); address.Box.Clear(); owner.capri.ForgetProvider(); });
                 forget.Accent = Hot;
                 note = Caption("", 280, 60, Faint);
                 AcceptButton = connect;
@@ -5779,31 +5781,31 @@ namespace CapriDesktop
                 shut.Glyph = 2;
                 shut.AccessibleName = "关闭";
                 hint = Caption("", 28, 52, Look.Mono(8.5f, FontStyle.Regular, GraphicsUnit.Point), Faint);
-                from = Caption("Voice from", 28, 112, Font, Rose);
+                from = Caption("声音来源", 28, 112, Font, Rose);
                 services = owner.Dropdown();
                 service = Make(picked.Name, 28, 132, 328, 28, delegate { services.Show(service, new Point(0, service.Height)); });
                 service.Chevron = true;
-                service.AccessibleName = "Voice from";
-                place = Caption("Address", 28, 168, Font, Rose);
-                url = Input(28, 188, 328, VoiceServer.Address, "Voice server address, or a voice model's folder");
+                service.AccessibleName = "声音来源";
+                place = Caption("地址", 28, 168, Font, Rose);
+                url = Input(28, 188, 328, VoiceServer.Address, "语音服务器地址，或语音模型文件夹");
                 url.Box.TextChanged += delegate { Kept(); };
-                modelName = Caption("Model", 28, 224, Font, Rose);
-                model = Input(28, 244, 160, "Optional", "Model name, optional");
-                voiceName = Caption("Voice", 196, 224, Font, Rose);
-                speaker = Input(196, 244, 160, "Optional", "Voice name or ID, optional");
+                modelName = Caption("模型", 28, 224, Font, Rose);
+                model = Input(28, 244, 160, "可选", "模型名（可选）");
+                voiceName = Caption("音色", 196, 224, Font, Rose);
+                speaker = Input(196, 244, 160, "可选", "音色名或 ID（可选）");
                 // Fish Audio's cloud lists their own voices under the Voice box's arrow. A model file's arrow picks a clip for Pocket TTS.
                 voices = owner.Dropdown();
                 speaker.Drop += delegate { if (picked.Api == VoiceServer.Files) PickClip(); else ListVoices(); };
                 keyName = Caption("Key", 28, 280, Font, Rose);
-                key = Input(28, 300, 244, "Optional", "Key. It goes only to this server, as a Bearer key");
+                key = Input(28, 300, 244, "可选", "Key。只发到这个服务器，作为 Bearer Key");
                 key.Box.UseSystemPasswordChar = true;
-                forget = Make("Forget", 280, 300, 76, 28, delegate { owner.capri.ForgetServerKey(savedUrl, savedApi); savedTail = null; Kept(); Say("Key forgotten.", false); });
+                forget = Make("清除", 280, 300, 76, 28, delegate { owner.capri.ForgetServerKey(savedUrl, savedApi); savedTail = null; Kept(); Say("Key 已清除。", false); });
                 forget.Accent = Hot;
                 // A model file has no key; Browse takes its place.
-                browse = Make("Browse...", 28, 300, 150, 28, delegate { Browse(); });
+                browse = Make("浏览…", 28, 300, 150, 28, delegate { Browse(); });
                 browse.Visible = false;
                 test = Make("测试", 28, 344, 84, 28, delegate { Try(); });
-                Key use = Make("Use this server", 120, 344, 150, 28, delegate { Use(); });
+                Key use = Make("使用这个服务器", 120, 344, 150, 28, delegate { Use(); });
                 use.Accent = Cyan;
                 use.Loud = true;
                 AcceptButton = use;
@@ -5826,7 +5828,7 @@ namespace CapriDesktop
             {
                 string api, address, name, voice, tail;
                 bool saved = owner.capri.SavedServer(cloud, out api, out address, out name, out voice, out tail);
-                Text = cloud ? "Cloud voice" : "Custom local voice";
+                Text = cloud ? "云端声音" : "自定义本地语音";
                 title.Text = (cloud ? "云端声音" : "自定义本地") + " >";
                 ShowAddress(!cloud);
                 for (int i = services.Items.Count - 1; i >= 0; i--) services.Items[i].Dispose();
@@ -5906,7 +5908,7 @@ namespace CapriDesktop
                             if (a.Bounds.IntersectsWith(b.Bounds)) return "overlap: " + (a.Text.Length > 0 ? a.Text : a.AccessibleName) + " / " + (b.Text.Length > 0 ? b.Text : b.AccessibleName);
                         }
                     }
-                    return "fits: hint " + hint.Top + " to " + hint.Bottom + ", Voice from at " + from.Top + ", its box at " + service.Top;
+                    return "fits: hint " + hint.Top + " ～ " + hint.Bottom + ", Voice from at " + from.Top + ", its box at " + service.Top;
                 }
             }
 
@@ -5930,11 +5932,11 @@ namespace CapriDesktop
                 service.Text = choice.Name;
                 hint.Text = choice.Hint;
                 FitHint();
-                place.Text = file ? "Model folder" : "Address";
-                url.Cue = file ? "Browse to a voice model" : VoiceServer.Address;
-                modelName.Text = file ? "语言" : "Model";
-                model.Cue = file ? "Kokoro only, like es" : "Optional";
-                voiceName.Text = file ? "Speaker or clip" : "Voice";
+                place.Text = file ? "模型文件夹" : "地址";
+                url.Cue = file ? "浏览到语音模型" : VoiceServer.Address;
+                modelName.Text = file ? "语言" : "模型";
+                model.Cue = file ? "仅 Kokoro，例如 es" : "可选";
+                voiceName.Text = file ? "说话人或音频片段" : "音色";
                 keyName.Visible = key.Visible = !file;
                 browse.Visible = file;
                 speaker.Cue = choice.VoiceCue;
@@ -5947,7 +5949,7 @@ namespace CapriDesktop
                 }
                 foreach (ToolStripItem item in services.Items) ((ToolStripMenuItem)item).Checked = item.Text == choice.Name;
                 Kept();
-                Say(!dropped ? "" : file ? "Key cleared: a model file needs none." : "Key cleared: paste the key for " + choice.Name + ".", false);
+                Say(!dropped ? "" : file ? "Key 已清空：模型文件不需要 Key。" : "已清空 Key，请粘贴 Key：" + choice.Name + ".", false);
             }
 
             internal void Choose(string name)
@@ -5959,7 +5961,7 @@ namespace CapriDesktop
             // Their own Fish Audio voices, listed with the key they typed or the one saved, to pick from.
             private void ListVoices()
             {
-                Say("Getting your Fish Audio voices...", false);
+                Say("正在获取你的 Fish Audio 音色…", false);
                 owner.capri.FishVoices(url.Box.Text, key.Box.Text, delegate(List<KeyValuePair<string, string>> found, string problem)
                 {
                     if (IsDisposed) return;
@@ -5977,14 +5979,14 @@ namespace CapriDesktop
                 });
             }
 
-            internal const string NewFishVoice = "New voice from a clip...";
+            internal const string NewFishVoice = "用音频片段新建音色…";
 
             private void MakeVoice()
             {
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
-                    dialog.Title = "Pick 10 to 30 seconds of a voice you have the rights and consent to use";
-                    dialog.Filter = "Voice clips (*.wav;*.mp3;*.m4a;*.flac)|*.wav;*.mp3;*.m4a;*.flac|All files (*.*)|*.*";
+                    dialog.Title = "选一段 10 到 30 秒、你有权利和授权使用的声音";
+                    dialog.Filter = "声音片段 (*.wav;*.mp3;*.m4a;*.flac)|*.wav;*.mp3;*.m4a;*.flac|所有文件 (*.*)|*.*";
                     if (dialog.ShowDialog(this) == DialogResult.OK) MakeVoice(dialog.FileName);
                 }
             }
@@ -5992,13 +5994,13 @@ namespace CapriDesktop
             // A new private Fish Audio voice from the clip; its ID goes in the Voice box.
             internal void MakeVoice(string clip)
             {
-                Say("Making your Fish Audio voice...", false);
+                Say("正在制作你的 Fish Audio 音色…", false);
                 owner.capri.MakeFishVoice(url.Box.Text, key.Box.Text, clip, delegate(string id, string problem)
                 {
                     if (IsDisposed) return;
                     if (problem != null) { Say(problem, true); return; }
                     speaker.Box.Text = id;
-                    Say("Made your Fish Audio voice. Press Test to hear it.", false);
+                    Say("Fish Audio 音色已做好，点「测试」试听。", false);
                 });
             }
 
@@ -6026,8 +6028,8 @@ namespace CapriDesktop
             {
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
-                    dialog.Title = "Pick a clip of a voice you have the rights and consent to use";
-                    dialog.Filter = "Voice clips (*.wav;*.mp3;*.m4a;*.flac)|*.wav;*.mp3;*.m4a;*.flac|All files (*.*)|*.*";
+                    dialog.Title = "选一段你有权利和授权使用的声音";
+                    dialog.Filter = "声音片段 (*.wav;*.mp3;*.m4a;*.flac)|*.wav;*.mp3;*.m4a;*.flac|所有文件 (*.*)|*.*";
                     if (dialog.ShowDialog(this) == DialogResult.OK) TakeClip(dialog.FileName);
                 }
             }
@@ -6035,15 +6037,15 @@ namespace CapriDesktop
             internal void TakeClip(string clip)
             {
                 speaker.Box.Text = clip;
-                Say("Pocket TTS models copy this clip's voice. Press Test to hear it.", false);
+                Say("Pocket TTS 模型会模仿这段音频的音色，点「测试」试听。", false);
             }
 
             private void Browse()
             {
                 using (OpenFileDialog dialog = new OpenFileDialog())
                 {
-                    dialog.Title = "Pick a voice model: its .tar.bz2, or the .onnx in its folder";
-                    dialog.Filter = "Voice models (*.tar.bz2;*.zip;*.onnx)|*.tar.bz2;*.zip;*.onnx|All files (*.*)|*.*";
+                    dialog.Title = "选一个语音模型：它的 .tar.bz2，或文件夹里的 .onnx";
+                    dialog.Filter = "语音模型 (*.tar.bz2;*.zip;*.onnx)|*.tar.bz2;*.zip;*.onnx|所有文件 (*.*)|*.*";
                     if (dialog.ShowDialog(this) == DialogResult.OK) Take(dialog.FileName);
                 }
             }
@@ -6058,7 +6060,7 @@ namespace CapriDesktop
                     return;
                 }
                 browse.Enabled = false;
-                Say("Unpacking " + System.IO.Path.GetFileName(path) + "...", false);
+                Say("正在解压 " + System.IO.Path.GetFileName(path) + "...", false);
                 System.Threading.ThreadPool.QueueUserWorkItem(delegate
                 {
                     string folder = null, problem = null;
@@ -6071,7 +6073,7 @@ namespace CapriDesktop
                         {
                             browse.Enabled = true;
                             if (folder != null) url.Box.Text = folder;
-                            Say(folder != null ? "Unpacked. Press Test to hear it." : problem, folder == null);
+                            Say(folder != null ? "解压完成，点「测试」试听。" : problem, folder == null);
                         }));
                     }
                     catch (InvalidOperationException) { }
@@ -6094,7 +6096,7 @@ namespace CapriDesktop
             private void Try()
             {
                 test.Enabled = false;
-                Say("Asking your server...", false);
+                Say("正在询问你的服务器…", false);
                 owner.capri.TestVoiceServer(url.Box.Text, model.Box.Text, speaker.Box.Text, key.Box.Text, picked.Api, delegate(string said, bool problem)
                 {
                     if (IsDisposed) return;
@@ -6111,7 +6113,7 @@ namespace CapriDesktop
                 Close();
             }
 
-            internal string Showing { get { return picked.Name + " | " + url.Box.Text + " | " + model.Box.Text + " | " + speaker.Box.Text + " | " + key.Cue + " | " + (forget.Visible ? "Forget" : "-") + " | " + note.Text; } }
+            internal string Showing { get { return picked.Name + " | " + url.Box.Text + " | " + model.Box.Text + " | " + speaker.Box.Text + " | " + key.Cue + " | " + (forget.Visible ? "清除" : "-") + " | " + note.Text; } }
 
             internal string Fields { get { return (addressShown ? place.Text : "no address") + " | " + modelName.Text + " | " + voiceName.Text + " | " + (key.Visible ? "Key" : "no key") + " | " + (browse.Visible ? browse.Text : "-"); } }
 
@@ -6252,7 +6254,7 @@ namespace CapriDesktop
                 SuspendLayout();
                 this.owner = owner;
                 Zoom = zoom;
-                Text = "Security";
+                Text = "安全";
                 Icon = owner.Icon;
                 ShowInTaskbar = false;
                 FormBorderStyle = FormBorderStyle.None;
@@ -6272,22 +6274,22 @@ namespace CapriDesktop
                 shut.AccessibleName = "关闭";
                 shut.Click += delegate { Close(); };
                 Controls.Add(shut);
-                Caption("What she does on your PC without asking. With a toggle off she asks first, and does it when you say yes.", 28, 52, small, Faint);
-                Caption("Preset", 28, 82, Type(9.5f * zoom), Rose);
+                Caption("她在你电脑上不问就做的那些事。某行关掉后她会先问，你答应了才做。", 28, 52, small, Faint);
+                Caption("预设", 28, 82, Type(9.5f * zoom), Rose);
                 presets = new Slider(new[] { Security.Presets[0], Security.Presets[1], Security.Presets[2], Security.Presets[3] });
                 presets.Font = Type(12f * zoom, true);
                 presets.Bounds = Box(120, 70, 340, 36);
-                presets.AccessibleName = "Security preset: Lockdown, Guarded, Trusted or Blackwall";
+                presets.AccessibleName = "安全预设：封锁、戒备、信任、黑墙";
                 presets.Changed += delegate { if (!syncing) Security.Pick(presets.Value); };
                 presets.MouseUp += delegate { if (!syncing && Security.Preset == Security.Custom) Security.Pick(presets.Value); };
                 Controls.Add(presets);
                 presetName = new Readout(presets);
                 presetLine = Caption("", 28, 110, small, Faint);
                 Font head = Type(10f * zoom, true);
-                Heading(this, "HER HANDS >", new Point(Z(28), Z(144)), head, White, Column + 14);
-                Heading(this, "HER JOBS >", new Point(Z(52 + Column), Z(144)), head, White, Column + 14);
-                Heading(this, "LISTENING >", new Point(Z(52 + Column), Z(362)), head, White, Column + 14);
-                Heading(this, "HER MEMORY >", new Point(Z(28), Z(454)), head, White, Column + 14);
+                Heading(this, "她的手 >", new Point(Z(28), Z(144)), head, White, Column + 14);
+                Heading(this, "她的活儿 >", new Point(Z(52 + Column), Z(144)), head, White, Column + 14);
+                Heading(this, "听声 >", new Point(Z(52 + Column), Z(362)), head, White, Column + 14);
+                Heading(this, "记忆 >", new Point(Z(28), Z(454)), head, White, Column + 14);
                 for (int i = 0; i < Security.Count; i++)
                 {
                     int x = i <= Security.Mouse || i == Security.Personal ? 28 : 52 + Column;
@@ -6466,7 +6468,7 @@ namespace CapriDesktop
                 SuspendLayout();
                 this.owner = owner;
                 Zoom = zoom;
-                Text = "Extras";
+                Text = "更多";
                 Icon = owner.Icon;
                 ShowInTaskbar = false;
                 // She's always on top, and on a new install she arrives in the middle of the screen, right where this opens.
@@ -6481,20 +6483,20 @@ namespace CapriDesktop
                 KeyPreview = true;
                 ClientSize = new Size(Z(Wide), Z(Tall));
                 Font small = Look.Mono(8.5f * zoom, FontStyle.Regular, GraphicsUnit.Point);
-                Heading(this, "EXTRAS >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
+                Heading(this, "更多 >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
                 Key shut = new Key();
                 shut.Bounds = Box(Wide - 54, 20, 26, 22);
                 shut.Glyph = 2;
                 shut.AccessibleName = "关闭";
                 shut.Click += delegate { Close(); };
                 Controls.Add(shut);
-                Caption("These start off. Turn on what you want. They're all in Settings too.", 28, 52, small, Faint);
-                Extra(0, "Watch my screen", "She glances at your screen and comments. Costs a little on a paid brain.", small, delegate { owner.capri.ToggleWatch(); });
-                Extra(1, "Comment on my games", "She talks about your game as you play. Costs a little on a paid brain.", small, delegate { owner.capri.SetCommentPace(toggles[1].Checked ? 2 : 0); owner.Sync(); });
-                Extra(2, "剪辑我的游戏", "Keeps the last two minutes of your game in memory. Say clip that to save it.", small, delegate { owner.capri.ToggleClips(); });
-                Extra(3, "听「Capri」唤醒", "She keeps listening and answers when you say her name.", small, delegate { owner.capri.ToggleListenCapri(); });
+                Caption("这些默认关闭，想开哪个开哪个。设置里也都有。", 28, 52, small, Faint);
+                Extra(0, "看着我的屏幕", "她会瞄一眼你的屏幕并评论。付费大脑会花一点钱。", small, delegate { owner.capri.ToggleWatch(); });
+                Extra(1, "评论我的游戏", "你玩的时候她会聊你的游戏。付费大脑会花一点钱。", small, delegate { owner.capri.SetCommentPace(toggles[1].Checked ? 2 : 0); owner.Sync(); });
+                Extra(2, "剪辑我的游戏", "把最近两分钟游戏画面留在内存里。说“剪下来”就能保存。", small, delegate { owner.capri.ToggleClips(); });
+                Extra(3, "听「Capri」唤醒", "她一直听着，你叫她名字她就答。", small, delegate { owner.capri.ToggleListenCapri(); });
                 Key done = new Key();
-                done.Text = "Done";
+                done.Text = "完成";
                 done.Font = Type(9f * zoom, true);
                 done.Accent = Cyan;
                 done.Loud = true;
@@ -6646,7 +6648,7 @@ namespace CapriDesktop
                 SuspendLayout();
                 this.owner = owner;
                 Zoom = zoom;
-                Text = "Voice layers";
+                Text = "叠音";
                 Icon = owner.Icon;
                 ShowInTaskbar = false;
                 FormBorderStyle = FormBorderStyle.None;
@@ -6659,20 +6661,20 @@ namespace CapriDesktop
                 KeyPreview = true;
                 ClientSize = new Size(Z(Wide), Z(Tall));
                 Font small = Look.Mono(8.5f * zoom, FontStyle.Regular, GraphicsUnit.Point), head = Type(10f * zoom, true);
-                Heading(this, "VOICE LAYERS >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
+                Heading(this, "叠音 >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
                 Key shut = new Key();
                 shut.Bounds = Box(Wide - 54, 20, 26, 22);
                 shut.Glyph = 2;
                 shut.AccessibleName = "关闭";
                 shut.Click += delegate { Close(); };
                 Controls.Add(shut);
-                Caption("Her voice, and two copies of it mixed in under her, each with its own pitch and delay.", 28, 52, small, Faint);
+                Caption("她的声音，下面混进两份复制，各自有自己的音调和延迟。", 28, 52, small, Faint);
                 onOff = new Toggle();
-                onOff.Text = "Voice layers";
+                onOff.Text = "叠音";
                 onOff.Font = Font;
                 onOff.Switch = 120;
                 onOff.Bounds = Box(28, 76, 260, 22);
-                onOff.AccessibleName = "Voice layers. Off, she sounds as she always has";
+                onOff.AccessibleName = "叠音：关掉就是她原来的声音";
                 onOff.CheckedChanged += delegate
                 {
                     if (syncing) return;
@@ -6681,12 +6683,12 @@ namespace CapriDesktop
                     owner.capri.HearVoiceStyle();
                 };
                 Controls.Add(onOff);
-                Caption("Off: she sounds as she always has. On: every voice she has, ElevenLabs too.", 28, 102, small, Faint);
-                Make("Hear her", Wide - 236, 76, 100, 22, delegate { owner.capri.HearVoiceStyle(); }).AccessibleName = "Hear her: she says a line in her voice as it is now";
-                Make("Defaults", Wide - 128, 76, 100, 22, delegate { Defaults(); }).AccessibleName = "Defaults: Layer 1 " + VoiceFx.Layering.PitchName(VoiceFx.Layering.HigherPitch) + " and Layer 2 " + VoiceFx.Layering.PitchName(VoiceFx.Layering.LowerPitch) + " semitones, both " + VoiceFx.Layering.DelayName(VoiceFx.Layering.Behind) + " behind her";
-                Heading(this, "MAIN >", new Point(Z(28), Z(136)), head, White, Wide - 28);
+                Caption("关：她保持原来的声音。开：她用的每种声音都叠，包括 ElevenLabs。", 28, 102, small, Faint);
+                Make("听她", Wide - 236, 76, 100, 22, delegate { owner.capri.HearVoiceStyle(); }).AccessibleName = "听她：用现在的嗓音说一句";
+                Make("恢复默认", Wide - 128, 76, 100, 22, delegate { Defaults(); }).AccessibleName = "默认：第 1 层 " + VoiceFx.Layering.PitchName(VoiceFx.Layering.HigherPitch) + "和第 2 层 " + VoiceFx.Layering.PitchName(VoiceFx.Layering.LowerPitch) + "个半音，两层都 " + VoiceFx.Layering.DelayName(VoiceFx.Layering.Behind) + "跟在她后面";
+                Heading(this, "主声 >", new Point(Z(28), Z(136)), head, White, Wide - 28);
                 Caption("音调", 28, 166, Font, Rose);
-                mainPitch = Bar(PitchNames, 120, 163, 300, "Her voice's pitch, the same as Settings > VOICE > Pitch");
+                mainPitch = Bar(PitchNames, 120, 163, 300, "她的音调，和 设置 > 声音 > 音调 一样");
                 mainName = new Readout(mainPitch);
                 mainPitch.Changed += delegate
                 {
@@ -6696,20 +6698,20 @@ namespace CapriDesktop
                     owner.Sync();
                 };
                 mainPitch.Released += delegate { if (!syncing) owner.capri.HearVoiceStyle(); };
-                Caption("Her voice itself. Its pitch is Settings > VOICE > Pitch, and they move together.", 28, 192, small, Faint);
+                Caption("她本人的声音。音调在 设置 > 声音 > 音调，两者一起动。", 28, 192, small, Faint);
                 for (int layer = 1; layer <= 2; layer++)
                 {
                     int x = layer == 1 ? 28 : 28 + Column, at = layer - 1, which = layer;
-                    Heading(this, "LAYER " + layer + " >", new Point(Z(x), Z(228)), head, White, Column - 12);
+                    Heading(this, "层 " + layer + " >", new Point(Z(x), Z(228)), head, White, Column - 12);
                     Caption("音调", x, 258, Font, Rose);
                     pitches[at] = Bar(PitchSteps, x + 84, 255, 244, "Layer " + layer + "'s pitch, in semitones from hers");
                     pitches[at].TickEvery = 4;
                     pitchNames[at] = new Readout(pitches[at]);
-                    Caption("Delay", x, 286, Font, Rose);
+                    Caption("延迟", x, 286, Font, Rose);
                     delays[at] = Bar(DelaySteps, x + 84, 283, 244, "Layer " + layer + "'s delay behind her");
                     delays[at].TickEvery = 10;
                     delayNames[at] = new Readout(delays[at]);
-                    Caption(layer == 1 ? "Out of the box a little higher, just behind her." : "Out of the box lower, just behind her.", x, 314, small, Faint);
+                    Caption(layer == 1 ? "默认高一点，就在她后面。" : "默认低一点，就在她后面。", x, 314, small, Faint);
                     pitches[at].Changed += delegate
                     {
                         if (syncing) return;
@@ -6911,9 +6913,9 @@ namespace CapriDesktop
         private sealed class MixSheet : Form, LookWindow
         {
             internal const int Wide = 620, Tall = 478;
-            internal const string NoCable = "No virtual mic yet. Pick Output, then Get VB-CABLE (free).", NoOutput = "None yet: pick to get VB-CABLE (free)";
-            internal const string Off = "Off. Turn on Her voice in your mic above.";
-            internal static string NotYet { get { return CallApps.Current.Name + " isn't hearing it yet: do 1 and 2, then join a call."; } }
+            internal const string NoCable = "还没有虚拟麦克风。先点「输出」，再获取 VB-CABLE（免费）。", NoOutput = "还没有：点一下获取 VB-CABLE（免费）";
+            internal const string Off = "已关闭。请打开上面的「把她的话送进麦克风」。";
+            internal static string NotYet { get { return CallApps.Current.Name + " 还听不到：做完 1 和 2，然后加入通话。"; } }
             internal readonly float Zoom;
             private readonly Mainframe owner;
             private readonly Toggle onOff;
@@ -6942,14 +6944,14 @@ namespace CapriDesktop
                 KeyPreview = true;
                 ClientSize = new Size(Z(Wide), Z(Tall));
                 Font small = Look.Mono(8.5f * zoom, FontStyle.Regular, GraphicsUnit.Point), head = Type(10f * zoom, true);
-                Heading(this, "VOICE IN YOUR MIC >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
+                Heading(this, "麦克风里的她 >", new Point(Z(24), Z(15)), Display(15f * zoom), Rose, 0);
                 Key shut = new Key();
                 shut.Bounds = Box(Wide - 54, 20, 26, 22);
                 shut.Glyph = 2;
                 shut.AccessibleName = "关闭";
                 shut.Click += delegate { Close(); };
                 Controls.Add(shut);
-                note = Caption("Her voice joins your mic only in call mode.", 28, 52, small, Faint);
+                note = Caption("只有通话模式才把她的话送进你的麦克风。", 28, 52, small, Faint);
                 onOff = new Toggle();
                 onOff.Text = "把她的话送进麦克风";
                 onOff.Font = Font;
@@ -6958,19 +6960,19 @@ namespace CapriDesktop
                 onOff.AccessibleName = "把她的话送进麦克风";
                 onOff.CheckedChanged += delegate { if (!syncing) owner.capri.ToggleVoiceInMic(); };
                 Controls.Add(onOff);
-                Caption("Input", 28, 115, Font, Rose);
+                Caption("输入", 28, 115, Font, Rose);
                 input = Make("", 120, 112, Wide - 148, 22, delegate { owner.ShowMixInputs(input); });
                 input.Chevron = true;
-                input.AccessibleName = "Input: the mic that goes in with her voice";
-                Caption("Output", 28, 143, Font, Rose);
+                input.AccessibleName = "输入：和她声音一起进去的麦克风";
+                Caption("输出", 28, 143, Font, Rose);
                 output = Make("", 120, 140, Wide - 148, 22, delegate { owner.ShowMixOutputs(output); });
                 output.Chevron = true;
-                output.AccessibleName = "Output: the virtual mic she plays into, which your call app hears";
+                output.AccessibleName = "输出：她播放进去的虚拟麦克风，你的通话应用听到的就是它";
                 state = Caption("", 28, 174, Font, Faint);
-                callHead = Heading(this, "IN DISCORD >", new Point(Z(28), Z(208)), head, White, Wide - 28);
+                callHead = Heading(this, "在 Discord 里 >", new Point(Z(28), Z(208)), head, White, Wide - 28);
                 steps = new Label[5];
                 steps[0] = Caption("", 28, 240, Font, White);
-                pickStep = Caption("2   Input Device:", 28, 266, Font, White);
+                pickStep = Caption("2   输入设备：", 28, 266, Font, White);
                 pick = Caption("", 28, 266, Font, Cyan);
                 steps[1] = Caption("", 28, 292, Font, White);
                 steps[2] = Caption("", 28, 318, Font, White);
@@ -7026,30 +7028,30 @@ namespace CapriDesktop
                 string problem = capri.VoiceInMicProblem, setup = capri.CableSetupLine, far = capri.MixFarName;
                 CallApp app = CallApps.Current;
                 bool isDiscord = app.Name == "Discord";
-                Retext(callHead, "IN " + app.Caption + " >");
+                Retext(callHead, "在 " + app.Caption + " >");
                 string[] lines = isDiscord ? new[] {
-                    "1   User Settings (the cog by your name) > Voice & Video",
-                    "3   Output Device: your headphones, like before", "4   Echo Cancellation: Off",
-                    "5   Noise Suppression: None. Both can cut her voice after the first line.",
-                    "6   Mic Test > Let's Check: you'll hear you, and her as she talks"
+                    "1   用户设置（你名字旁的齿轮）> 语音与视频",
+                    "3   输出设备：你的耳机，和以前一样", "4   回声消除：关",
+                    "5   噪声抑制：无。两者都可能把她的声音从第二句起切掉。",
+                    "6   麦克风测试 > Let's Check：你会听到自己，还有她说话"
                 } : new[] {
-                    "1   Open the call or meeting's audio settings",
-                    "3   Speaker: your headphones, like before", "4   If her voice cuts off, turn off noise filtering",
-                    "5   Try a mic test in your call app",
-                    "6   Join the call and check they hear both of you"
+                    "1   打开通话或会议的音频设置",
+                    "3   扬声器：你的耳机，和以前一样", "4   如果她的声音被切掉，关掉噪声过滤",
+                    "5   在通话应用里试一下麦克风测试",
+                    "6   加入通话，确认他们能听到你们俩"
                 };
                 for (int i = 0; i < steps.Length; i++) Retext(steps[i], lines[i]);
-                Retext(pickStep, isDiscord ? "2   Input Device:" : "2   Microphone:");
+                Retext(pickStep, isDiscord ? "2   输入设备：" : "2   麦克风：");
                 syncing = true;
                 onOff.Checked = on;
                 onOff.Enabled = cable || on;
                 syncing = false;
-                Retext(note, cable && !vb ? CableSetup.Better + " Pick Output to get it." : "Your mic and her voice go into one virtual mic, and " + app.Name + " hears that.");
-                Retext(input, capri.MixInputName ?? "No mic found");
+                Retext(note, cable && !vb ? CableSetup.Better + " Pick Output to get it." : "你的麦克风和她的声音进同一个虚拟麦克风，" + app.Name + " 听到的就是它。");
+                Retext(input, capri.MixInputName ?? "找不到麦克风");
                 Retext(output, cable ? far : NoOutput);
                 Retext(pick, far);
                 pick.Left = pickStep.Right + (int)Math.Round(4 * ScaleOf(this));
-                Retext(elsewhere, "Roblox or any other app: pick " + far + " as its mic.");
+                Retext(elsewhere, "Roblox 或其它应用：把 " + far + " 选成它的麦克风。");
                 string said;
                 Color colour = Hot;
                 if (!vb && setup != null) said = setup;
@@ -7057,13 +7059,13 @@ namespace CapriDesktop
                 else if (there.Far == null) said = MicMix.OffLine(MicMix.EndOf(there));
                 else if (!on) said = Off;
                 else if (problem != null) said = problem;
-                else { said = "On: your mic and her voice are going in."; colour = Cyan; }
+                else { said = "开：你的麦克风和她的声音正在进去。"; colour = Cyan; }
                 Retext(state, said);
                 state.ForeColor = colour;
                 List<string> hearing = cable && on && there.Far != null ? capri.MixListeners : new List<string>();
                 bool discord = hearing.Exists(delegate(string process) { return app.Has(process); });
-                string apps = Apps(hearing), verb = AppNames(hearing).Count > 1 ? " hear" : " hears";
-                Retext(live, !cable || !on || there.Far == null ? "" : discord ? apps + verb + " it now." : hearing.Count > 0 ? apps + verb + " it now. " + app.Name + " doesn't yet." : NotYet);
+                string apps = Apps(hearing), verb = AppNames(hearing).Count > 1 ? " ／都" : " ";
+                Retext(live, !cable || !on || there.Far == null ? "" : discord ? apps + verb + " 现在听得到。" : hearing.Count > 0 ? apps + verb + " 现在听得到。 " + app.Name + " 还听不到。" : NotYet);
                 live.ForeColor = discord ? Cyan : Faint;
             }
 
@@ -7125,7 +7127,7 @@ namespace CapriDesktop
                 string vb = "CABLE Output (VB-Audio Virtual Cable)";
                 foreach (string text in new[] { NoOutput, vb, "Microphone (" + MicMix.SteamEnd + ")" })
                     if (TextRenderer.MeasureText(text, output.Font).Width + (int)Math.Ceiling(28 * s) > output.Width) return "doesn't fit: " + text + " in Output";
-                foreach (string line in new[] { "2   Input Device: " + vb, "Roblox or any other app: pick " + vb + " as its mic.", NoCable,CableSetup.Finish, CableSetup.Declined, CableSetup.Failed, CableSetup.Running, MicMix.Unopened, MicMix.NoMic, MicMix.MicGone, MicMix.MutedLine(MicMix.CableEnd), MicMix.MutedLine(MicMix.SteamEnd), MicMix.OffLine(MicMix.CableEnd), MicMix.OffLine(MicMix.SteamEnd), Off, "Discord, OBS and Roblox hear it now.", "OBS and Roblox hear it now. Discord doesn't yet.", NotYet })
+                foreach (string line in new[] { "2   Input Device: " + vb, "Roblox 或其它应用：把 " + vb + " 选成它的麦克风。", NoCable,CableSetup.Finish, CableSetup.Declined, CableSetup.Failed, CableSetup.Running, MicMix.Unopened, MicMix.NoMic, MicMix.MicGone, MicMix.MutedLine(MicMix.CableEnd), MicMix.MutedLine(MicMix.SteamEnd), MicMix.OffLine(MicMix.CableEnd), MicMix.OffLine(MicMix.SteamEnd), Off, "Discord, OBS and Roblox hear it now.", "OBS and Roblox hear it now. Discord doesn't yet.", NotYet })
                     if (state.Left + TextRenderer.MeasureText(line, Font).Width + (int)(24 * s) > ClientSize.Width - (int)(16 * s)) return "doesn't fit: " + line;
                 return null;
             }
