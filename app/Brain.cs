@@ -424,6 +424,21 @@ namespace CapriDesktop
         internal Moment(string on, string line, string[] words) { On = on; Line = line; Words = words; }
     }
 
+    // capri-bridge 插件写的 DSH 会话状态。
+    [DataContract]
+    internal sealed class DshState
+    {
+        [DataMember(Name = "status")] public string Status;
+        [DataMember(Name = "title")] public string Title;
+        [DataMember(Name = "detail")] public string Detail;
+        [DataMember(Name = "summary")] public string Summary;
+        [DataMember(Name = "think")] public string Think;
+        [DataMember(Name = "turnTokens")] public int TurnTokens;
+        [DataMember(Name = "actions")] public int Actions;
+        [DataMember(Name = "approval")] public bool Approval;
+        [DataMember(Name = "doneId")] public int DoneId;
+        [DataMember(Name = "doneAt")] public long DoneAt;
+    }
     // 免费英语音色读不了中文时，先让大脑把台词翻成英文再读（汉化分支加的）。
     [DataContract]
     internal sealed class DubAnswer

@@ -2481,6 +2481,7 @@ namespace CapriDesktop
                 artItem.DropDownItems.Add(artOpt);
             }
             menu.Items.Add(artItem);
+            menu.Items.Add(new ToolStripMenuItem("查余额", null, delegate { ShowBalance(); }));
             ToolStripMenuItem moves = new ToolStripMenuItem("Move");
             wanderItem = new ToolStripMenuItem("到处走走", null, delegate { ToggleWander(); });
             wanderItem.Checked = preferences.Wander;
@@ -2694,6 +2695,11 @@ namespace CapriDesktop
             chatTail = new System.Windows.Forms.Timer();
             chatTail.Interval = 120;
             chatTail.Tick += delegate { ChatTail(); };
+            // DSH 桥：每 1.5 秒看一眼 capri-bridge 写的状态（汉化分支加的）。
+            dshTimer = new System.Windows.Forms.Timer();
+            dshTimer.Interval = 1500;
+            dshTimer.Tick += delegate { DshTick(); };
+            dshTimer.Start();
             signals = new System.Windows.Forms.Timer();
             signals.Interval = 250;
             signals.Tick += delegate
@@ -13987,6 +13993,58 @@ namespace CapriDesktop
             RenderFrame();
         }
 
+        // DSH 会话的实时状态，由 capri-bridge 插件写进 dsh-state.json：一轮跑完她说一声，要批准时先喊人。
+        private System.Windows.Forms.Timer dshTimer;
+        private int dshDone;
+        private bool dshSeen;
+        private bool dshApproval;
+
+        private void DshTick()
+        {
+            if (testing) return;
+            string file = Path.Combine(Path.GetDirectoryName(settingsPath), "dsh-state.json");
+            if (!File.Exists(file)) return;
+            DshState now;
+            try { now = Voice.Read<DshState>(File.ReadAllBytes(file)); }
+            catch (Exception) { return; }
+            if (now.Approval && !dshApproval)
+            {
+                dshApproval = true;
+                SayNow(string.IsNullOrEmpty(now.Detail) ? "DSH 那边有活儿等你批准。" : "DSH 等你批准：" + now.Detail);
+                return;
+            }
+            if (!now.Approval) dshApproval = false;
+            if (now.DoneId <= dshDone) return;
+            dshDone = now.DoneId;
+            if (!dshSeen) { dshSeen = true; return; }
+            string line = string.IsNullOrEmpty(now.Summary) ? "搞定了。" : "搞定了：" + now.Summary;
+            if (!string.IsNullOrEmpty(now.Title)) line = "「" + now.Title + "」" + line;
+            if (now.TurnTokens > 0) line += "（本轮 " + (now.TurnTokens >= 1000 ? (now.TurnTokens / 1000) + "k" : now.TurnTokens.ToString()) + " token）";
+            SayNow(line);
+        }
+
+        // 双击/菜单里问她 Key 上还剩多少钱（汉化分支加的）。
+        private bool balancing;
+
+        private void ShowBalance()
+        {
+            if (balancing) return;
+            balancing = true;
+            SayNow("我看看你 Key 上还剩多少…");
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                string said = brain.Balance();
+                Post(delegate { balancing = false; SayNow(said); });
+            });
+        }
+        private void SayNow(string line)
+        {
+            if (hidden) SetHidden(false);
+            brain.Cancel();
+            heard = null;
+            box.Prompt = null;
+            Answer(++asking, line, TalkState.Talking, false);
+        }
         // ---- 立绘皮肤（汉化分支加的）----
         // 三套 8×9 图集（192×208/帧），状态只做最小映射；动作/口型/趴窗逻辑不变，画面上换成皮肤对应的帧。
         internal static readonly string[] ArtPackIds = { "capri-clear", "capri-pixel", "capri-anime" };
