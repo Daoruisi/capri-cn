@@ -45,26 +45,26 @@ namespace CapriDesktop
             // Her ears' own download lines fit whole, fix and all, instead of "Her ears didn't download: The download of her ears...".
             if (lead == EarsUndownloaded)
             {
-                string line = whole == Engine.Stalled("her ears") ? "Her ears' download keeps stopping. Check your connection"
-                    : whole == Engine.WrongSize("her ears") ? "Her ears' download is the wrong size. Try again"
-                    : whole == Engine.Unmatched("her ears") ? "Her ears' download failed its checksum. Try again" : null;
+                string line = whole == Engine.Stalled("her ears") ? "她的耳朵下载总是中断，检查下网络"
+                    : whole == Engine.WrongSize("her ears") ? "她的耳朵下载大小不对，重试"
+                    : whole == Engine.Unmatched("her ears") ? "她的耳朵下载校验失败，重试" : null;
                 if (line != null) return new HearingStatus(line, whole, problem, actions);
             }
-            if (whole.StartsWith("Windows speech ", StringComparison.Ordinal) && lead.StartsWith("Windows speech", StringComparison.Ordinal)) { lead = ""; alone = true; }
+            if (whole.StartsWith("Windows speech ", StringComparison.Ordinal) && lead.StartsWith("Windows 语音识别", StringComparison.Ordinal)) { lead = ""; alone = true; }
             string shown = Reason(whole, LineRoom - lead.Length);
             string full = shown == whole.TrimEnd('.') ? null : alone ? whole : lead + whole;
             return new HearingStatus(lead + shown, full, problem, actions);
         }
 
-        internal const string EarsUndownloaded = "Her ears didn't download: ";
-        internal static readonly string[] Choices = { "Auto", "Her own ears", "Windows speech" };
+        internal const string EarsUndownloaded = "她的耳朵没下载成功：";
+        internal static readonly string[] Choices = { "自动", "她自己的耳朵", "Windows 语音识别" };
         // VB-CABLE's input as Windows' default speakers sends every app's sound into the cable, where nobody hears it, and its
         // setup can leave it that way (Neco Arc, 3 Nov: "I stop hear everything else"). Voicemeeter's input is meant to be the
         // default, and Steam's is only while it streams, so only VB-Audio's cables count.
-        internal const string CableSpeakers = "Default speakers are CABLE Input";
-        internal const string CableNotice = "Your PC's sound is going into CABLE Input, so you can't hear your other apps. Pick your speakers or headphones in Windows Sound settings.";
+        internal const string CableSpeakers = "默认扬声器是 CABLE Input";
+        internal const string CableNotice = "你电脑的声音正送进 CABLE Input，所以别的应用你听不到。到 Windows 声音设置里选你的扬声器或耳机。";
         // A Bluetooth headset's mic puts it on a call, which quiets everything else it plays. She still hears, so it's only a note.
-        internal const string BluetoothMic = "Bluetooth mic: call mode quiets other apps";
+        internal const string BluetoothMic = "蓝牙麦克风：通话模式会压低其它应用的声音";
         internal static bool CableOutput(string name) { return Regex.IsMatch(name ?? "", @"^(Hi-Fi )?CABLE(-[A-D])? Input\b", RegexOptions.IgnoreCase); }
         internal static int Choice(int value) { return value >= 0 && value < Choices.Length ? value : 0; }
         internal static bool Own(int choice, bool ready) { return Choice(choice) != 2 && ready; }
@@ -72,15 +72,15 @@ namespace CapriDesktop
         {
             switch (action)
             {
-                case HearingAction.Sound: return "Open Sound settings";
-                case HearingAction.Output: return "Open output settings";
-                case HearingAction.Type: return "Type instead";
-                case HearingAction.Privacy: return "Open mic privacy";
-                case HearingAction.Speech: return "Open speech settings";
-                case HearingAction.Own: return "Use her own ears";
-                case HearingAction.Windows: return "Use Windows speech";
-                case HearingAction.Test: return "Test mic";
-                default: return "Pick another mic";
+                case HearingAction.Sound: return "打开声音设置";
+                case HearingAction.Output: return "打开输出设置";
+                case HearingAction.Type: return "改用打字";
+                case HearingAction.Privacy: return "打开麦克风隐私";
+                case HearingAction.Speech: return "打开语音设置";
+                case HearingAction.Own: return "用她自己的耳朵";
+                case HearingAction.Windows: return "用 Windows 语音识别";
+                case HearingAction.Test: return "测试麦克风";
+                default: return "换一个麦克风";
             }
         }
 
@@ -90,8 +90,8 @@ namespace CapriDesktop
         // or a comma, and only then ends at a word with "...", never mid-word.
         internal static string Reason(string text, int room)
         {
-            string reason = Regex.Replace(string.IsNullOrWhiteSpace(text) ? "No words came back" : text, @"\s+", " ").Trim();
-            foreach (string lead in new[] { "Windows speech recognition didn't start: ", "Can't open your mic: " })
+            string reason = Regex.Replace(string.IsNullOrWhiteSpace(text) ? "没听到任何字" : text, @"\s+", " ").Trim();
+            foreach (string lead in new[] { "Windows 语音识别没启动：", "打不开你的麦克风：" })
                 if (reason.StartsWith(lead, StringComparison.Ordinal) && reason.Length > lead.Length) reason = reason.Substring(lead.Length);
             int stop = reason.IndexOf(". ", StringComparison.Ordinal);
             if (stop > 0) reason = reason.Substring(0, stop);
@@ -141,7 +141,7 @@ namespace CapriDesktop
         private void StartHearingStatus()
         {
             hearingSoundNotice = EarsNote;
-            hearingDownloadNotice = delegate(string text) { Notice.Tell(mainframe, text, "Her own ears", false); };
+            hearingDownloadNotice = delegate(string text) { Notice.Tell(mainframe, text, "她自己的耳朵", false); };
             hearingDownload = DownloadHearing;
             if (testing) hearingOnline = delegate { return null; };
             // A test machine with no mic at all (GitHub's runners) gets a stand-in, or every hearing check there reads "No mic found".
@@ -288,53 +288,53 @@ namespace CapriDesktop
             if (hearingCaptureProblem != null)
                 return HearingStatus.Explained("Mic failed: ", hearingCaptureProblem, true, true, HearingAction.Sound, HearingAction.Type);
             if (hearingCableOut) return new HearingStatus(HearingStatus.CableSpeakers, true, HearingAction.Output);
-            if (ears.Muted) return new HearingStatus("Mic muted", true);
-            if (hearingWindowsMuted) return new HearingStatus("Mic muted in Windows", true, HearingAction.Sound, HearingAction.Test);
+            if (ears.Muted) return new HearingStatus("麦克风已静音", true);
+            if (hearingWindowsMuted) return new HearingStatus("麦克风在 Windows 里被静音", true, HearingAction.Sound, HearingAction.Test);
             bool ownFits = parakeet.Fits;
             bool windows = HearingWindows && !HearingLink;
             if (!HearingLink && HearingChoice == 1 && !ownFits)
-                return new HearingStatus(IntPtr.Size == 8 ? "Her ears don't know this language yet" : "Her ears need 64-bit Windows", true, HearingAction.Windows);
+                return new HearingStatus(IntPtr.Size == 8 ? "她的耳朵还不认识这种语言" : "她的耳朵需要 64 位 Windows", true, HearingAction.Windows);
             if (!HearingLink && HearingChoice != 2 && hearingInstallProblem != null && !OwnEars && !settingUpEars)
                 return HearingStatus.Explained(HearingStatus.EarsUndownloaded, hearingInstallProblem, false, true, HearingAction.Own, HearingAction.Windows);
             // VB-CABLE's output as Windows' default mic isn't Windows speech failing: she hears their real mic offline, and VOICE
             // gives the whole reason. The line names the cable, so they know which default to change.
-            if (!HearingLink && hearingSpeechProblem == CableDefault) return new HearingStatus("Hearing offline: your default mic is CABLE Output", false, HearingAction.Sound);
+            if (!HearingLink && hearingSpeechProblem == CableDefault) return new HearingStatus("离线听声：你的默认麦克风是 CABLE Output", false, HearingAction.Sound);
             // Call mode picks offline hearing to keep each speaker apart, so the line is a grey note and VOICE says why.
             if (!HearingLink && hearingSpeechProblem == CallHearing) return new HearingStatus(CallHearingLine, false);
             if (!HearingLink && hearingSpeechProblem != null)
             {
                 if (hearingSpeechProblem == Dictation.PrivacyOff)
-                    return ownFits ? new HearingStatus("Online speech recognition is off", true, HearingAction.Speech, HearingAction.Own) : new HearingStatus("Online speech recognition is off", true, HearingAction.Speech);
-                return ownFits ? HearingStatus.Explained("Windows speech failed: ", hearingSpeechProblem, false, true, HearingAction.Own, HearingAction.Type) : HearingStatus.Explained("Windows speech failed: ", hearingSpeechProblem, false, true, HearingAction.Speech, HearingAction.Type);
+                    return ownFits ? new HearingStatus("在线语音识别已关闭", true, HearingAction.Speech, HearingAction.Own) : new HearingStatus("在线语音识别已关闭", true, HearingAction.Speech);
+                return ownFits ? HearingStatus.Explained("Windows 语音识别失败：", hearingSpeechProblem, false, true, HearingAction.Own, HearingAction.Type) : HearingStatus.Explained("Windows 语音识别失败：", hearingSpeechProblem, false, true, HearingAction.Speech, HearingAction.Type);
             }
             Mic chosen = Ears.Find(preferences.Mic, hearingMics);
             if (windows && !hearingOffline && chosen != null && Dictation.OtherMic(chosen.Id, chosen.Name, dictation != null ? dictationMic : hearingDefaultId) != null)
-                return ownFits ? new HearingStatus("Windows speech hears a different mic: Windows default", true, HearingAction.Own, HearingAction.Sound) : new HearingStatus("Windows speech hears a different mic: Windows default", true, HearingAction.Sound);
-            if (hearingSilent) return new HearingStatus("Silent for 20 s: is the right mic picked?", true, HearingAction.Test, HearingAction.Pick);
-            if (hearingTestSilent) return new HearingStatus("No sound reached the mic test", true, HearingAction.Test, HearingAction.Pick);
-            if (hearingQuiet) return new HearingStatus("Mic is too quiet: raise its input volume", true, HearingAction.Test, HearingAction.Pick);
+                return ownFits ? new HearingStatus("Windows 语音识别听到的是另一个麦克风：Windows 默认", true, HearingAction.Own, HearingAction.Sound) : new HearingStatus("Windows 语音识别听到的是另一个麦克风：Windows 默认", true, HearingAction.Sound);
+            if (hearingSilent) return new HearingStatus("20 秒没声音：麦克风选对了吗？", true, HearingAction.Test, HearingAction.Pick);
+            if (hearingTestSilent) return new HearingStatus("麦克风测试没收到声音", true, HearingAction.Test, HearingAction.Pick);
+            if (hearingQuiet) return new HearingStatus("麦克风声音太小：调高输入音量", true, HearingAction.Test, HearingAction.Pick);
             if (!HearingLink && hearingResultProblem != null)
             {
-                string engine = windows ? "Windows speech" : "Her ears";
-                return windows && !ownFits ? HearingStatus.Explained(engine + " failed: ", hearingResultProblem, false, true, HearingAction.Test, HearingAction.Type) : HearingStatus.Explained(engine + " failed: ", hearingResultProblem, false, true, windows ? HearingAction.Own : HearingAction.Windows);
+                string engine = windows ? "Windows 语音识别" : "她的耳朵";
+                return windows && !ownFits ? HearingStatus.Explained(engine + " 失败：", hearingResultProblem, false, true, HearingAction.Test, HearingAction.Type) : HearingStatus.Explained(engine + " 失败：", hearingResultProblem, false, true, windows ? HearingAction.Own : HearingAction.Windows);
             }
             if (!HearingLink && (settingUpEars || earsAwaited || HearingChoice == 1 && !OwnEars))
             {
-                string progress = settingUpEars ? earsTotal > 0 ? (earsGot * 100 / earsTotal) + "%" : "starting" : SettingUpVoice ? "getting the speech engine" : "not installed";
-                if (settingUpEars || SettingUpVoice) return windows && earsReady ? new HearingStatus("Her ears are downloading: " + progress + " · Windows speech on", false) : new HearingStatus("Her ears are downloading: " + progress, false, HearingAction.Type);
-                return new HearingStatus("Her ears aren't installed", true, HearingAction.Own, HearingAction.Windows);
+                string progress = settingUpEars ? earsTotal > 0 ? (earsGot * 100 / earsTotal) + "%" : "启动中" : SettingUpVoice ? "正在获取语音引擎" : "未安装";
+                if (settingUpEars || SettingUpVoice) return windows && earsReady ? new HearingStatus("她的耳朵正在下载：" + progress + " · Windows 语音识别开着", false) : new HearingStatus("她的耳朵正在下载：" + progress, false, HearingAction.Type);
+                return new HearingStatus("她的耳朵还没装", true, HearingAction.Own, HearingAction.Windows);
             }
-            // Shut on purpose, "ready" read as if she was listening (6 Nov).
-            if (earsClosed && !chatting) return new HearingStatus("Her ears are off: click her wave to open them", false);
+            // Shut on purpose, "就绪" read as if she was listening (6 Nov).
+            if (earsClosed && !chatting) return new HearingStatus("她的耳朵关着：点她的声波打开", false);
             // Only once nothing's wrong, so it never hides a problem.
             Mic device = HearingMic(windows);
             if (device != null && hearingHandsFree(device.Id, device.Name))
                 return windows && ownFits ? new HearingStatus(HearingStatus.BluetoothMic, false, HearingAction.Pick, HearingAction.Own) : new HearingStatus(HearingStatus.BluetoothMic, false, HearingAction.Pick);
-            string engineName = HearingLink ? "ElevenLabs" : windows ? hearingOffline ? "Windows offline speech" : "Windows speech" : "her own ears";
-            string name = device == null ? windows && !hearingOffline ? "default mic" : "mic" : device.Name;
-            if (windows && !hearingOffline && device != null) name = "default mic (" + name + ")";
+            string engineName = HearingLink ? "ElevenLabs" : windows ? hearingOffline ? "Windows 离线语音识别" : "Windows 语音识别" : "她自己的耳朵";
+            string name = device == null ? windows && !hearingOffline ? "默认麦克风" : "mic" : device.Name;
+            if (windows && !hearingOffline && device != null) name = "默认麦克风（" + name + ")";
             bool open = chatting && (local ? earsReady : ears.Listening);
-            return new HearingStatus("Hearing: " + engineName + " · " + name + " · " + (open ? "working" : chatting ? "starting" : "ready"), false);
+            return new HearingStatus("听音：" + engineName + " · " + name + " · " + (open ? "工作中" : chatting ? "启动中" : "就绪"), false);
         }
 
         private void UpdateHearing()
@@ -394,7 +394,7 @@ namespace CapriDesktop
             if (!chatting || !(local ? earsReady : ears.Listening) || ears.Muted || talkState == TalkState.Thinking) return;
             if (local && hearingSignalSeconds >= 3 && now - hearingWordsAt >= MicQuietWait && hearingResultProblem == null)
             {
-                hearingResultProblem = "No words came back";
+                hearingResultProblem = "没听到任何字";
                 UpdateHearing();
             }
             bool silent = now - hearingSoundAt >= MicQuietWait;
@@ -414,8 +414,8 @@ namespace CapriDesktop
                 hearingWordsAt = clock.Elapsed.TotalSeconds;
                 hearingSignalSeconds = 0;
             }
-            else if (problem != null && problem != "No words came back") hearingResultProblem = problem;
-            else if (hearingLoud && ++hearingMisses >= 3) hearingResultProblem = "No words came back";
+            else if (problem != null && problem != "没听到任何字") hearingResultProblem = problem;
+            else if (hearingLoud && ++hearingMisses >= 3) hearingResultProblem = "没听到任何字";
             UpdateHearing();
         }
 
@@ -450,7 +450,7 @@ namespace CapriDesktop
             {
                 if (!parakeet.Fits)
                 {
-                    Notice.Tell(mainframe, IntPtr.Size == 8 ? "Her own ears don't know this language yet. Choose Windows speech." : "Her ears need 64-bit Windows. Choose Windows speech.", "Her own ears", true);
+                    Notice.Tell(mainframe, IntPtr.Size == 8 ? "Her own ears don't know this language yet. Choose Windows speech." : "Her ears need 64-bit Windows. Choose Windows speech.", "她自己的耳朵", true);
                     return;
                 }
                 if (!settingUpEars && !SettingUpVoice)
@@ -568,7 +568,7 @@ namespace CapriDesktop
                 StartLocal();
                 expect("Hearing: her own ears · USB Mic · working", false, "");
                 if (opened.Count != 0 || Hearing.Own != parakeet) throw new Exception("Auto didn't prefer ready own ears.");
-                preview("working");
+                preview("工作中");
                 StopChat();
                 ownEarsTest = false;
                 preferences.Mic = null;
@@ -598,7 +598,7 @@ namespace CapriDesktop
                 currentDefault = "default";
                 privacy = true;
                 RefreshHearingDevices();
-                expect("Windows is blocking the mic", true, "Open mic privacy");
+                expect("Windows is blocking the mic", true, "打开麦克风隐私");
                 mainframe.PressHearing(0);
                 if (pages[pages.Count - 1] != "ms-settings:privacy-microphone") throw new Exception("Privacy action opened the wrong settings.");
                 preview("blocked");
@@ -609,7 +609,7 @@ namespace CapriDesktop
                 hearingSoundAt = hearingLoudAt = now - 21;
                 int said = asking;
                 CheckHearingSignal(now);
-                expect("Silent for 20 s: is the right mic picked?", true, "Test mic | Pick another mic");
+                expect("20 秒没声音：麦克风选对了吗？", true, "Test mic | Pick another mic");
                 if (asking != said || reply == mainframe.HearingText) throw new Exception("A silent mic was said out loud; it belongs on the hearing line.");
                 CheckHearingSignal(now + 1);
                 if (asking != said) throw new Exception("A silent mic was said out loud on a later check.");
@@ -623,7 +623,7 @@ namespace CapriDesktop
                 HeardLevel(0.002);
                 hearingLoudAt = now - 21;
                 CheckHearingSignal(now);
-                expect("Mic is too quiet: raise its input volume", true, "Test mic | Pick another mic");
+                expect("麦克风声音太小：调高输入音量", true, "Test mic | Pick another mic");
                 HeardLevel(0.03);
                 expect("Hearing: Windows speech · default mic (Realtek) · working", false, "");
                 // A real problem while she's still saying a reply shows under VOICE, waits for her to finish, then is said once
@@ -668,17 +668,17 @@ namespace CapriDesktop
 
                 Dictation.Make = delegate { return new StandInDictation { Problem = Dictation.PrivacyOff }; };
                 StartLocal();
-                expect("Online speech recognition is off", true, "Open speech settings | Use her own ears");
+                expect("在线语音识别已关闭", true, "Open speech settings | Use her own ears");
                 if (!hearingOffline || !earsReady || dictation != null) throw new Exception("Auto didn't keep its existing Windows offline fallback.");
                 if (reply != mainframe.HearingText || mainframe.VoiceNoteText != reply) throw new Exception("Speech-off chat note and hearing line disagree.");
                 mainframe.PressHearing(0);
                 if (pages[pages.Count - 1] != SpeechSettings) throw new Exception("Speech action opened the wrong settings.");
                 mainframe.PressHearing(1);
                 if (HearingChoice != 1 || downloads.Count != 2 || !downloads[0].StartsWith("notice: Get her own ears: " + Engine.Amount(parakeet.Size + (kokoro.Installed ? 0 : LocalVoice.PackSize)), StringComparison.Ordinal) || downloads[1] != "download") throw new Exception("Own ears didn't state the whole size before calling the existing installer.");
-                expect("Her ears are downloading: 40%", false, "Type instead");
+                expect("Her ears are downloading: 40%", false, "改用打字");
                 earsGot = 60;
                 ShowInstall();
-                expect("Her ears are downloading: 60%", false, "Type instead");
+                expect("Her ears are downloading: 60%", false, "改用打字");
                 StopChat();
                 settingUpEars = false;
                 ShowInstall();
@@ -686,14 +686,14 @@ namespace CapriDesktop
                 Dictation.Make = delegate { return new StandInDictation(); };
                 ChooseHearing(2);
                 StartLocal();
-                if (dictation == null || Hearing.Own != null || mainframe.HearingShown != "Windows speech") throw new Exception("Windows choice was ignored while own ears were ready.");
+                if (dictation == null || Hearing.Own != null || mainframe.HearingShown != "Windows 语音识别") throw new Exception("Windows choice was ignored while own ears were ready.");
                 Dictation keptWindows = dictation;
                 if (EarsArrived() || dictation != keptWindows) throw new Exception("Downloaded ears replaced an explicit Windows choice.");
                 ownEarsTest = false;
                 preferences.Mic = "usb";
                 ears.Chosen = "usb";
                 RefreshHearingDevices();
-                expect("Windows speech hears a different mic: Windows default", true, "Use her own ears | Open Sound settings");
+                expect("Windows 语音识别听到的是另一个麦克风：Windows 默认", true, "Use her own ears | Open Sound settings");
                 HearingNote();
                 if (reply != mainframe.HearingText) throw new Exception("Different-mic chat note disagrees with the hearing line.");
                 mainframe.PressHearing(1);
@@ -704,24 +704,24 @@ namespace CapriDesktop
                 HeardLevel(0.03);
                 Dictation rejected = dictation;
                 rejected.Rejected(null); rejected.Rejected(null); rejected.Rejected(null);
-                expect("Windows speech failed: No words came back", true, "Use her own ears");
+                expect("Windows speech failed: No words came back", true, "用她自己的耳朵");
                 ownEarsTest = true;
                 mainframe.PressHearing(0);
                 if (HearingChoice != 1 || dictation != null || Hearing.Own != parakeet) throw new Exception("Switch from Windows speech to own ears failed.");
                 HeardLevel(0.03);
-                HearingResult("No words came back", false); HearingResult("No words came back", false); HearingResult("No words came back", false);
-                expect("Her ears failed: No words came back", true, "Use Windows speech");
+                HearingResult("没听到任何字", false); HearingResult("没听到任何字", false); HearingResult("没听到任何字", false);
+                expect("Her ears failed: No words came back", true, "用 Windows 语音识别");
                 mainframe.PressHearing(0);
                 if (HearingChoice != 2 || dictation == null || Hearing.Own != null) throw new Exception("Switch from own ears to Windows speech failed.");
                 HeardLevel(0.03);
                 hearingSignalSeconds = 3;
                 hearingWordsAt = clock.Elapsed.TotalSeconds - 21;
                 CheckHearingSignal(clock.Elapsed.TotalSeconds);
-                expect("Windows speech failed: No words came back", true, "Use her own ears");
+                expect("Windows speech failed: No words came back", true, "用她自己的耳朵");
                 dictation.Partial("I can hear words");
                 expect("Hearing: Windows speech · default mic (Realtek) · working", false, "");
                 HearingResult("The recognizer could not load", false);
-                expect("Windows speech failed: The recognizer could not load", true, "Use her own ears");
+                expect("Windows speech failed: The recognizer could not load", true, "用她自己的耳朵");
                 HearingResult(null, true);
                 StopChat();
                 Dictation.Make = delegate { return new StandInDictation { Problem = "The connection was lost." }; };
@@ -730,7 +730,7 @@ namespace CapriDesktop
                 if (reply != mainframe.HearingText) throw new Exception("Failed Windows speech chat note disagrees with the hearing line.");
                 StopChat();
                 HearingCaptureFailed("WASAPI start failed. " + Dictation.MicBlocked, false);
-                expect("Windows is blocking the mic", true, "Open mic privacy");
+                expect("Windows is blocking the mic", true, "打开麦克风隐私");
                 HearingCaptureFailed(Dictation.NoMic, false);
                 expect("No mic found", true, "Open Sound settings | Type instead");
                 HearingCaptureFailed("The selected device is busy.", false);
@@ -772,12 +772,12 @@ namespace CapriDesktop
                 StopChat();
                 online = false;
                 RefreshHearingDevices();
-                expect("Online speech recognition is off", true, "Open speech settings | Use her own ears");
+                expect("在线语音识别已关闭", true, "Open speech settings | Use her own ears");
                 online = null;
                 hearingSpeechProblem = null;
                 preferences.Hearing = 1;
                 parakeet.Language = "ja";
-                expect("Her ears don't know this language yet", true, "Use Windows speech");
+                expect("她的耳朵还不认识这种语言", true, "用 Windows 语音识别");
                 parakeet.Language = "en";
                 int changes = 0;
                 HearingChanges notifications = new HearingChanges(delegate { changes++; });
@@ -837,9 +837,9 @@ namespace CapriDesktop
                             new HearingStatus("Hearing: her own ears · USB Mic · working", false),
                             new HearingStatus("No mic found", true, HearingAction.Sound, HearingAction.Type),
                             new HearingStatus("Windows is blocking the mic", true, HearingAction.Privacy),
-                            new HearingStatus("Silent for 20 s: is the right mic picked?", true, HearingAction.Test, HearingAction.Pick),
-                            new HearingStatus("Online speech recognition is off", true, HearingAction.Speech, HearingAction.Own),
-                            new HearingStatus("Windows speech hears a different mic: Windows default", true, HearingAction.Own, HearingAction.Sound) })
+                            new HearingStatus("20 秒没声音：麦克风选对了吗？", true, HearingAction.Test, HearingAction.Pick),
+                            new HearingStatus("在线语音识别已关闭", true, HearingAction.Speech, HearingAction.Own),
+                            new HearingStatus("Windows 语音识别听到的是另一个麦克风：Windows 默认", true, HearingAction.Own, HearingAction.Sound) })
                         {
                             mainframe.ShowHearing(state);
                             mainframe.VoiceNote(state.Text, state.Problem);
