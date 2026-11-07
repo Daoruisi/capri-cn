@@ -2454,8 +2454,8 @@ namespace CapriDesktop
             title.Tag = Mainframe.MenuLook.Title;
             menu.Items.Add(title);
             menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add(new ToolStripMenuItem("Open Capri Mainframe", null, delegate { mainframe.Restore(); }));
-            visibilityItem = new ToolStripMenuItem("Hide Capri", null, delegate { ToggleHidden(); });
+            menu.Items.Add(new ToolStripMenuItem("打开 Capri 主控台", null, delegate { mainframe.Restore(); }));
+            visibilityItem = new ToolStripMenuItem("隐藏 Capri", null, delegate { ToggleHidden(); });
             menu.Items.Add(visibilityItem);
             ToolStripMenuItem sizes = new ToolStripMenuItem("Size");
             AddSize(sizes, "Small", 170);
@@ -2465,30 +2465,30 @@ namespace CapriDesktop
             AddSize(sizes, "Giant", 560);
             menu.Items.Add(sizes);
             ToolStripMenuItem moves = new ToolStripMenuItem("Move");
-            wanderItem = new ToolStripMenuItem("Wander around", null, delegate { ToggleWander(); });
+            wanderItem = new ToolStripMenuItem("到处走走", null, delegate { ToggleWander(); });
             wanderItem.Checked = preferences.Wander;
             moves.DropDownItems.Add(wanderItem);
-            danceItem = new ToolStripMenuItem("Dance to music", null, delegate { ToggleDance(); });
+            danceItem = new ToolStripMenuItem("跟着音乐动", null, delegate { ToggleDance(); });
             danceItem.Checked = !preferences.NoDance;
             moves.DropDownItems.Add(danceItem);
             danceNowItem = new ToolStripMenuItem("Dance", null, delegate { Animate(danceAsked ? "stop_dancing" : "dance"); });
             moves.DropDownItems.Add(danceNowItem);
-            rideItem =new ToolStripMenuItem("Ride cursor", null, delegate { WakeRest(true); if (riding) StopRide(); else StartRide(); });
+            rideItem =new ToolStripMenuItem("骑鼠标", null, delegate { WakeRest(true); if (riding) StopRide(); else StartRide(); });
             rideItem.Enabled = !preferences.Hologram;
             moves.DropDownItems.Add(rideItem);
-            sitItem = new ToolStripMenuItem("Sit on windows", null, delegate { ToggleSitting(); });
+            sitItem = new ToolStripMenuItem("坐在窗口上", null, delegate { ToggleSitting(); });
             sitItem.Checked = !preferences.NoSitting;
             moves.DropDownItems.Add(sitItem);
-            sitHereItem = new ToolStripMenuItem("Sit here", null, delegate { WakeRest(true); if (seat != null && seat.Free) StandUp(); else SitHere(); });
+            sitHereItem = new ToolStripMenuItem("坐在这", null, delegate { WakeRest(true); if (seat != null && seat.Free) StandUp(); else SitHere(); });
             moves.DropDownItems.Add(sitHereItem);
-            hangHereItem = new ToolStripMenuItem("Hang here", null, delegate { WakeRest(true); if (hanging) LetGo(); else HangHere(); });
+            hangHereItem = new ToolStripMenuItem("挂在这", null, delegate { WakeRest(true); if (hanging) LetGo(); else HangHere(); });
             moves.DropDownItems.Add(hangHereItem);
-            lieItem = new ToolStripMenuItem("Lie down", null, delegate { bool wasLying = lying; WakeRest(true); if (wasLying) SitUp(); else LieDown(); });
+            lieItem = new ToolStripMenuItem("躺下", null, delegate { bool wasLying = lying; WakeRest(true); if (wasLying) SitUp(); else LieDown(); });
             moves.DropDownItems.Add(lieItem);
-            sleepItem = new ToolStripMenuItem("Go to sleep", null, delegate { Nap(!napAsked && !Asleep); });
+            sleepItem = new ToolStripMenuItem("去睡觉", null, delegate { Nap(!napAsked && !Asleep); });
             moves.DropDownItems.Add(sleepItem);
-            moves.DropDownItems.Add(new ToolStripMenuItem("Bring to this screen", null, delegate { RestoreAtCursor(); }));
-            screenItem = new ToolStripMenuItem("Go to the next screen", null, delegate { MoveSelf("other_screen", null); });
+            moves.DropDownItems.Add(new ToolStripMenuItem("叫到这个屏幕", null, delegate { RestoreAtCursor(); }));
+            screenItem = new ToolStripMenuItem("去下一个屏幕", null, delegate { MoveSelf("other_screen", null); });
             moves.DropDownItems.Add(screenItem);
             menu.Items.Add(moves);
             hologramItem = new ToolStripMenuItem("Hologram", null, delegate { SetHologram(!preferences.Hologram); });
@@ -2501,15 +2501,15 @@ namespace CapriDesktop
             clickDelay.Interval = Math.Max(100, SystemInformation.DoubleClickTime);
             clickDelay.Tick += delegate { OnClickDelay(); };
             helpItem = new ToolStripMenuItem("Help");
-            helpItem.DropDownItems.Add(new ToolStripMenuItem("Help page", null, delegate { OpenHelp(); }));
-            helpItem.DropDownItems.Add(new ToolStripMenuItem("Join the Discord", null, delegate { OpenPage(DiscordPage); }));
-            helpItem.DropDownItems.Add(new ToolStripMenuItem("Copy error details", null, delegate { CopyErrors(); }));
+            helpItem.DropDownItems.Add(new ToolStripMenuItem("帮助页面", null, delegate { OpenHelp(); }));
+            helpItem.DropDownItems.Add(new ToolStripMenuItem("加入 Discord", null, delegate { OpenPage(DiscordPage); }));
+            helpItem.DropDownItems.Add(new ToolStripMenuItem("复制错误详情", null, delegate { CopyErrors(); }));
             // Store policies 11.12 and 11.16: AI replies and mods need a way to report them from inside the app, and mods need their rules there too.
             if (Packaged.Is) helpItem.DropDownItems.Add(new ToolStripMenuItem("Report a problem", null, delegate { OpenPage(IssuesPage); }));
             if (Packaged.Is) helpItem.DropDownItems.Add(new ToolStripMenuItem("Mod rules", null, delegate { OpenPage(ModRulesPage); }));
-            checkItem = new ToolStripMenuItem("Check for updates", null, delegate { CheckForUpdates(true); });
+            checkItem = new ToolStripMenuItem("检查更新", null, delegate { CheckForUpdates(true); });
             helpItem.DropDownItems.Add(checkItem);
-            updateItem = new ToolStripMenuItem("Restart to update", null, delegate { InstallUpdate(); });
+            updateItem = new ToolStripMenuItem("重启以更新", null, delegate { InstallUpdate(); });
             menu.Items.Add(helpItem);
             foreach (ToolStripMenuItem parent in new[] { sizes, moves, helpItem })
             {
@@ -2522,7 +2522,7 @@ namespace CapriDesktop
                 drop.ShowCheckMargin = parent != helpItem;
             }
             menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add(new ToolStripMenuItem("Quit Capri", null, delegate { Quit(); }));
+            menu.Items.Add(new ToolStripMenuItem("退出 Capri", null, delegate { Quit(); }));
             menu.Opened += delegate { Computer.MenuOpen = true; };
             menu.Closed += delegate { Computer.MenuOpen = false; };
             playerMenu = new ContextMenuStrip();
@@ -2531,10 +2531,10 @@ namespace CapriDesktop
             playerMenu.BackColor = menu.BackColor;
             playerMenu.Font = menu.Font;
             playerMenu.ShowImageMargin = false;
-            playerOpenItem = new ToolStripMenuItem("Open the player", null, delegate { Tune tune = player.Tune; ThreadPool.QueueUserWorkItem(delegate { try { Tunes.Open(tune); } catch (Exception) { } }); });
+            playerOpenItem = new ToolStripMenuItem("打开播放器", null, delegate { Tune tune = player.Tune; ThreadPool.QueueUserWorkItem(delegate { try { Tunes.Open(tune); } catch (Exception) { } }); });
             playerMenu.Items.Add(playerOpenItem);
-            playerMenu.Items.Add(new ToolStripMenuItem("Hide for now", null, delegate { playerClosed = true; HidePlayer(); }));
-            playerMenu.Items.Add(new ToolStripMenuItem("Turn off mini player", null, delegate { TogglePlayer(); }));
+            playerMenu.Items.Add(new ToolStripMenuItem("先隐藏", null, delegate { playerClosed = true; HidePlayer(); }));
+            playerMenu.Items.Add(new ToolStripMenuItem("关闭迷你播放器", null, delegate { TogglePlayer(); }));
             player.Command += PlayerCommand;
             player.Moved += SavePlayerSpot;
             tray = new NotifyIcon();
@@ -2542,7 +2542,7 @@ namespace CapriDesktop
             {
                 tray.Icon = icon != null ? new Icon(icon) : Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             }
-            tray.Text = "Capri · Double-click to restore";
+            tray.Text = "Capri · 双击还原";
             tray.ContextMenuStrip = menu;
             tray.DoubleClick += delegate { RestoreAtCursor(); };
             tray.BalloonTipClicked += delegate { BalloonClicked(); };
@@ -4339,7 +4339,7 @@ namespace CapriDesktop
             hotkey = hopName != null;
             riding = true;
             PassThrough();
-            rideItem.Text = "Hop off";
+            rideItem.Text = "下鼠标";
             tray.Text = hotkey ? "Capri · " + hopName + " to hop off" : "Capri · Hop off from this menu";
             if (!testing && !quiet) { balloonPage = null; balloonUpdate = false; balloonMainframe = false; tray.ShowBalloonTip(6000, "Capri is riding your cursor", hotkey ? "Press " + hopName + " to get her off." : "Right-click her tray icon, then choose Move and Hop off.", ToolTipIcon.Info); }
             Play(perchGlitch);
@@ -4357,8 +4357,8 @@ namespace CapriDesktop
             leanAngle = 0;
             Play(grin);
             PassThrough();
-            if (rideItem != null) rideItem.Text = "Ride cursor";
-            if (tray != null) tray.Text = "Capri · Double-click to restore";
+            if (rideItem != null) rideItem.Text = "骑鼠标";
+            if (tray != null) tray.Text = "Capri · 双击还原";
             if (!IsDisposed) { Location = anchor; UpdateAnimation(); SavePreferences(); mainframe.Sync(); }
         }
 
@@ -17694,7 +17694,7 @@ namespace CapriDesktop
                 if (reply != null) throw new Exception("A game glance spoke after the game left the foreground.");
                 Preferences defaults = Preferences.Fresh();
                 if (defaults.Watch || defaults.CommentPace != Commentary.Off || defaults.NoGaming) throw new Exception("Game watching defaults changed.");
-                string help = SelfKnow.Setting("Mainframe.cs", "Watch my screen").Facts;
+                string help = SelfKnow.Setting("Mainframe.cs", "看着我的屏幕").Facts;
                 if (!help.Contains("Comments off and Gaming Mode off") || !help.Contains("Events only and Watch my screen off")) throw new Exception("Her watching help did not explain quiet games.");
                 checks.Add("PASS game glance gates: Comments off blocks capture and pending lines, calls and user speech still pause comments, on-demand checks still work, game changes drop old lines, defaults stay put and watching help explains quiet games");
             }

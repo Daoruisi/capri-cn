@@ -592,7 +592,7 @@ namespace CapriSetup
             primary.Click += Perform;
             Controls.Add(primary);
             cancel = new Plate();
-            cancel.Text = "Cancel";
+            cancel.Text = "取消";
             cancel.Font = Neon.Type(11f, true);
             cancel.Bounds = Box(318, 400, 116, 42);
             cancel.Click += delegate
@@ -641,7 +641,7 @@ namespace CapriSetup
             Plate mark = new Plate();
             mark.Glyph = glyph;
             mark.TabStop = false;
-            mark.AccessibleName = glyph == 1 ? "Minimize" : "Close";
+            mark.AccessibleName = glyph == 1 ? "最小化" : "Close";
             mark.Bounds = Box(x, 14, 30, 26);
             mark.Click += click;
             Controls.Add(mark);

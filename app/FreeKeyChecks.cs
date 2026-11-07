@@ -37,7 +37,7 @@ namespace CapriDesktop
                         string crowded = TextFits() ?? Overlap();
                         if (!TiersFit || crowded != null) throw new Exception("Free key's BRAIN panel does not fit at " + percent + "%: " + crowded);
                         if (!freeKey.TabStop || !freeKey.Focus()) throw new Exception("The Free key button cannot be reached by keyboard.");
-                        if (hints[freeKey].Topic != SelfKnow.Setting("Mainframe.cs", "Free key")) throw new Exception("Free key lost its real help binding.");
+                        if (hints[freeKey].Topic != SelfKnow.Setting("Mainframe.cs", "免费 Key")) throw new Exception("Free key lost its real help binding.");
                         foreach (string provider in new[] { "NVIDIA", "Google AI Studio", "OpenRouter" })
                             if (!freeKey.AccessibleDescription.Contains(provider)) throw new Exception("Free key's tip missed " + provider + ".");
                         freeKey.PerformClick();

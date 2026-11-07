@@ -1091,7 +1091,7 @@ namespace CapriDesktop
             if (box.Visible) box.Hide();
             // A job that's already running moves to the HUD, as one started in Gaming Mode does.
             taskPanel.Stop();
-            visibilityItem.Text = "Hide Capri";
+            visibilityItem.Text = "隐藏 Capri";
             GameHud.Status(!preferences.Silent, shushed);
             GameHud.Show(game.Bounds);
             UpdateAnimation();
